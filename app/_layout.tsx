@@ -1,6 +1,7 @@
 import { SplashScreen, Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
+import { AuthProvider } from "@/context/GlobalProvider";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -17,17 +18,19 @@ export default function RootLayout() {
     "Poppins-Thin": require("../assets/fonts/Poppins-Thin.ttf"),
   });
 
-  useEffect( () => {
+  useEffect(() => {
     if (error) throw error;
     if (fontsLoaded) SplashScreen.hideAsync();
   }, [fontsLoaded, error])
 
-  if(!fontsLoaded && !error) return null;
+  if (!fontsLoaded && !error) return null;
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{headerShown: false}}/>
-      <Stack.Screen name="(auth)" options={{headerShown: false}}/>
-      <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
-    </Stack>
+    <AuthProvider>
+      <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack>
+    </AuthProvider>
   );
 }

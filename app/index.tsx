@@ -4,15 +4,19 @@ import { StatusBar } from 'expo-status-bar'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '@/constants'
 import CustomButton from '@/components/CustomButton'
+import { useAuth } from '@/context/GlobalProvider'
 const App = () => {
-  // return <Redirect href="/home" />
+  const { authState } = useAuth();
+  if (authState && authState.isLoggedIn) {
+    return <Redirect href="/home" />
+  }
   return (
     <SafeAreaView className='bg-primary h-full'>
       <ScrollView contentContainerStyle={{ height: '100%' }}>
         <View className='w-full items-center min-h-[85vh] px-4'>
           <Image
             source={images.logo}
-            className='w-[130px] h-[84px]'
+            className='w-full h-[84px]'
             resizeMode='contain' />
           <Image
             source={images.cards}

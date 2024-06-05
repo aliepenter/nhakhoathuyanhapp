@@ -1,11 +1,13 @@
-import { FlatList, Image, RefreshControl, Text, View } from 'react-native'
+import { Alert, FlatList, Image, RefreshControl, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '@/constants';
 import SearchInput from '@/components/SearchInput';
 import Trending from '@/components/Trending';
 import EmptyState from '@/components/EmptyState';
-const DATA : any = [
+import { useAuth } from '@/context/GlobalProvider';
+import CustomButton from '@/components/CustomButton';
+const DATA: any = [
   {
     id: 1
   },
@@ -20,6 +22,19 @@ const Home = () => {
     setRefreshing(true);
     setRefreshing(false)
   }
+  const { authState, onLogout } = useAuth();
+  
+  const handleLogout = async () => {
+    if (onLogout) {
+      try {
+        await onLogout();
+      } catch (error) {
+        Alert.alert('Đăng xuất thất bại', 'Xin vui thử lại sau');
+      }
+    } else {
+      Alert.alert('Đăng xuất thất bại', 'Xin vui thử lại sau');
+    }
+  };
   return (
     <SafeAreaView className='bg-primary h-full'>
       <FlatList
@@ -34,13 +49,13 @@ const Home = () => {
           <View className='my-6 px-4 space-y-6'>
             <View className='justify-between items-start mb-6 flex-row'>
               <View>
-                <Text className='font-pmedium text-sm text-gray-100'> Welcome Back</Text>
+                <Text className='font-pmedium text-sm text-gray-100'>Xin chào</Text>
                 <Text className='text-2xl font-psemibold text-white'>
-                  JSMastery
+                  {authState?.userInfo?.ho_va_ten}
                 </Text>
               </View>
               <View className='mt-1.5'>
-                <Image source={images.logoSmall} className='w-9 h-10' resizeMode='contain' />
+                <Image source={images.logoSmall} className='w-11 h-11' resizeMode='contain' />
               </View>
             </View>
             <SearchInput />
@@ -50,6 +65,8 @@ const Home = () => {
               </Text>
               <Trending posts={[{ id: 1 }, { id: 2 }, { id: 3 }] ?? []} />
             </View>
+            <CustomButton title="Logout" handlePress={handleLogout} containerStyles="w-full mt-7" />
+
           </View>
         )}
         ListEmptyComponent={() => (
@@ -58,7 +75,7 @@ const Home = () => {
             subtitle="Be the first one to upload a video"
           />
         )}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       />
     </SafeAreaView>
   )

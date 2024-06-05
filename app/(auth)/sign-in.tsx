@@ -1,10 +1,11 @@
-import { ScrollView, StyleSheet, Text, View, Image, Alert } from 'react-native'
+import { ScrollView, Text, View, Image, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '@/constants'
 import FormField from '@/components/FormField'
 import CustomButton from '../../components/CustomButton';
 import { Link, router } from 'expo-router'
+import { useAuth } from '@/context/GlobalProvider'
 
 const SignIn = () => {
   const [form, setForm] = useState({
@@ -12,25 +13,27 @@ const SignIn = () => {
     password: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { onLogin } = useAuth();
   const submit = async () => {
     if (!form.phone || !form.password) {
-      Alert.alert('Thất bại', 'Xin vui lòng điền đầy đủ thông tin')
+      Alert.alert('Đăng nhập thất bại', 'Xin vui lòng điền đầy đủ thông tin');
+      return;
     }
     setIsSubmitting(true);
     try {
-      // await SignIn(form.email, form.password)
-      router.replace('/home');
+      await onLogin!(form.phone, form.password);
+      router.push('/home');
     } catch (error) {
-      Alert.alert('Error', 'Đăng nhập thất bại, xin vui lòng kiểm tra lại thông tin')
+      Alert.alert('Đăng nhập thất bại', 'Xin vui lòng kiểm tra lại thông tin');
     } finally {
       setIsSubmitting(false);
     }
-  }
+  };
   return (
     <SafeAreaView className='bg-primary h-full'>
       <ScrollView>
         <View className='w-full min-h-[83vh] justify-center px-4 my-6'>
-          <Image source={images.logo} resizeMode='contain' className='w-[115px] h-[35px]' />
+          <Image source={images.logo} resizeMode='contain' className='w-full h-[200px]' />
           <Text className='text-2xl text-white text-semibold mt-10 font-psemibold'>Log in to Aura</Text>
           <FormField
             title="Số điện thoại"
@@ -60,5 +63,3 @@ const SignIn = () => {
 }
 
 export default SignIn
-
-const styles = StyleSheet.create({})
