@@ -34,7 +34,6 @@ const SignIn = () => {
       <ScrollView>
         <View className='w-full min-h-[83vh] justify-center px-4 my-6'>
           <Image source={images.logo} resizeMode='contain' className='w-full h-[200px]' />
-          <Text className='text-2xl text-white text-semibold mt-10 font-psemibold'>Log in to Aura</Text>
           <FormField
             title="Số điện thoại"
             value={form.phone}
@@ -42,19 +41,19 @@ const SignIn = () => {
             otherStyles="mt-7"
           />
           <FormField
-            title="Password"
+            title="Mật khẩu"
             value={form.password}
             handleChangeText={(e: any) => setForm({ ...form, password: e })}
             otherStyles="mt-7"
           />
           <CustomButton
-            title="Sign in"
+            title="Đăng nhập"
             handlePress={submit}
             containerStyles="mt-7"
             isLoading={isSubmitting}
           />
           <View className='justify-center pt-5 flex-row gap-2'>
-            <Link href="/sign-up" className="text-lg text-gray-100 font-pregular">Don't have account?</Link>
+            <Link href="/sign-up" className="text-lg text-gray-100 font-pregular">Bạn chưa có tài khoản?</Link>
           </View>
         </View>
       </ScrollView>

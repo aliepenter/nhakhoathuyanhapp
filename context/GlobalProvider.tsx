@@ -18,6 +18,7 @@ interface AuthProps {
 
 const TOKEN_KEY = 'Dat.2624';
 export const URL = `${API_URL}:${API_PORT}`;
+
 const AuthContext = createContext<Partial<AuthProps>>({});
 
 export const useAuth = () => {
@@ -49,8 +50,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const login = async (username: string, password: string) => {
         try {
-            console.log(`${URL}/auth/login`);
-            
             const result = await axios.post(`${URL}/auth/login`, { username, password });
             axios.defaults.headers.common['Authorization'] = `Bearer ${result.data}`;
             const userProfile = await axios.get(`${URL}/auth/profile`);

@@ -1,5 +1,5 @@
 import { Text, View, Image } from 'react-native'
-import { Tabs, Redirect } from 'expo-router'
+import { Tabs } from 'expo-router'
 import { icons } from '../../constants';
 import { StatusBar } from 'expo-status-bar'
 
