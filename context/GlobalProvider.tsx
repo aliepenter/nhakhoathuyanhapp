@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, ReactNode } from "react
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store';
 import { router } from "expo-router";
-
+import { API_URL, API_PORT } from '@env';
 
 interface AuthState {
     token: string | null;
@@ -17,7 +17,7 @@ interface AuthProps {
 }
 
 const TOKEN_KEY = 'Dat.2624';
-export const API_URL = 'http://192.168.1.102:3000';
+export const URL = `${API_URL}:${API_PORT}`;
 const AuthContext = createContext<Partial<AuthProps>>({});
 
 export const useAuth = () => {
@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             const token = await SecureStore.getItemAsync(TOKEN_KEY);
             if (token) {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-                const userProfile = await axios.get(`${API_URL}/auth/profile`);
+                const userProfile = await axios.get(`${URL}/auth/profile`);
                 setAuthState({
                     token: token,
                     isLoggedIn: true,
@@ -49,12 +49,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const login = async (username: string, password: string) => {
         try {
-            const result = await axios.post(`${API_URL}/auth/login`, { username, password });
+            console.log(`${URL}/auth/login`);
+            
+            const result = await axios.post(`${URL}/auth/login`, { username, password });
             axios.defaults.headers.common['Authorization'] = `Bearer ${result.data}`;
-            const userProfile = await axios.get(`${API_URL}/auth/profile`);
-            setAuthState({ token: result.data, isLoggedIn: true, userInfo: userProfile });
+            const userProfile = await axios.get(`${URL}/auth/profile`);
+            setAuthState({ token: result.data, isLoggedIn: true, userInfo: userProfile.data });
             await SecureStore.setItemAsync(TOKEN_KEY, result.data);
-            return result.data;
         } catch (error) {
             throw error;
         }

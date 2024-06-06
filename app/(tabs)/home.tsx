@@ -55,7 +55,7 @@ const Home = () => {
                 </Text>
               </View>
               <View className='mt-1.5'>
-                <Image source={images.logoSmall} className='w-11 h-11' resizeMode='contain' />
+                <Image source={images.logoSmall} className='w-10 h-10' resizeMode='contain' />
               </View>
             </View>
             <SearchInput />

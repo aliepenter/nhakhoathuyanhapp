@@ -1,6 +1,7 @@
 import { Text, View, Image } from 'react-native'
 import { Tabs, Redirect } from 'expo-router'
 import { icons } from '../../constants';
+import { StatusBar } from 'expo-status-bar'
 
 const TabIcon = ({ icon, color, name, focused }: any) => {
     return (
@@ -32,11 +33,11 @@ const TabsLayout = () => {
                         <TabIcon icon={icons.home} color={color} name="Trang chủ" focused={focused}></TabIcon>
                     ),
                 }}></Tabs.Screen>
-                <Tabs.Screen name='bookmark' options={{
-                    title: 'Bookmark',
+                <Tabs.Screen name='booking' options={{
+                    title: 'Đặt lịch',
                     headerShown: false,
                     tabBarIcon: ({ color, focused }) => (
-                        <TabIcon icon={icons.bookmark} color={color} name="Bookmark" focused={focused}></TabIcon>
+                        <TabIcon icon={icons.booking} color={color} name="Đặt lịch" focused={focused}></TabIcon>
                     ),
                 }}></Tabs.Screen>
                 <Tabs.Screen name='create' options={{
@@ -54,6 +55,7 @@ const TabsLayout = () => {
                     ),
                 }}></Tabs.Screen>
             </Tabs>
+            <StatusBar backgroundColor='#161622' style='light' />
         </>
     )
 }
