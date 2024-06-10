@@ -49,7 +49,7 @@ const TrendingItem = ({ activeItem, item }: any) => {
       >
         <ImageBackground
           source={{ uri: `${API_URL}${item.video_thumbnail}` }}
-          className="w-80 h-48 overflow-hidden shadow-lg shadow-black/40"
+          className="w-80 h-48 overflow-hidden shadow-lg shadow-black/40 rounded-[20px]"
           resizeMode="stretch"
         />
         <Image

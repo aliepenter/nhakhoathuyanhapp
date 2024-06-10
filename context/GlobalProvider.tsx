@@ -51,12 +51,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const login = async (username: string, password: string) => {
         try {
             const result = await axios.post(`${URL}/auth/login`, { username, password });
-            axios.defaults.headers.common['Authorization'] = `Bearer ${result.data}`;
-            const userProfile = await axios.get(`${URL}/auth/profile`);
-            setAuthState({ token: result.data, isLoggedIn: true, userInfo: userProfile.data });
-            await SecureStore.setItemAsync(TOKEN_KEY, result.data);
+            if (result) {
+                axios.defaults.headers.common['Authorization'] = `Bearer ${result.data}`;
+                const userProfile = await axios.get(`${URL}/auth/profile`);
+                setAuthState({ token: result.data, isLoggedIn: true, userInfo: userProfile.data });
+                await SecureStore.setItemAsync(TOKEN_KEY, result.data);
+            }else{
+                return null;
+            }
         } catch (error) {
-            throw error;
+            return null;
         }
     }
 

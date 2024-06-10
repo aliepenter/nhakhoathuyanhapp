@@ -14,7 +14,7 @@ import Trending from "@/components/Trending";
 import EmptyState from "@/components/EmptyState";
 import { useAuth } from "@/context/GlobalProvider";
 import CustomButton from "@/components/CustomButton";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { getVideos } from "@/lib/apiCall";
 const DATA: any = [
   {
@@ -47,13 +47,16 @@ const Home = () => {
   };
 
   useEffect(() => {
-    const loadToken = async () => {
+    if (!authState || authState.isLoggedIn === false) {
+      router.push('/sign-in');
+    }
+    const videos = async () => {
       const videos: any = await getVideos();
       if (videos) {
         setVideos(videos.data);
       }
     };
-    loadToken();
+    videos();
   }, []);
 
   return (
