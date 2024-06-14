@@ -8,9 +8,8 @@ import {
 import React, { useState } from "react";
 import * as Animatable from "react-native-animatable";
 import { icons } from "@/constants";
-import { API_URL } from "@env";
-import YoutubePlayer from "react-native-youtube-iframe";
 import { router } from "expo-router";
+const API_URL="http://192.168.1.102"
 
 const zoomIn: any = {
   0: {

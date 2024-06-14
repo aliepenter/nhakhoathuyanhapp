@@ -2,7 +2,6 @@ import { createContext, useContext, useEffect, useState, ReactNode } from "react
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store';
 import { router } from "expo-router";
-import { API_URL, API_PORT } from '@env';
 
 interface AuthState {
     token: string | null;
@@ -16,6 +15,9 @@ interface AuthProps {
     onLogout: () => Promise<void>;
 }
 
+
+const API_URL="http://192.168.1.102"
+const API_PORT=3000
 const TOKEN_KEY = 'Dat.2624';
 export const URL = `${API_URL}:${API_PORT}`;
 
@@ -57,10 +59,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                 setAuthState({ token: result.data, isLoggedIn: true, userInfo: userProfile.data });
                 await SecureStore.setItemAsync(TOKEN_KEY, result.data);
             }else{
-                return null;
+                throw Error;
             }
         } catch (error) {
-            return null;
+            throw error;
         }
     }
 

@@ -11,10 +11,7 @@ const App = () => {
     return <Redirect href="/home" />
   }
   return (
-    <KeyboardAvoidingView
-      behavior='padding'
-      keyboardVerticalOffset={0}
-    >
+
       <SafeAreaView className='bg-primary h-full'>
         <ScrollView contentContainerStyle={{ height: '100%' }}>
           <View className='w-full items-center min-h-[85vh] px-4'>
@@ -41,7 +38,6 @@ const App = () => {
         </ScrollView>
         <StatusBar backgroundColor='#161622' style='light' />
       </SafeAreaView>
-    </KeyboardAvoidingView>
   )
 }
 
