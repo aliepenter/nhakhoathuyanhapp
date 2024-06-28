@@ -16,7 +16,7 @@ interface AuthProps {
 }
 
 
-const API_URL="http://192.168.1.102"
+const API_URL="http://192.168.1.100"
 const API_PORT=3000
 const TOKEN_KEY = 'Dat.2624';
 export const URL = `${API_URL}:${API_PORT}`;
@@ -54,9 +54,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         try {
             const result = await axios.post(`${URL}/auth/login`, { username, password });
             if (result) {
+                
                 axios.defaults.headers.common['Authorization'] = `Bearer ${result.data}`;
                 const userProfile = await axios.get(`${URL}/auth/profile`);
                 setAuthState({ token: result.data, isLoggedIn: true, userInfo: userProfile.data });
+                console.log(authState);
+
                 await SecureStore.setItemAsync(TOKEN_KEY, result.data);
             }else{
                 throw Error;

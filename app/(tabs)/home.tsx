@@ -97,7 +97,7 @@ const Home = () => {
                 <View className="mt-1.5">
                   <Link
                     href="/sign-up"
-                    className="text-gray-100 text-sm font-pregular text-blue-500"
+                    className="text-sm font-pregular text-blue-500"
                   >
                     Xem tất cả
                   </Link>

@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View, Image } from 'react-native'
+import { ScrollView, Text, View, Image } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '@/constants'
@@ -55,5 +55,3 @@ const SignUp = () => {
 }
 
 export default SignUp
-
-const styles = StyleSheet.create({})
