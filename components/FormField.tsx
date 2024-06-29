@@ -2,21 +2,22 @@ import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native'
 import React, { useState } from 'react'
 import { icons } from '@/constants';
 
-const FormField = ({ title, value, placeholder, handleChangeText, otherStyles, ...pros }: any) => {
+const FormField = ({ title, keyboardType, autoFocus, value, placeholder, handleChangeText, otherStyles, ...pros }: any) => {
     const [showPassword, setShowPassword] = useState(false);
-
+    
     return (
-        <View className={`space-y-2 ${otherStyles}`}>
-            <Text className='text-base text-gray-100 font-pmedium'>{title}</Text>
+        <View className={`space-y-2 ${otherStyles} flex items-center`}>
             <View
-                className='w-full h-16 border-2 border-black-200 bg-black-100 rounded-2xl focus:border-secondary flex-row'
+                className='w-11/12 bg-white rounded-2xl flex-row border-2 border-[#2594B8]'
             >
-                <TextInput className='flex-1 px-4 text-white font-semibold text-base'
+                <TextInput className='flex-1 p-4 text-black font-semibold text-base'
                     value={value}
                     placeholder={placeholder}
                     placeholderTextColor="#7b7b8b"
                     onChangeText={handleChangeText}
                     secureTextEntry={title === 'Mật khẩu' && !showPassword}
+                    autoFocus={autoFocus}
+                    keyboardType={keyboardType}
                 />
                 <View
                     className='flex-row items-center pr-4'

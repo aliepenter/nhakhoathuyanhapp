@@ -13,11 +13,11 @@ interface AuthProps {
     authState: AuthState;
     onLogin: (username: string, password: string) => Promise<any>;
     onLogout: () => Promise<void>;
+    trackPhoneNumber: (username: string) => Promise<void>;
 }
 
-
-const API_URL="http://192.168.1.100"
-const API_PORT=3000
+const API_URL = "http://192.168.1.100"
+const API_PORT = 3000
 const TOKEN_KEY = 'Dat.2624';
 export const URL = `${API_URL}:${API_PORT}`;
 
@@ -50,18 +50,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         loadToken();
     }, [])
 
-    const login = async (username: string, password: string) => {
+    const trackPhoneNumber = async (username: string) => {
         try {
-            const result = await axios.post(`${URL}/auth/login`, { username, password });
+            const result = await axios.get(`${URL}/users/${username}`);
             if (result) {
-                
-                axios.defaults.headers.common['Authorization'] = `Bearer ${result.data}`;
-                const userProfile = await axios.get(`${URL}/auth/profile`);
-                setAuthState({ token: result.data, isLoggedIn: true, userInfo: userProfile.data });
-                console.log(authState);
-
-                await SecureStore.setItemAsync(TOKEN_KEY, result.data);
-            }else{
+                return true;
+            } else {
                 throw Error;
             }
         } catch (error) {
@@ -69,18 +63,39 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
     }
 
+    const login = async (username: string, password: string) => {
+        try {
+            const result = await axios.post(`${URL}/auth/login`, { username, password });
+            if (result) {
+                axios.defaults.headers.common['Authorization'] = `Bearer ${result.data}`;
+                const userProfile = await axios.get(`${URL}/auth/profile`);
+                setAuthState({ token: result.data, isLoggedIn: true, userInfo: userProfile.data });
+                await SecureStore.setItemAsync(TOKEN_KEY, result.data);
+            } else {
+                throw Error;
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
 
     const logout = async () => {
-        await SecureStore.deleteItemAsync(TOKEN_KEY);
-        axios.defaults.headers.common['Authorization'] = '';
-        setAuthState({ token: null, isLoggedIn: false, userInfo: null });
-        router.push('/sign-in');
+        try {
+            await SecureStore.deleteItemAsync(TOKEN_KEY);
+            axios.defaults.headers.common['Authorization'] = '';
+            setAuthState({ token: null, isLoggedIn: false, userInfo: null });
+            router.push('/sign-in');
+        } catch (error) {
+            throw error;
+        }
+
     }
 
     const value: AuthProps = {
         authState,
         onLogin: login,
         onLogout: logout,
+        trackPhoneNumber: trackPhoneNumber
     };
 
     return (

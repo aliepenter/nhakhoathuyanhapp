@@ -46,7 +46,8 @@
     "react-native-web": "~0.19.10",
     "react-native-youtube": "^2.0.2",
     "react-native-youtube-iframe": "^2.3.0",
-    "util": "^0.12.5"
+    "util": "^0.12.5",
+    "expo-linear-gradient": "~13.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
