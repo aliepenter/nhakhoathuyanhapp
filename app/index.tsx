@@ -1,19 +1,16 @@
-import { useAuth } from '@/context/GlobalProvider'
-import { Redirect } from 'expo-router';
-import { useEffect, useState } from 'react'
-import { View, Text } from 'react-native';
-const App = () => {
-  const { authState } = useAuth();
-  const [redirectUrl, setRedirectUrl] = useState<string>('/sign-in');
+import useUser from "@/hooks/auth/useUser";
+import { Redirect } from "expo-router";
+import Loader from "@/components/loader/loader";
 
-  useEffect(() => {
-    if (authState && authState.isLoggedIn) {
-      setRedirectUrl('/home');
-    }
-  }, [authState]);
-
+export default function TabsIndex() {
   return (
-    <Redirect href={redirectUrl} />
-  )
+    <>
+      {1 ? (
+        <Loader />
+      ) : (
+        <></>
+        // <Redirect href={!user ? "/(routes)/login" : "/(tabs)"} />
+      )}
+    </>
+  );
 }
-export default App

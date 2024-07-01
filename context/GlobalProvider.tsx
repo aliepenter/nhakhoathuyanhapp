@@ -13,7 +13,6 @@ interface AuthProps {
     authState: AuthState;
     onLogin: (username: string, password: string) => Promise<any>;
     onLogout: () => Promise<void>;
-    trackPhoneNumber: (username: string) => Promise<void>;
 }
 
 const API_URL = "http://192.168.1.100"
@@ -33,52 +32,42 @@ interface AuthProviderProps {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
     const [authState, setAuthState] = useState<AuthState>({ token: null, isLoggedIn: false, userInfo: null });
-
+    
     useEffect(() => {
         const loadToken = async () => {
             const token = await SecureStore.getItemAsync(TOKEN_KEY);
             if (token) {
-                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-                const userProfile = await axios.get(`${URL}/auth/profile`);
-                setAuthState({
-                    token: token,
-                    isLoggedIn: true,
-                    userInfo: userProfile.data
-                });
+                try {
+                    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                    const userProfile = await axios.get(`${URL}/auth/profile`);
+                    setAuthState({
+                        token: token,
+                        isLoggedIn: true,
+                        userInfo: userProfile.data
+                    });
+                } catch (error) {
+                    return null;
+                }
             }
         }
         loadToken();
     }, [])
 
-    const trackPhoneNumber = async (username: string) => {
-        try {
-            const result = await axios.get(`${URL}/users/${username}`);
-            if (result) {
-                return true;
-            } else {
-                throw Error;
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
     const login = async (username: string, password: string) => {
-        try {
-            const result = await axios.post(`${URL}/auth/login`, { username, password });
-            if (result) {
+        const result = await axios.post(`${URL}/auth/login`, { username, password });
+        if (result) {
+            try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${result.data}`;
                 const userProfile = await axios.get(`${URL}/auth/profile`);
                 setAuthState({ token: result.data, isLoggedIn: true, userInfo: userProfile.data });
                 await SecureStore.setItemAsync(TOKEN_KEY, result.data);
-            } else {
-                throw Error;
+            } catch (error) {
+                throw error;
             }
-        } catch (error) {
-            throw error;
+        } else {
+            throw Error;
         }
     }
-
     const logout = async () => {
         try {
             await SecureStore.deleteItemAsync(TOKEN_KEY);
@@ -90,14 +79,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
 
     }
-
     const value: AuthProps = {
         authState,
         onLogin: login,
         onLogout: logout,
-        trackPhoneNumber: trackPhoneNumber
     };
-
     return (
         <AuthContext.Provider value={value}>
             {children}

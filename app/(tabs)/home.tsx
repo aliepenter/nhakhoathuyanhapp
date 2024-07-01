@@ -14,8 +14,10 @@ import Trending from "@/components/Trending";
 import EmptyState from "@/components/EmptyState";
 import { useAuth } from "@/context/GlobalProvider";
 import CustomButton from "@/components/CustomButton";
-import { Link, router } from "expo-router";
-import { getVideos } from "@/lib/apiCall";
+import { Link, Redirect, router } from "expo-router";
+import { getVideos,logout } from "@/lib/apiCall";
+import { useGlobalContext } from "@/context/GlobalProviders";
+
 const DATA: any = [
   {
     id: 1,
@@ -32,12 +34,15 @@ const Home = () => {
     setRefreshing(true);
     setRefreshing(false);
   };
-  const { authState, onLogout } = useAuth();
+  const { user, isLoggedIn } = useGlobalContext();
 
+  if (!user || isLoggedIn === false) {
+    return <Redirect href={"/sign-in"} />
+  }
   const handleLogout = async () => {
-    if (onLogout) {
+    if (logout) {
       try {
-        await onLogout();
+        await logout();
       } catch (error) {
         Alert.alert("Đăng xuất thất bại", "Xin vui thử lại sau");
       }
@@ -47,9 +52,6 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if (!authState || authState.isLoggedIn === false) {
-      router.push('/sign-in');
-    }
     const videos = async () => {
       const videos: any = await getVideos();
       if (videos) {
@@ -75,7 +77,7 @@ const Home = () => {
                   Xin chào
                 </Text>
                 <Text className="text-2xl font-psemibold text-white">
-                  {authState?.userInfo?.ho_va_ten}
+                  {user?.ho_va_ten}
                 </Text>
               </View>
               <View className="mt-1.5">

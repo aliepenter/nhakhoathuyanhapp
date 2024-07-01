@@ -6,11 +6,10 @@ import FormField from '@/components/FormField'
 import CustomButton from '../../components/CustomButton';
 import { Link, router } from 'expo-router'
 import { useAuth } from '@/context/GlobalProvider'
+import { trackPhoneNumber } from "@/lib/apiCall";
 
 const SignIn = () => {
-  const [form, setForm] = useState({
-    phone: ''
-  });
+  const [phoneNumber, setPhoneNumber] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   // const { onLogin } = useAuth();
   // const submit = async () => {
@@ -29,16 +28,29 @@ const SignIn = () => {
   //   }
   // };
 
-  const { trackPhoneNumber } = useAuth();
   const submit = async () => {
-    if (!form.phone) {
+
+    if (!phoneNumber) {
       Alert.alert('Đăng nhập thất bại', 'Xin vui lòng điền đầy đủ thông tin');
       return;
     }
     setIsSubmitting(true);
+
     try {
-      await trackPhoneNumber!(form.phone);
-      router.push('/signInOtp');
+      const phoneNumberStatus = await trackPhoneNumber!(phoneNumber);
+
+      if (phoneNumberStatus) {
+        router.push({
+          pathname: "signInPassword",
+          params: { username: phoneNumber },
+        });
+      } else {
+        router.push({
+          pathname: "sign-up",
+          params: { username: phoneNumber },
+        });
+      }
+
     } catch (error) {
       Alert.alert('Đăng nhập thất bại', 'Xin vui lòng kiểm tra lại thông tin');
     } finally {
@@ -72,9 +84,9 @@ const SignIn = () => {
             title="Số điện thoại"
             keyboardType="numeric"
             autoFocus={true}
-            value={form.phone}
+            value={phoneNumber}
             placeholder="Nhập số điện thoại của bạn tại đây"
-            handleChangeText={(e: any) => setForm({ ...form, phone: e })}
+            handleChangeText={(e: any) => setPhoneNumber(e)}
             otherStyles={`${Platform.OS === 'ios' ? 'mb-[15px]' : 'mb-[10px]'}`}
           />
           <View>

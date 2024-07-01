@@ -20,6 +20,20 @@ const AuthLayout = () => {
           }}
         >
         </Stack.Screen>
+        <Stack.Screen
+          name='signInPassword'
+          options={{
+            headerShown: false
+          }}
+        >
+        </Stack.Screen>
+        <Stack.Screen
+          name='signInOtp'
+          options={{
+            headerShown: false
+          }}
+        >
+        </Stack.Screen>
       </Stack>
       <StatusBar backgroundColor='#161622' style='light' />
     </>
