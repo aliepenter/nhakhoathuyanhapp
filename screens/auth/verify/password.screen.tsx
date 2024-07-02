@@ -1,21 +1,28 @@
-import { StyleSheet, Text, View, Image, Alert, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, ImageBackground } from 'react-native'
-import React, { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { images } from '@/constants'
-import FormField from '@/components/FormField'
-import { Link, router } from 'expo-router'
-import { useAuth } from '@/context/GlobalProvider'
+import {
+    StyleSheet,
+    Text,
+    View,
+    Image,
+    Alert,
+    KeyboardAvoidingView,
+    Platform,
+    ImageBackground,
+} from 'react-native';
+import React, { useState } from 'react';
+import { images } from '@/constants';
+import FormField from '@/components/FormField';
+import { Link, router } from 'expo-router';
 import { useRoute } from "@react-navigation/native";
-import { getProfile, login } from "@/lib/apiCall";
-import { useGlobalContext } from '@/context/GlobalProviders'
-import CustomButton from '@/components/CustomButton'
+import { login } from "@/lib/apiCall";
+import CustomButton from '@/components/CustomButton';
 
 const PasswordScreen = () => {
     const [password, setPassword] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const route = useRoute();
-
     const { username }: any = route.params;
+
+    const isIOS = Platform.OS === 'ios';
 
     const submit = async () => {
         if (!password) {
@@ -35,34 +42,34 @@ const PasswordScreen = () => {
     return (
         <ImageBackground source={images.bgPhoneInput} resizeMode='cover' className='flex-1'>
             <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                className={`flex flex-1 ${Platform.OS === 'ios' ? 'justify-center' : 'justify-center'}`}
+                behavior={isIOS ? 'padding' : 'height'}
+                className={`flex flex-1 ${isIOS ? 'justify-center' : 'justify-center'}`}
             >
                 <View
-                    className={`${Platform.OS === 'ios' ? 'my-8 mb-[60px]' : 'mt-16  mb-[30px]'}`}
+                    className={`${isIOS ? 'my-8 mb-[60px]' : 'mb-[30px]'}`}
                 >
                     <Image source={images.logo} resizeMode='contain' className='w-full h-[104px]' />
                     <View
-                        className={`items-center ${Platform.OS === 'ios' ? 'mt-[15px]' : 'mt-[10px]'}`}
+                        className={`items-center ${isIOS ? 'mt-[15px]' : 'mt-[10px]'}`}
                     >
                         <Text className='text-[24px] text-white font-pbold' style={styles.stroke}>Nha khoa Thùy Anh</Text>
                     </View>
                 </View>
                 <View>
                     <View
-                        className={`items-center ${Platform.OS === 'ios' ? 'mb-[15px]' : 'mb-[10px]'}`}
+                        className={`items-center ${isIOS ? 'mb-[15px]' : 'mb-[10px]'}`}
                     >
-                        <Text className='text-[24px] text-white font-pbold'>Xin chào!</Text>
-                        <Text className='text-[14px] text-white font-pbold'>Vui lòng nhập số điện thoại của bạn để tiếp tục</Text>
+                        <Text className='text-[24px] text-white font-pbold'>Mật khẩu</Text>
+                        <Text className='text-[14px] text-white font-pbold'>Nhập mật khẩu cho tài khoản {username}</Text>
                     </View>
                     <FormField
-                        title="Số điện thoại"
-                        keyboardType="numeric"
+                        title="password"
+                        keyboardType="default"
                         autoFocus={true}
                         value={password}
-                        placeholder="Nhập số điện thoại của bạn tại đây"
+                        placeholder="********"
                         handleChangeText={(e: any) => setPassword(e)}
-                        otherStyles={`${Platform.OS === 'ios' ? 'mb-[15px]' : 'mb-[10px]'}`}
+                        otherStyles={`${isIOS ? 'mb-[15px]' : 'mb-[10px]'}`}
                     />
                     <View>
                         <CustomButton
@@ -71,20 +78,19 @@ const PasswordScreen = () => {
                             containerStyles="w-11/12"
                             isLoading={isSubmitting}
                         />
-                        <View className={`items-end w-[95%] ${Platform.OS === 'ios' ? 'mt-[15px]' : 'mt-[10px]'}`}>
-                            <Link href="/sign-up" className="text-[14px] text-white font-pregular">Đăng nhập sau</Link>
+                        <View className={`items-end w-[95%] ${isIOS ? 'mt-[15px]' : 'mt-[10px]'}`}>
+                            <Link href="/sign-up" className="text-[14px] text-white font-pregular">Đăng nhập bằng mã OTP</Link>
                         </View>
-                    </View>
-                    <View className={`items-center w-[95%] ${Platform.OS === 'ios' ? 'mt-[25px]' : ''}`}>
-                        <Link href="/sign-up" className="text-[12px] text-white font-pregular">Chính sách bảo mật</Link>
+                        
                     </View>
                 </View>
             </KeyboardAvoidingView>
-        </ImageBackground >
-    )
+        </ImageBackground>
+    );
 }
 
-export default PasswordScreen
+export default PasswordScreen;
+
 const styles = StyleSheet.create({
     stroke: {
         textShadowOffset: { width: 2, height: 2 },

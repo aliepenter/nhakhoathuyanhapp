@@ -15,14 +15,14 @@ const FormField = ({ title, keyboardType, autoFocus, value, placeholder, handleC
                     placeholder={placeholder}
                     placeholderTextColor="#7b7b8b"
                     onChangeText={handleChangeText}
-                    secureTextEntry={title === 'Mật khẩu' && !showPassword}
+                    secureTextEntry={title === 'password' && !showPassword}
                     autoFocus={autoFocus}
                     keyboardType={keyboardType}
                 />
                 <View
                     className='flex-row items-center pr-4'
                 >
-                    {title === 'Mật khẩu' && (
+                    {title === 'password' && (
                         <TouchableOpacity onPress={() => setShowPassword(!showPassword)} >
                             <Image source={!showPassword ? icons.eye : icons.eyeHide} className='w-6 h-6' resizeMode='contain' />
                         </TouchableOpacity>
