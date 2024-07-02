@@ -1,7 +1,7 @@
 import { Text, View, Image } from 'react-native'
 import { Tabs } from 'expo-router'
-import { icons } from '../../constants';
 import { StatusBar } from 'expo-status-bar'
+import icons from '@/constants/icons'
 
 const TabIcon = ({ icon, color, name, focused }: any) => {
     return (
@@ -11,49 +11,49 @@ const TabIcon = ({ icon, color, name, focused }: any) => {
         </View>
     )
 }
-
 const TabsLayout = () => {
     return (
         <>
-            <Tabs screenOptions={{
-                tabBarShowLabel: false,
-                tabBarActiveTintColor: '#FFA001',
-                tabBarInactiveTintColor: '#CDCDE0',
-                tabBarStyle: {
-                    backgroundColor: '#161622',
-                    borderTopWidth: 1,
-                    borderTopColor: '#232533',
-                    height: 84,
-                }
-            }}>
-                <Tabs.Screen name='home' options={{
-                    title: 'Home',
-                    headerShown: false,
-                    tabBarIcon: ({ color, focused }) => (
-                        <TabIcon icon={icons.home} color={color} name="Trang chủ" focused={focused}></TabIcon>
-                    ),
-                }}></Tabs.Screen>
-                <Tabs.Screen name='booking' options={{
-                    title: 'Đặt lịch',
-                    headerShown: false,
-                    tabBarIcon: ({ color, focused }) => (
-                        <TabIcon icon={icons.booking} color={color} name="Đặt lịch" focused={focused}></TabIcon>
-                    ),
-                }}></Tabs.Screen>
-                <Tabs.Screen name='create' options={{
-                    title: 'Create',
-                    headerShown: false,
-                    tabBarIcon: ({ color, focused }) => (
-                        <TabIcon icon={icons.plus} color={color} name="Create" focused={focused}></TabIcon>
-                    ),
-                }}></Tabs.Screen>
-                <Tabs.Screen name='profile' options={{
-                    title: 'Profile',
-                    headerShown: false,
-                    tabBarIcon: ({ color, focused }) => (
-                        <TabIcon icon={icons.profile} color={color} name="Profile" focused={focused}></TabIcon>
-                    ),
-                }}></Tabs.Screen>
+            <Tabs
+                screenOptions={({ route }) => {
+                    return {
+                        tabBarIcon: ({ color, focused }) => {
+                            let iconName;
+                            let tabName;
+                            if (route.name === "index") {
+                                iconName = icons.home;
+                                tabName = "Trang chủ";
+                            } else if (route.name === "image-gallery/index") {
+                                iconName = icons.booking;
+                                tabName = "Thư viện ảnh";
+                            } else if (route.name === "notification/index") {
+                                iconName = icons.plus;
+                                tabName = "Thông báo";
+                            } else if (route.name === "profile/index") {
+                                iconName = icons.profile;
+                                tabName = "Tài khoản";
+                            }
+                            return (
+                                <TabIcon icon={iconName} color={color} name={tabName} focused={focused}></TabIcon>
+                            );
+                        },
+                        headerShown: false,
+                        tabBarShowLabel: false,
+                        tabBarActiveTintColor: '#FFA001',
+                        tabBarInactiveTintColor: '#CDCDE0',
+                        tabBarStyle: {
+                            backgroundColor: '#161622',
+                            borderTopWidth: 1,
+                            borderTopColor: '#232533',
+                            height: 84,
+                        }
+                    };
+                }}
+            >
+                <Tabs.Screen name="index" />
+                <Tabs.Screen name="image-gallery/index" />
+                <Tabs.Screen name="notification/index" />
+                <Tabs.Screen name="profile/index" />
             </Tabs>
             <StatusBar backgroundColor='#161622' style='light' />
         </>

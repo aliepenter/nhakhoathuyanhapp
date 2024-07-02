@@ -13,25 +13,38 @@ export default function useUser() {
     useEffect(() => {
         const subscription = async () => {
             const token = await SecureStore.getItemAsync(TOKEN_KEY);
+            
             if (token) {
-
                 try {
                     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-                    await axios.get(`${URL}/auth/profile`)
+                    await axios.get(`${SERVER_URI}/auth/profile`)
                         .then((res: any) => {
-                            setUser(res.data.user);
-                            setLoading(false);
+                            setUser(res.data);
+                            setTimeout(() => {
+                                setLoading(false);
+                            }, 0);
                         })
                         .catch((error: any) => {
+
                             setError("Đã có lỗi xảy ra, xin vui lòng thử lại sau");
-                            setLoading(false);
+                            setTimeout(() => {
+                                setLoading(false);
+                            }, 0);
                         });;
 
                 } catch (error) {
+
                     setError("Đã có lỗi xảy ra, xin vui lòng thử lại sau")
-                    setLoading(false);
+                    setTimeout(() => {
+                        setLoading(false);
+                    }, 0);
                 }
+            } else {
+                setTimeout(() => {
+                    setLoading(false);
+                }, 0);
             }
+
         };
         subscription();
     }, [refetch]);

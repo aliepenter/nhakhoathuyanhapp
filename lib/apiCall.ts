@@ -80,7 +80,6 @@ export const logout = async () => {
 export const getProfile = async () => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);
   if (token) {
-
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       const userProfile = await axios.get(`${URL}/auth/profile`);

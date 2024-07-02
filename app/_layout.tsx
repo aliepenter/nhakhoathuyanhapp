@@ -1,15 +1,8 @@
 import { SplashScreen, Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
-// import { AuthProvider } from "@/context/GlobalProvider";
-import GlobalProvider from '../context/GlobalProviders';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import { LogBox } from "react-native";
 import { ToastProvider } from "react-native-toast-notifications";
-
-import Home from "./(tabs)/home";
-import SignIn from "./(auth)/sign-in";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {

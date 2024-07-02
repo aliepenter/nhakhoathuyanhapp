@@ -1,3 +1,4 @@
 type User = {
-    _id: string;
-  };
+  _id: string;
+  ho_va_ten: string;
+};
