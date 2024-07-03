@@ -12,7 +12,9 @@ import eyeHide from "../assets/icons/eye-hide.png";
 import eye from "../assets/icons/eye.png";
 import play from "../assets/icons/play.png";
 import booking from "../assets/icons/booking.png";
-
+import notification from "../assets/icons/notification.png";
+import gallery from "../assets/icons/gallery.png";
+import phoneCall from "../assets/icons/phone-call.png";
 export default {
   play,
   bookmark,
@@ -28,4 +30,7 @@ export default {
   eyeHide,
   eye,
   booking,
+  gallery,
+  notification,
+  phoneCall
 };

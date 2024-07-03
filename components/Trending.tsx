@@ -9,7 +9,7 @@ import React, { useState } from "react";
 import * as Animatable from "react-native-animatable";
 import { icons } from "@/constants";
 import { router } from "expo-router";
-const API_URL="http://192.168.1.102"
+import { SERVER_URL } from "@/utils/uri";
 
 const zoomIn: any = {
   0: {
@@ -47,7 +47,7 @@ const TrendingItem = ({ activeItem, item }: any) => {
         onPress={onPress}
       >
         <ImageBackground
-          source={{ uri: `${API_URL}${item.video_thumbnail}` }}
+          source={{ uri: `${SERVER_URL}${item.video_thumbnail}` }}
           className="w-80 h-48 overflow-hidden shadow-lg shadow-black/40 rounded-[20px]"
           resizeMode="stretch"
         />

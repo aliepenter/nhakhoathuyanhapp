@@ -7,5 +7,7 @@ import logo from "../assets/images/logo.png";
 import logoSmall from "../assets/images/logo-small.png";
 import empty from "../assets/images/empty.png";
 import bgPhoneInput from "../assets/images/background-phone-input.png";
+import bgHeaderHome from "../assets/images/bg-header-home.png";
 
-export default { profile, thumbnail, cards, path, logo, logoSmall, empty, splashscreen, bgPhoneInput };
+
+export default { bgHeaderHome, profile, thumbnail, cards, path, logo, logoSmall, empty, splashscreen, bgPhoneInput };

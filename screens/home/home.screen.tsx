@@ -2,6 +2,7 @@ import {
   Alert,
   FlatList,
   Image,
+  ImageBackground,
   RefreshControl,
   Text,
   View,
@@ -14,7 +15,7 @@ import Trending from "@/components/Trending";
 import EmptyState from "@/components/EmptyState";
 import CustomButton from "@/components/CustomButton";
 import { Link, Redirect, router } from "expo-router";
-import { getVideos,logout } from "@/lib/apiCall";
+import { getVideos, logout } from "@/lib/apiCall";
 import useUser from "@/hooks/auth/useUser";
 
 const DATA: any = [
@@ -57,69 +58,23 @@ const HomeScreen = () => {
   }, []);
 
   return (
-    <SafeAreaView className="bg-primary h-full">
-      <FlatList
-        data={DATA}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <Text className="text-3xl text-white">{item.id}</Text>
-        )}
-        ListHeaderComponent={() => (
-          <View className="my-6 px-4 space-y-6">
-            <View className="justify-between items-start mb-6 flex-row">
-              <View>
-                <Text className="font-pmedium text-sm text-gray-100">
-                  Xin chào
-                </Text>
-                <Text className="text-2xl font-psemibold text-white">
-                  {user?.ho_va_ten}
-                </Text>
+    <View className="h-full bg-white">
+      <View className="h-[175px]">
+        <ImageBackground source={images.bgHeaderHome} resizeMode='stretch' className='flex-1'>
+          <View className="flex-row flex-1 justify-start ml-7 mt-10 items-center">
+            <Image source={images.logo} resizeMode='contain' className='w-[100px] h-[100px]' />
+            <View className="ml-7">
+              <View className="flex-row items-center">
+                <Text className="text-white text-[14px]">Xin chào, </Text>
+                <Text className="text-white size-[14px] font-pbold">{user?.ho_va_ten}</Text>
               </View>
-              <View className="mt-1.5">
-                <Image
-                  source={images.logoSmall}
-                  className="w-10 h-10"
-                  resizeMode="contain"
-                />
-              </View>
+              <Text className="text-white text-[14px] font-pbold">{user?.so_dien_thoai}</Text>
+              <Text className="text-white text-[14px] font-semibold">{user?.dia_chi}</Text>
             </View>
-            <SearchInput />
-            <View className="w-full flex-1 pt-5 pb-8">
-              <View className="justify-between items-start mb-6 flex-row">
-                <View>
-                  <Text className="text-gray-100 text-2xl font-pregular mb-3">
-                    Video nổi bật
-                  </Text>
-                </View>
-                <View className="mt-1.5">
-                  <Link
-                    href="/sign-up"
-                    className="text-sm font-pregular text-blue-500"
-                  >
-                    Xem tất cả
-                  </Link>
-                </View>
-              </View>
-              <Trending posts={videos ?? []} />
-            </View>
-            <CustomButton
-              title="Logout"
-              handlePress={handleLogout}
-              containerStyles="w-full mt-7"
-            />
           </View>
-        )}
-        ListEmptyComponent={() => (
-          <EmptyState
-            title="No Videos Found"
-            subtitle="Be the first one to upload a video"
-          />
-        )}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      />
-    </SafeAreaView>
+        </ImageBackground>
+      </View>
+    </View>
   );
 };
 

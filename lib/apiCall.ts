@@ -34,7 +34,6 @@ export const getVideos = async () => {
 export const trackPhoneNumber = async (username: string) => {
   try {
     const result = await axios.get(`${URL}/users/${username}`);
-
     if (result) {
       if (result.data) {
         return true;
@@ -53,9 +52,6 @@ export const login = async (username: string, password: string) => {
   const result = await axios.post(`${URL}/auth/login`, { username, password });
   if (result) {
     try {
-      // axios.defaults.headers.common['Authorization'] = `Bearer ${result.data}`;
-      // const userProfile = await axios.get(`${URL}/auth/profile`);
-      // setAuthState({ token: result.data, isLoggedIn: true, userInfo: userProfile.data });
       await SecureStore.setItemAsync(TOKEN_KEY, result.data);
     } catch (error) {
       throw error;
@@ -70,7 +66,7 @@ export const logout = async () => {
   try {
     await SecureStore.deleteItemAsync(TOKEN_KEY);
     axios.defaults.headers.common['Authorization'] = '';
-    router.push('/sign-in');
+    router.push('/(routes)/login');
   } catch (error) {
     throw error;
   }
@@ -85,11 +81,6 @@ export const getProfile = async () => {
       const userProfile = await axios.get(`${URL}/auth/profile`);
       if (!userProfile) throw Error;
       return userProfile.data;
-      // setAuthState({
-      //   token: token,
-      //   isLoggedIn: true,
-      //   userInfo: userProfile.data
-      // });
     } catch (error) {
       return null;
     }

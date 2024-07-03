@@ -7,6 +7,7 @@ import {
     KeyboardAvoidingView,
     Platform,
     ImageBackground,
+    TouchableOpacity,
 } from 'react-native';
 import React, { useState } from 'react';
 import { images } from '@/constants';
@@ -39,6 +40,13 @@ const PasswordScreen = () => {
             setIsSubmitting(false);
         }
     };
+
+    const handleOtpLogin = () => {
+        router.push({
+            pathname: "/(routes)/verify-password/otpLogin",
+            params: { username: username },
+        });
+    }
     return (
         <ImageBackground source={images.bgPhoneInput} resizeMode='cover' className='flex-1'>
             <KeyboardAvoidingView
@@ -46,7 +54,7 @@ const PasswordScreen = () => {
                 className={`flex flex-1 ${isIOS ? 'justify-center' : 'justify-center'}`}
             >
                 <View
-                    className={`${isIOS ? 'my-8 mb-[60px]' : 'mb-[30px]'}`}
+                    className={`${isIOS ? 'my-8 mb-[60px]' : 'mt-10 mb-[30px]'}`}
                 >
                     <Image source={images.logo} resizeMode='contain' className='w-full h-[104px]' />
                     <View
@@ -60,7 +68,7 @@ const PasswordScreen = () => {
                         className={`items-center ${isIOS ? 'mb-[15px]' : 'mb-[10px]'}`}
                     >
                         <Text className='text-[24px] text-white font-pbold'>Mật khẩu</Text>
-                        <Text className='text-[14px] text-white font-pbold'>Nhập mật khẩu cho tài khoản {username}</Text>
+                        <Text className='text-[14px] text-white font-pregular'>Nhập mật khẩu cho tài khoản {username}</Text>
                     </View>
                     <FormField
                         title="password"
@@ -79,9 +87,15 @@ const PasswordScreen = () => {
                             isLoading={isSubmitting}
                         />
                         <View className={`items-end w-[95%] ${isIOS ? 'mt-[15px]' : 'mt-[10px]'}`}>
-                            <Link href="/sign-up" className="text-[14px] text-white font-pregular">Đăng nhập bằng mã OTP</Link>
+                            <TouchableOpacity
+                                onPress={handleOtpLogin}
+                                activeOpacity={0.7}
+                            >
+                                <Text className="text-[14px] text-white font-pregular">
+                                    Đăng nhập bằng mã OTP
+                                </Text>
+                            </TouchableOpacity>
                         </View>
-                        
                     </View>
                 </View>
             </KeyboardAvoidingView>

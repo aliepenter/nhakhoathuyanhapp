@@ -11,6 +11,8 @@ import CustomButton from '@/components/CustomButton'
 const LoginScreen = () => {
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const isIOS = Platform.OS === 'ios';
+
   // const { onLogin } = useAuth();
   // const submit = async () => {
   //   if (!form.phone || !form.password) {
@@ -46,7 +48,7 @@ const LoginScreen = () => {
         });
       } else {
         router.push({
-          pathname: "sign-up",
+          pathname: "/(routes)/verify-sign-up",
           params: { username: phoneNumber },
         });
       }
@@ -60,34 +62,34 @@ const LoginScreen = () => {
   return (
     <ImageBackground source={images.bgPhoneInput} resizeMode='cover' className='flex-1'>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        className={`flex flex-1 ${Platform.OS === 'ios' ? 'justify-center' : 'justify-center'}`}
+        behavior={isIOS ? 'padding' : 'height'}
+        className={`flex flex-1 ${isIOS ? 'justify-center' : 'justify-center'}`}
       >
         <View
-          className={`${Platform.OS === 'ios' ? 'my-8 mb-[60px]' : 'mt-16  mb-[30px]'}`}
+          className={`${isIOS ? 'my-8 mb-[60px]' : 'mt-16  mb-[30px]'}`}
         >
           <Image source={images.logo} resizeMode='contain' className='w-full h-[104px]' />
           <View
-            className={`items-center ${Platform.OS === 'ios' ? 'mt-[15px]' : 'mt-[10px]'}`}
+            className={`items-center ${isIOS ? 'mt-[15px]' : 'mt-[10px]'}`}
           >
             <Text className='text-[24px] text-white font-pbold' style={styles.stroke}>Nha khoa Thùy Anh</Text>
           </View>
         </View>
         <View>
           <View
-            className={`items-center ${Platform.OS === 'ios' ? 'mb-[15px]' : 'mb-[10px]'}`}
+            className={`items-center ${isIOS ? 'mb-[15px]' : 'mb-[10px]'}`}
           >
             <Text className='text-[24px] text-white font-pbold'>Xin chào!</Text>
-            <Text className='text-[14px] text-white font-pbold'>Vui lòng nhập số điện thoại của bạn để tiếp tục</Text>
+            <Text className='text-[14px] text-white font-pregular'>Vui lòng nhập số điện thoại của bạn để tiếp tục</Text>
           </View>
           <FormField
             title="Số điện thoại"
-            keyboardType="numeric"
+            keyboardType="number-pad"
             autoFocus={true}
             value={phoneNumber}
             placeholder="Nhập số điện thoại của bạn tại đây"
             handleChangeText={(e: any) => setPhoneNumber(e)}
-            otherStyles={`${Platform.OS === 'ios' ? 'mb-[15px]' : 'mb-[10px]'}`}
+            otherStyles={`${isIOS ? 'mb-[15px]' : 'mb-[10px]'}`}
           />
           <View>
             <CustomButton
@@ -96,11 +98,11 @@ const LoginScreen = () => {
               containerStyles="w-11/12"
               isLoading={isSubmitting}
             />
-            <View className={`items-end w-[95%] ${Platform.OS === 'ios' ? 'mt-[15px]' : 'mt-[10px]'}`}>
+            <View className={`items-end w-[95%] ${isIOS ? 'mt-[15px]' : 'mt-[10px]'}`}>
               <Link href="/sign-up" className="text-[14px] text-white font-pregular">Đăng nhập sau</Link>
             </View>
           </View>
-          <View className={`items-center w-[95%] ${Platform.OS === 'ios' ? 'mt-[25px]' : ''}`}>
+          <View className={`items-center w-[95%] ${isIOS ? 'mt-[25px]' : ''}`}>
             <Link href="/sign-up" className="text-[12px] text-white font-pregular">Chính sách bảo mật</Link>
           </View>
         </View>
