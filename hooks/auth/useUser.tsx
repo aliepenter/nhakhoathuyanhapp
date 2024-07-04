@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { SERVER_URI } from "@/utils/uri";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SecureStore from 'expo-secure-store';
 const TOKEN_KEY = 'Dat.2624';
 
@@ -22,14 +21,14 @@ export default function useUser() {
                             setUser(res.data);
                             setTimeout(() => {
                                 setLoading(false);
-                            }, 0);
+                            }, 2000);
                         })
                         .catch((error: any) => {
 
                             setError("Đã có lỗi xảy ra, xin vui lòng thử lại sau");
                             setTimeout(() => {
                                 setLoading(false);
-                            }, 0);
+                            }, 2000);
                         });;
 
                 } catch (error) {
@@ -37,12 +36,12 @@ export default function useUser() {
                     setError("Đã có lỗi xảy ra, xin vui lòng thử lại sau")
                     setTimeout(() => {
                         setLoading(false);
-                    }, 0);
+                    }, 2000);
                 }
             } else {
                 setTimeout(() => {
                     setLoading(false);
-                }, 0);
+                }, 2000);
             }
 
         };

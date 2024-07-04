@@ -4,7 +4,6 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '@/constants'
 import FormField from '@/components/FormField'
 import { Link, router } from 'expo-router'
-import { useAuth } from '@/context/GlobalProvider'
 import { trackPhoneNumber } from "@/lib/apiCall";
 import CustomButton from '@/components/CustomButton'
 
@@ -40,23 +39,25 @@ const LoginScreen = () => {
 
     try {
       const phoneNumberStatus = await trackPhoneNumber!(phoneNumber);
-
-      if (phoneNumberStatus) {
-        router.push({
-          pathname: "/(routes)/verify-password",
-          params: { username: phoneNumber },
-        });
-      } else {
-        router.push({
-          pathname: "/(routes)/verify-sign-up",
-          params: { username: phoneNumber },
-        });
-      }
-
+      setTimeout(() => {
+        if (phoneNumberStatus) {
+          router.push({
+            pathname: "/(routes)/verify-password",
+            params: { username: phoneNumber },
+          });
+        } else {
+          router.push({
+            pathname: "/(routes)/verify-sign-up",
+            params: { username: phoneNumber },
+          });
+        }
+      }, 2000);
     } catch (error) {
       Alert.alert('Đăng nhập thất bại', 'Xin vui lòng kiểm tra lại thông tin');
     } finally {
-      setIsSubmitting(false);
+      setTimeout(() => {
+        setIsSubmitting(false);
+      }, 2000);
     }
   };
   return (

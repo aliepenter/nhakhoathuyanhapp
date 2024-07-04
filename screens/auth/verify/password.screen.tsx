@@ -33,11 +33,15 @@ const PasswordScreen = () => {
         setIsSubmitting(true);
         try {
             await login!(username, password);
-            router.push("/(tabs)");
+            setTimeout(() => {
+                router.push("/(tabs)");
+            }, 2000);
         } catch (error) {
             Alert.alert('Đăng nhập thất bại', 'Xin vui lòng kiểm tra lại thông tin');
         } finally {
-            setIsSubmitting(false);
+            setTimeout(() => {
+                setIsSubmitting(false);
+            }, 2000);
         }
     };
 

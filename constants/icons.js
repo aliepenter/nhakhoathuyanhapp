@@ -13,9 +13,29 @@ import eye from "../assets/icons/eye.png";
 import play from "../assets/icons/play.png";
 import booking from "../assets/icons/booking.png";
 import notification from "../assets/icons/notification.png";
+import notificationHeader from "../assets/icons/notification-header.png";
+import notificationHighlight from "../assets/icons/notification-highlight.png";
 import gallery from "../assets/icons/gallery.png";
 import phoneCall from "../assets/icons/phone-call.png";
+import iconChinhNha from "../assets/icons/icon-chinh-nha.png";
+import iconDatLich from "../assets/icons/icon-dat-lich.png";
+import iconLichHen from "../assets/icons/icon-lich-hen.png";
+import iconThanhToan from "../assets/icons/icon-thanh-toan.png";
+import iconChiNhanh from "../assets/icons/icon-chi-nhanh.png";
+import iconTinTuc from "../assets/icons/icon-tin-tuc.png";
+import iconHopDong from "../assets/icons/icon-hop-dong.png";
+import iconLoiDan from "../assets/icons/icon-loi-dan.png";
+import verticalLine from "../assets/icons/vertical-line.png";
 export default {
+  verticalLine,
+  iconLichHen,
+  iconThanhToan,
+  iconChiNhanh,
+  iconTinTuc,
+  iconHopDong,
+  iconLoiDan,
+  iconDatLich,
+  iconChinhNha,
   play,
   bookmark,
   home,
@@ -32,5 +52,7 @@ export default {
   booking,
   gallery,
   notification,
-  phoneCall
+  phoneCall,
+  notificationHighlight,
+  notificationHeader
 };

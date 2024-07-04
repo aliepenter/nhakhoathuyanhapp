@@ -8,6 +8,7 @@ import logoSmall from "../assets/images/logo-small.png";
 import empty from "../assets/images/empty.png";
 import bgPhoneInput from "../assets/images/background-phone-input.png";
 import bgHeaderHome from "../assets/images/bg-header-home.png";
+import bannerDefault from "../assets/images/banner-default.jpg";
 
 
-export default { bgHeaderHome, profile, thumbnail, cards, path, logo, logoSmall, empty, splashscreen, bgPhoneInput };
+export default {bannerDefault, bgHeaderHome, profile, thumbnail, cards, path, logo, logoSmall, empty, splashscreen, bgPhoneInput };

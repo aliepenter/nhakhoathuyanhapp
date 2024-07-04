@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import * as Animatable from "react-native-animatable";
-import { icons } from "@/constants";
+import { icons, images } from "@/constants";
 import { router } from "expo-router";
 import { SERVER_URL } from "@/utils/uri";
 
@@ -37,7 +37,6 @@ const TrendingItem = ({ activeItem, item }: any) => {
     });
   return (
     <Animatable.View
-      className="mr-5"
       animation={activeItem === item.id ? zoomIn : zoomOut}
       duration={500}
     >
@@ -47,8 +46,8 @@ const TrendingItem = ({ activeItem, item }: any) => {
         onPress={onPress}
       >
         <ImageBackground
-          source={{ uri: `${SERVER_URL}${item.video_thumbnail}` }}
-          className="w-80 h-48 overflow-hidden shadow-lg shadow-black/40 rounded-[20px]"
+          source={item.video_thumbnail?{ uri: `${SERVER_URL}${item.video_thumbnail}` }:images.bannerDefault}
+          className="w-80 h-48 overflow-hidden rounded-[20px]"
           resizeMode="stretch"
         />
         <Image
