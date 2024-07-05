@@ -12,11 +12,10 @@ import {
 } from 'react-native';
 import React, { useRef, useState } from 'react';
 import { images } from '@/constants';
-import FormField from '@/components/FormField';
 import { Link, router } from 'expo-router';
 import { useRoute } from "@react-navigation/native";
 import { login } from "@/lib/apiCall";
-import CustomButton from '@/components/CustomButton';
+import CustomButton from '@/components/common/CustomButton';
 
 const OtpSignUpScreen = () => {
     const [password, setPassword] = useState(null);
@@ -115,6 +114,10 @@ const OtpSignUpScreen = () => {
                             handlePress={submit}
                             containerStyles="w-11/12"
                             isLoading={isSubmitting}
+                            buttonStyle="rounded-xl min-h-[62px]"
+                            colorFrom="#2594B8"
+                            colorTo="#226E9E"
+                            textStyles="text-white font-psemibold text-lg"
                         />
                         <View className={`items-end w-[95%] ${isIOS ? 'mt-[15px]' : 'mt-[10px]'}`}>
                             <TouchableOpacity

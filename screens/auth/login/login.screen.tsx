@@ -1,36 +1,40 @@
-import { StyleSheet, Text, View, Image, Alert, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, ImageBackground } from 'react-native'
+import { StyleSheet, Text, View, Image, Alert, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, ImageBackground, BackHandler } from 'react-native'
 import React, { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '@/constants'
-import FormField from '@/components/FormField'
 import { Link, router } from 'expo-router'
 import { trackPhoneNumber } from "@/lib/apiCall";
-import CustomButton from '@/components/CustomButton'
+import { useFocusEffect } from '@react-navigation/native'
+import FormField from '@/components/common/FormField';
+import CustomButton from '@/components/common/CustomButton';
 
 const LoginScreen = () => {
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isIOS = Platform.OS === 'ios';
+  const handleBackAction = () => {
+    Alert.alert("Thoát khỏi ứng dụng", "Bạn muốn rời khỏi ứng dụng?", [
+      {
+        text: "Hủy bỏ",
+        onPress: () => null,
+        style: 'cancel'
+      },
+      {
+        text: "Rời khỏi",
+        onPress: () => BackHandler.exitApp()
+      },
+    ])
+    return true;
+  }
 
-  // const { onLogin } = useAuth();
-  // const submit = async () => {
-  //   if (!form.phone || !form.password) {
-  //     Alert.alert('Đăng nhập thất bại', 'Xin vui lòng điền đầy đủ thông tin');
-  //     return;
-  //   }
-  //   setIsSubmitting(true);
-  //   try {
-  //     await onLogin!(form.phone, form.password);
-  //     router.push('/home');
-  //   } catch (error) {
-  //     Alert.alert('Đăng nhập thất bại', 'Xin vui lòng kiểm tra lại thông tin');
-  //   } finally {
-  //     setIsSubmitting(false);
-  //   }
-  // };
-
+  useFocusEffect(
+    React.useCallback(() => {
+      BackHandler.addEventListener('hardwareBackPress', handleBackAction);
+      return () => {
+        BackHandler.removeEventListener('hardwareBackPress', handleBackAction);
+      }
+    }, [])
+  )
   const submit = async () => {
-
     if (!phoneNumber) {
       Alert.alert('Đăng nhập thất bại', 'Xin vui lòng điền đầy đủ thông tin');
       return;
@@ -98,6 +102,10 @@ const LoginScreen = () => {
               handlePress={submit}
               containerStyles="w-11/12"
               isLoading={isSubmitting}
+              buttonStyle="rounded-xl min-h-[62px]"
+              colorFrom="#2594B8"
+              colorTo="#226E9E"
+              textStyles="text-white font-psemibold text-lg"
             />
             <View className={`items-end w-[95%] ${isIOS ? 'mt-[15px]' : 'mt-[10px]'}`}>
               <Link href="/sign-up" className="text-[14px] text-white font-pregular">Đăng nhập sau</Link>

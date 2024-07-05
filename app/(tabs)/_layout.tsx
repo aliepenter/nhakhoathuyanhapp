@@ -2,14 +2,39 @@ import React from 'react';
 import { Tabs } from 'expo-router';
 
 import TabBar from '@/components/tabbar/TabBar';
-import { View, Text } from 'react-native';
+import { Alert, BackHandler } from 'react-native';
 import { StatusBar } from 'expo-status-bar'
+import { useFocusEffect } from '@react-navigation/native';
+
 
 const TabsLayout = () => {
+    const handleBackAction = () => {
+        Alert.alert("Thoát khỏi ứng dụng", "Bạn muốn rời khỏi ứng dụng?", [
+            {
+                text: "Hủy bỏ",
+                onPress: () => null,
+                style: 'cancel'
+            },
+            {
+                text: "Rời khỏi",
+                onPress: () => BackHandler.exitApp()
+            },
+        ])
+        return true;
+    }
+
+    useFocusEffect(
+        React.useCallback(() => {
+            BackHandler.addEventListener('hardwareBackPress', handleBackAction);
+            return () => {
+                BackHandler.removeEventListener('hardwareBackPress', handleBackAction);
+            }
+        }, [])
+    )
     return (
         <>
             <Tabs tabBar={props => <TabBar {...props} />}>
-                <Tabs.Screen options={{ headerShown: false }}  name="index" />
+                <Tabs.Screen options={{ headerShown: false }} name="index" />
                 <Tabs.Screen options={{ headerShown: false }} name="image-gallery/index" />
                 <Tabs.Screen options={{ headerShown: false }} name="notification/index" />
                 <Tabs.Screen options={{ headerShown: false }} name="profile/index" />

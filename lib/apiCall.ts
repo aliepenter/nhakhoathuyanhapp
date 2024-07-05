@@ -1,12 +1,8 @@
 // api/apiService.js
 
 import axios from "axios";
-import { useState } from "react";
 import * as SecureStore from 'expo-secure-store';
 import { router } from "expo-router";
-
-
-
 
 const API_URL = "http://192.168.1.100"
 const API_PORT = 3000
@@ -34,6 +30,24 @@ export const getVideos = async () => {
 export const getBanners = async () => {
   try {
     const response = await axios.get(`${URL}/banners`);
+    return {
+      code: 200,
+      data: response.data,
+    };
+  } catch (error: any) {
+    if (error.response) {
+      return {
+        code: error.response.status,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
+
+export const getBranches = async () => {
+  try {
+    const response = await axios.get(`${URL}/branches`);
     return {
       code: 200,
       data: response.data,

@@ -13,3 +13,14 @@ type Banner = {
   post_id: number;
   status: number;
 };
+
+
+type Branch = {
+  id: number;
+  ten_chi_nhanh: string;
+  dia_chi: string;
+  phone_number: string;
+  image_url: string;
+  tinh_thanh: string;
+  map_url: string;
+};

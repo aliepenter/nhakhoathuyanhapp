@@ -1,7 +1,7 @@
 import { Alert, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import CustomButton from '@/components/CustomButton'
 import { logout } from '@/lib/apiCall';
+import CustomButton from '@/components/common/CustomButton';
 
 const Profile = () => {
 

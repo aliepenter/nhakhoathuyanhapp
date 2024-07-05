@@ -80,6 +80,7 @@ const Trending = ({ posts }: any) => {
         itemVisiblePercentThreshold: 40,
       }}
       horizontal
+      showsHorizontalScrollIndicator={false}
     />
   );
 };

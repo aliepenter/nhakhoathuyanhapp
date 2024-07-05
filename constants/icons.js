@@ -26,7 +26,13 @@ import iconTinTuc from "../assets/icons/icon-tin-tuc.png";
 import iconHopDong from "../assets/icons/icon-hop-dong.png";
 import iconLoiDan from "../assets/icons/icon-loi-dan.png";
 import verticalLine from "../assets/icons/vertical-line.png";
+import iconPhoneGif from "../assets/icons/icon-phone-gif.gif";
+import map from "../assets/icons/map.png";
+import phoneBlack from "../assets/icons/phone-black.png";
 export default {
+  map,
+  phoneBlack,
+  iconPhoneGif,
   verticalLine,
   iconLichHen,
   iconThanhToan,

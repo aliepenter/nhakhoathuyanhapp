@@ -10,7 +10,7 @@ const FormField = ({ title, keyboardType, autoFocus, value, placeholder, handleC
             <View
                 className='w-11/12 bg-white rounded-2xl flex-row border-2 border-[#2594B8]'
             >
-                <TextInput className='flex-1 p-4 text-black font-semibold text-base justify-center'
+                <TextInput className='flex-1 p-4 text-black font-semibold text-base'
                     value={value}
                     placeholder={placeholder}
                     placeholderTextColor="#7b7b8b"
