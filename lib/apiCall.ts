@@ -3,15 +3,14 @@
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store';
 import { router } from "expo-router";
+import { SERVER_URI } from "@/utils/uri";
 
-const API_URL = "http://192.168.1.100"
-const API_PORT = 3000
+
 const TOKEN_KEY = 'Dat.2624';
-export const URL = `${API_URL}:${API_PORT}`;
 
 export const getVideos = async () => {
   try {
-    const response = await axios.get(`${URL}/videos`);
+    const response = await axios.get(`${SERVER_URI}/videos`);
     return {
       code: 200,
       data: response.data,
@@ -29,7 +28,7 @@ export const getVideos = async () => {
 
 export const getBanners = async () => {
   try {
-    const response = await axios.get(`${URL}/banners`);
+    const response = await axios.get(`${SERVER_URI}/banners`);
     return {
       code: 200,
       data: response.data,
@@ -47,7 +46,7 @@ export const getBanners = async () => {
 
 export const getBranches = async () => {
   try {
-    const response = await axios.get(`${URL}/branches`);
+    const response = await axios.get(`${SERVER_URI}/branches`);
     return {
       code: 200,
       data: response.data,
@@ -65,7 +64,7 @@ export const getBranches = async () => {
 
 export const trackPhoneNumber = async (username: string) => {
   try {
-    const result = await axios.get(`${URL}/users/${username}`);
+    const result = await axios.get(`${SERVER_URI}/users/${username}`);
     if (result) {
       if (result.data) {
         return true;
@@ -81,7 +80,7 @@ export const trackPhoneNumber = async (username: string) => {
 }
 
 export const login = async (username: string, password: string) => {
-  const result = await axios.post(`${URL}/auth/login`, { username, password });
+  const result = await axios.post(`${SERVER_URI}/auth/login`, { username, password });
   if (result) {
     try {
       await SecureStore.setItemAsync(TOKEN_KEY, result.data);
@@ -110,7 +109,7 @@ export const getProfile = async () => {
   if (token) {
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      const userProfile = await axios.get(`${URL}/auth/profile`);
+      const userProfile = await axios.get(`${SERVER_URI}/auth/profile`);
       if (!userProfile) throw Error;
       return userProfile.data;
     } catch (error) {

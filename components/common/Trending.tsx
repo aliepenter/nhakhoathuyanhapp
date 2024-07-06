@@ -32,7 +32,7 @@ const zoomOut: any = {
 const TrendingItem = ({ activeItem, item }: any) => {
   const onPress = () =>
     router.push({
-      pathname: "playVideo",
+      pathname: "(routes)/play-video",
       params: { videoItem: item.video_url, headerTitle: item.video_title },
     });
   return (

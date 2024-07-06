@@ -43,6 +43,8 @@ const LoginScreen = () => {
 
     try {
       const phoneNumberStatus = await trackPhoneNumber!(phoneNumber);
+      console.log(phoneNumberStatus);
+      
       setTimeout(() => {
         if (phoneNumberStatus) {
           router.push({
@@ -57,7 +59,7 @@ const LoginScreen = () => {
         }
       }, 2000);
     } catch (error) {
-      Alert.alert('Đăng nhập thất bại', 'Xin vui lòng kiểm tra lại thông tin');
+      Alert.alert('Đăng nhập thất bại', 'Xin vui lòng kiểm tra kết nối của bạn');
     } finally {
       setTimeout(() => {
         setIsSubmitting(false);
