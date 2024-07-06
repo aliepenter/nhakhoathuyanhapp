@@ -1,7 +1,7 @@
 import { SplashScreen, Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
-import { LogBox } from "react-native";
+import { LogBox, StatusBar } from "react-native";
 import { ToastProvider } from "react-native-toast-notifications";
 SplashScreen.preventAutoHideAsync();
 
@@ -43,6 +43,7 @@ function RootLayoutNav() {
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index"/>
       </Stack>
+      <StatusBar barStyle={'light-content' } />
     </ToastProvider>
   );
 }

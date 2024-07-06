@@ -11,8 +11,14 @@ export default function useUser() {
     const [refetch, setRefetch] = useState(false);
     useEffect(() => {
         const subscription = async () => {
-            const token = await SecureStore.getItemAsync(TOKEN_KEY);
             try {
+
+                const token = await SecureStore.getItemAsync(TOKEN_KEY);
+                if (!token) {
+                    setTimeout(() => {
+                        setLoading(false);
+                    }, 2000);
+                }
                 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                 await axios.get(`${SERVER_URI}/auth/profile`)
                     .then((res: any) => {
@@ -22,13 +28,19 @@ export default function useUser() {
                         }, 2000);
                     })
                     .catch((error: any) => {
+
                         setError("Đã có lỗi xảy ra, xin vui lòng thử lại sau");
                         setTimeout(() => {
                             setLoading(false);
                         }, 2000);
-                    });;
+                    }).finally(() => {
+                        setTimeout(() => {
+                            setLoading(false);
+                        }, 2000);
+                    });
 
             } catch (error) {
+
                 setError("Đã có lỗi xảy ra, xin vui lòng thử lại sau")
                 setTimeout(() => {
                     setLoading(false);

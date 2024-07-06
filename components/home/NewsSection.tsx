@@ -22,7 +22,7 @@ export default function NewsSection({ post }: any) {
                     </View>
                     <View className="mt-1.5">
                         <Link
-                            href="/sign-up"
+                            href="/(routes)/tin-tuc/"
                             className="text-[12px] font-pregular text-[#FF2D2D]"
                         >
                             Xem tất cả

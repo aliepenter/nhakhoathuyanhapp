@@ -1,6 +1,7 @@
 import React from 'react';
 import { Stack } from 'expo-router';
 import CustomHeader from '@/components/common/CustomHeader';
+import { StatusBar } from 'react-native';
 
 const PageLayout = () => {
     return (
@@ -76,6 +77,7 @@ const PageLayout = () => {
                 <Stack.Screen options={{ headerShown: false }} name="verify-sign-up/index" />
                 <Stack.Screen options={{ headerShown: false }} name="play-video/index" />
             </Stack>
+            <StatusBar barStyle={'light-content' } />
         </>
     );
 };
