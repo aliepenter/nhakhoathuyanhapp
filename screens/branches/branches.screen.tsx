@@ -5,9 +5,9 @@ import { getBanners, getBranches } from '@/lib/apiCall';
 import BranchList from '@/components/branches/BranchesList';
 
 export default function BranchesScreen() {
-    const [refreshing, setRefreshing] = useState(false);
     const [banners, setBanners] = useState([]);
     const [branches, setBranches] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
     const onRefresh = async () => {
         setRefreshing(true);
         setBanners([]);

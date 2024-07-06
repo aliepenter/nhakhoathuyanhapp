@@ -1,9 +1,9 @@
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, ActivityIndicator } from 'react-native'
 import React from 'react'
 import { icons } from '@/constants'
 import { LinearGradient } from 'expo-linear-gradient'
 
-export default function TimeTracking() {
+export default function TimeTracking({ schedule, totalTime }: any) {
     return (
         <View className='flex-row flex-1 justify-between px-[11px] mt-[20px]'>
             <LinearGradient
@@ -16,7 +16,14 @@ export default function TimeTracking() {
                     <Image source={icons.calenderMonth} className='w-[16px] h-[16px] mr-[3px]' resizeMode='contain' />
                     <Text className='font-pbold font-[12px] text-white'>Lịch hẹn sắp tới</Text>
                 </View>
-                <Text className='font-pextrabold text-[#FBFF49] font-[16px]'>07/07/2024</Text>
+                {schedule
+                    ?
+                    <Text className='font-pextrabold text-[#FBFF49] font-[16px]'>{schedule}</Text>
+                    :
+                    <View className="h-[23px] justify-center">
+                        <ActivityIndicator />
+                    </View>
+                }
             </LinearGradient>
             <LinearGradient
                 colors={['#1560A1', '#4FAA57']}
@@ -28,7 +35,14 @@ export default function TimeTracking() {
                     <Image source={icons.calenderDay} className='w-[16px] h-[16px] mr-[3px]' resizeMode='contain' />
                     <Text className='font-pbold font-[12px] text-white'>Thời gian niềng răng</Text>
                 </View>
-                <Text className='font-pextrabold text-[#FBFF49] font-[16px]'>250 ngày</Text>
+                {totalTime
+                    ?
+                    <Text className='font-pextrabold text-[#FBFF49] font-[16px]'>{totalTime} ngày</Text>
+                    :
+                    <View className="h-[23px] justify-center">
+                        <ActivityIndicator />
+                    </View>
+                }
             </LinearGradient>
         </View>
     )

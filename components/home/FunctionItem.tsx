@@ -50,6 +50,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.3,
         shadowRadius: 11.7,
-        elevation: 20
+        elevation: 10
     }
 });

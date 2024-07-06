@@ -7,13 +7,7 @@ export default function PlayVideo() {
     const navigation = useNavigation();
     const route = useRoute();
     const { videoItem, headerTitle }: any = route.params;
-    
-    // useEffect(() => {
-    //     navigation.setOptions({
-    //         headerTitle: headerTitle,
-    //     });
-    // }, []);
     return (
-        <PlayVideoScreen videoItem={videoItem} />
+        <PlayVideoScreen headerTitle={headerTitle} videoItem={videoItem} />
     )
 }

@@ -13,7 +13,7 @@ const Profile = () => {
     }
   };
   return (
-    <View>
+    <View className='mt-96'>
       <CustomButton
         title="Logout"
         handlePress={handleLogout}

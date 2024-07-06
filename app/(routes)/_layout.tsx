@@ -7,10 +7,66 @@ const PageLayout = () => {
         <>
             <Stack>
                 <Stack.Screen
+                    name="chinh-nha/index"
+                    options={{
+                        header: (props) => (
+                            <CustomHeader {...props} customStyle="bg-white" title="Lịch sử chỉnh nha" />
+                        ),
+                    }}
+                />
+                <Stack.Screen
+                    name="dat-lich/index"
+                    options={{
+                        header: (props) => (
+                            <CustomHeader {...props} customStyle="bg-white" title="Đặt lịch" />
+                        ),
+                    }}
+                />
+                <Stack.Screen
+                    name="lich-hen/index"
+                    options={{
+                        header: (props) => (
+                            <CustomHeader {...props} customStyle="bg-white" title="Lịch hẹn" />
+                        ),
+                    }}
+                />
+                <Stack.Screen
+                    name="payment/index"
+                    options={{
+                        header: (props) => (
+                            <CustomHeader {...props} customStyle="bg-white" title="Thanh toán" />
+                        ),
+                    }}
+                />
+                <Stack.Screen
                     name="branches/index"
                     options={{
                         header: (props) => (
-                            <CustomHeader {...props} title="Các chi nhánh" />
+                            <CustomHeader {...props} customStyle="bg-white" title="Các chi nhánh" />
+                        ),
+                    }}
+                />
+                <Stack.Screen
+                    name="tin-tuc/index"
+                    options={{
+                        header: (props) => (
+                            <CustomHeader {...props} customStyle="bg-white" title="Tin tức" />
+                        ),
+                    }}
+                />
+                <Stack.Screen
+                    name="hop-dong/index"
+                    options={{
+                        header: (props) => (
+                            <CustomHeader {...props} customStyle="bg-white" title="Hợp đồng" />
+                        ),
+                    }}
+                />
+                 <Stack.Screen
+                    name="loi-dan/index"
+                    options={{
+                        header: (props) => (
+                            <CustomHeader {...props} customStyle="bg-white" title="Lời dặn" />
                         ),
                     }}
                 />
@@ -18,11 +74,7 @@ const PageLayout = () => {
                 <Stack.Screen options={{ headerShown: false }} name="verify-password/index" />
                 <Stack.Screen options={{ headerShown: false }} name="verify-password/otpLogin" />
                 <Stack.Screen options={{ headerShown: false }} name="verify-sign-up/index" />
-                <Stack.Screen options={{
-                    header: (props) => (
-                        <CustomHeader {...props} title="Các chi nhánh" />
-                    ),
-                }} name="play-video/index" />
+                <Stack.Screen options={{ headerShown: false }} name="play-video/index" />
             </Stack>
         </>
     );

@@ -4,7 +4,7 @@ import {
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { getVideos, getBanners } from "@/lib/apiCall";
+import { getVideos, getBanners, getPosts } from "@/lib/apiCall";
 import useUser from "@/hooks/auth/useUser";
 import FunctionItemsList from "@/components/home/FunctionItem";
 import RenderVideo from "@/components/home/RenderVideo";
@@ -19,20 +19,41 @@ const HomeScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [videos, setVideos] = useState([]);
   const [banners, setBanners] = useState([]);
+  const [post, setPost] = useState([]);
+  const [schedule, setSchedule] = useState(null);
+  const [totalTime, setTotalTime] = useState(null);
   const onRefresh = async () => {
     setRefreshing(true);
     setVideos([]);
     setBanners([]);
+    setPost([]);
+    setSchedule(null);
+    setTotalTime(null);
     await fetchBannerData();
     await fetchVideoData();
+    await fetchNews();
     setRefreshing(false);
   };
 
   useEffect(() => {
     fetchVideoData();
     fetchBannerData();
+    fetchNews();
   }, []);
 
+  const fetchNews = async () => {
+    try {
+      const postData = await getPosts();
+      setTimeout(() => {
+        if (postData) {
+          setPost(postData.data);
+        }
+      }, 1000);
+
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
   const fetchVideoData = async () => {
     try {
       const videosResponse = await getVideos();
@@ -59,6 +80,7 @@ const HomeScreen = () => {
       console.error("Error fetching data:", error);
     }
   };
+  
   return (
     <View className="bg-white">
       <HeaderSection user={user} />
@@ -71,11 +93,11 @@ const HomeScreen = () => {
             case 'functions':
               return <FunctionItemsList />;
             case 'timetracking':
-              return <TimeTracking />;
+              return <TimeTracking schedule="07/07/2024" totalTime="250" />;
             case 'trending':
               return <RenderVideo videos={videos} />;
             case 'news':
-              return <NewsSection banners={banners} />;
+              return <NewsSection post={post} />;
             case 'last':
               return <View className="h-[150px]"></View>;
             default:

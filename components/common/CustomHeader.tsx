@@ -6,18 +6,18 @@ import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import images from '@/constants/images';
 
-const CustomHeader = ({ title }: any) => {
+const CustomHeader = ({ title, customStyle }: any) => {
     const navigation = useNavigation();
-
     const handleBack = () => {
         navigation.goBack();
     };
+    const truncatedTitle = title.length > 30 ? `${title.slice(0, 27)}...` : title;
 
     return (
-        <View className="h-[98px]">
+        <View className={`${customStyle ? customStyle : ""} h-[98px]`}>
             <ImageBackground source={images.bgHeaderPage} resizeMode='stretch' className='flex-row flex-1 items-end justify-center'>
-                <Text className='text-[20px] font-psemibold text-white mb-[14px]'>{title}</Text>
-                <TouchableOpacity className='absolute bottom-[5px] left-0' onPress={handleBack} style={styles.backButton}>
+                <Text className='text-[20px] font-psemibold text-white mb-[14px]'>{truncatedTitle}</Text>
+                <TouchableOpacity className='absolute bottom-[5px] left-0 p-[10px]' onPress={handleBack}>
                     <Ionicons name="arrow-back" size={24} color="white" />
                 </TouchableOpacity>
             </ImageBackground>
@@ -25,21 +25,5 @@ const CustomHeader = ({ title }: any) => {
     );
 };
 
-const styles = StyleSheet.create({
-    header: {
-        flexDirection: 'row',
-        height: 60,
-        backgroundColor: '#f4511e',
-        alignItems: 'center',
-    },
-    headerText: {
-        fontSize: 20,
-        color: 'white',
-        marginLeft: 10,
-    },
-    backButton: {
-        padding: 10,
-    },
-});
 
 export default CustomHeader;

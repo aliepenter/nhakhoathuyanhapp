@@ -43,8 +43,6 @@ const LoginScreen = () => {
 
     try {
       const phoneNumberStatus = await trackPhoneNumber!(phoneNumber);
-      console.log(phoneNumberStatus);
-      
       setTimeout(() => {
         if (phoneNumberStatus) {
           router.push({

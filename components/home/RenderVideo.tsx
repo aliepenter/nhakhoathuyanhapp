@@ -6,7 +6,7 @@ import {
     ActivityIndicator,
 } from "react-native";
 import { icons } from "@/constants";
-import { Link} from "expo-router";
+import { Link } from "expo-router";
 import Trending from '../common/Trending';
 export default function RenderVideo({ videos }: any) {
     return (
@@ -28,7 +28,7 @@ export default function RenderVideo({ videos }: any) {
                         </Link>
                     </View>
                 </View>
-                {videos.length != 0
+                {videos && videos.length != 0
                     ?
                     <Trending posts={videos ?? []} />
                     :

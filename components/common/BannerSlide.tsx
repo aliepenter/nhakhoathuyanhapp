@@ -11,7 +11,7 @@ export default function BannerSlide({ banners, type }: any) {
     return (
         < View className="mt-[10px] pl-[8px] pr-[8px] mb-[30px]" >
             {
-                banners.length != 0
+                banners && banners.length != 0
                     ?
                     <Swiper
                         showsPagination={true}

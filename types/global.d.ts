@@ -24,3 +24,19 @@ type Branch = {
   tinh_thanh: string;
   map_url: string;
 };
+
+type ChinhNha = {
+  id: number;
+  ngay_chinh_nha: string;
+  branch_id: any;
+  user_id: number;
+  chinh_nha_chi_tiet_id: number;
+};
+
+type Post = {
+  id: number;
+  title: string;
+  banner_id: any;
+  date: string;
+  content: string;
+};

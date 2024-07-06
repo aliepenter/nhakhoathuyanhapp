@@ -44,6 +44,25 @@ export const getBanners = async () => {
   }
 };
 
+export const getPosts = async () => {
+  try {
+    const response = await axios.get(`${SERVER_URI}/posts`);
+    return {
+      code: 200,
+      data: response.data,
+    };
+  } catch (error: any) {
+    if (error.response) {
+      return {
+        code: error.response.status,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
+
+
 export const getBranches = async () => {
   try {
     const response = await axios.get(`${SERVER_URI}/branches`);
@@ -104,16 +123,22 @@ export const logout = async () => {
 
 }
 
-export const getProfile = async () => {
+export const getChinhNha = async (userId: any) => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);
+  
   if (token) {
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      const userProfile = await axios.get(`${SERVER_URI}/auth/profile`);
-      if (!userProfile) throw Error;
-      return userProfile.data;
+      const chinhNha = await axios.get(`${SERVER_URI}/chinh-nha/${userId}`);
+      if (!chinhNha) return null;
+      return {
+        code: 200,
+        data: chinhNha.data,
+      };
     } catch (error) {
       return null;
     }
+  } else {
+    return null;
   }
 }
