@@ -26,16 +26,16 @@ export default function FunctionItemsList() {
     return (
         <View className="h-[200px] flex-col justify-between pl-[11px] pr-[11px]">
             <View className="flex-row justify-between">
-                <FunctionItem icon={icons.iconChinhNha} title="Chỉnh nha" />
-                <FunctionItem icon={icons.iconDatLich} title="Đặt lịch" />
-                <FunctionItem icon={icons.iconLichHen} title="Lịch hẹn" />
-                <FunctionItem icon={icons.iconThanhToan} title="Thanh toán" />
+                <FunctionItem icon={icons.iconChinhNha} path="/(routes)/chinh-nha" title="Chỉnh nha" />
+                <FunctionItem icon={icons.iconDatLich} path="/(routes)/dat-lich" title="Đặt lịch" />
+                <FunctionItem icon={icons.iconLichHen} path="/(routes)/lich-hen" title="Lịch hẹn" />
+                <FunctionItem icon={icons.iconThanhToan} path="/(routes)/payment" title="Thanh toán" />
             </View>
             <View className="flex-row justify-between">
                 <FunctionItem icon={icons.iconChiNhanh} path="/(routes)/branches" title="Chi nhánh" />
-                <FunctionItem icon={icons.iconTinTuc} title="Tin tức" />
-                <FunctionItem icon={icons.iconHopDong} title="Hợp đồng" />
-                <FunctionItem icon={icons.iconLoiDan} title="Lời dặn" />
+                <FunctionItem icon={icons.iconTinTuc} path="/(routes)/tin-tuc" title="Tin tức" />
+                <FunctionItem icon={icons.iconHopDong} path="/(routes)/hop-dong" title="Hợp đồng" />
+                <FunctionItem icon={icons.iconLoiDan} path="/(routes)/loi-dan" title="Lời dặn" />
             </View>
         </View>
     );

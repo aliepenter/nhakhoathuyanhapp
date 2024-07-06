@@ -11,6 +11,7 @@ import RenderVideo from "@/components/home/RenderVideo";
 import BannerSlide from "@/components/common/BannerSlide";
 import NewsSection from "@/components/home/NewsSection";
 import HeaderSection from "@/components/home/HeaderSection";
+import TimeTracking from "@/components/home/TimeTracking";
 
 
 const HomeScreen = () => {
@@ -62,13 +63,15 @@ const HomeScreen = () => {
     <View className="bg-white">
       <HeaderSection user={user} />
       <FlatList
-        data={[{ key: 'banner' }, { key: 'functions' }, { key: 'trending' }, { key: 'news' }, { key: 'last' }]}
+        data={[{ key: 'banner' }, { key: 'functions' }, { key: 'timetracking' }, { key: 'trending' }, { key: 'news' }, { key: 'last' }]}
         renderItem={({ item }) => {
           switch (item.key) {
             case 'banner':
               return <BannerSlide banners={banners} type={1} />;
             case 'functions':
               return <FunctionItemsList />;
+            case 'timetracking':
+              return <TimeTracking />;
             case 'trending':
               return <RenderVideo videos={videos} />;
             case 'news':

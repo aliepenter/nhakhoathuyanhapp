@@ -20,7 +20,7 @@
         "backgroundColor": "#ffffff"
       },
       "splash": {
-        "image": "./assets/images/splashscreen.jpg",
+        "image": "./assets/images/splashscreenandroid.png",
         "resizeMode": "cover"
       }
     },

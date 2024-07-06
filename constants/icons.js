@@ -29,7 +29,11 @@ import verticalLine from "../assets/icons/vertical-line.png";
 import iconPhoneGif from "../assets/icons/icon-phone-gif.gif";
 import map from "../assets/icons/map.png";
 import phoneBlack from "../assets/icons/phone-black.png";
+import calenderDay from "../assets/icons/calendar-day.png";
+import calenderMonth from "../assets/icons/calendar-month.png";
 export default {
+  calenderDay,
+  calenderMonth,
   map,
   phoneBlack,
   iconPhoneGif,
