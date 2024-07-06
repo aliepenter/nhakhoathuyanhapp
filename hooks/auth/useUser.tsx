@@ -12,38 +12,28 @@ export default function useUser() {
     useEffect(() => {
         const subscription = async () => {
             const token = await SecureStore.getItemAsync(TOKEN_KEY);
-            
-            if (token) {
-                try {
-                    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-                    await axios.get(`${SERVER_URI}/auth/profile`)
-                        .then((res: any) => {
-                            setUser(res.data);
-                            setTimeout(() => {
-                                setLoading(false);
-                            }, 2000);
-                        })
-                        .catch((error: any) => {
+            try {
+                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                await axios.get(`${SERVER_URI}/auth/profile`)
+                    .then((res: any) => {
+                        setUser(res.data);
+                        setTimeout(() => {
+                            setLoading(false);
+                        }, 2000);
+                    })
+                    .catch((error: any) => {
+                        setError("Đã có lỗi xảy ra, xin vui lòng thử lại sau");
+                        setTimeout(() => {
+                            setLoading(false);
+                        }, 2000);
+                    });;
 
-                            setError("Đã có lỗi xảy ra, xin vui lòng thử lại sau");
-                            setTimeout(() => {
-                                setLoading(false);
-                            }, 2000);
-                        });;
-
-                } catch (error) {
-
-                    setError("Đã có lỗi xảy ra, xin vui lòng thử lại sau")
-                    setTimeout(() => {
-                        setLoading(false);
-                    }, 2000);
-                }
-            } else {
+            } catch (error) {
+                setError("Đã có lỗi xảy ra, xin vui lòng thử lại sau")
                 setTimeout(() => {
                     setLoading(false);
                 }, 2000);
             }
-
         };
         subscription();
     }, [refetch]);

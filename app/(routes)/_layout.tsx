@@ -18,6 +18,11 @@ const PageLayout = () => {
                 <Stack.Screen options={{ headerShown: false }} name="verify-password/index" />
                 <Stack.Screen options={{ headerShown: false }} name="verify-password/otpLogin" />
                 <Stack.Screen options={{ headerShown: false }} name="verify-sign-up/index" />
+                <Stack.Screen options={{
+                    header: (props) => (
+                        <CustomHeader {...props} title="Các chi nhánh" />
+                    ),
+                }} name="play-video/index" />
             </Stack>
         </>
     );
