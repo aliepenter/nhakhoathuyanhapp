@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import React, { useState } from 'react';
 import { images } from '@/constants';
-import { Link, router } from 'expo-router';
+import { router } from 'expo-router';
 import { useRoute } from "@react-navigation/native";
 import { login } from "@/lib/apiCall";
 import FormField from '@/components/common/FormField';
@@ -25,6 +25,8 @@ const PasswordScreen = () => {
     const { username }: any = route.params;
 
     const isIOS = Platform.OS === 'ios';
+    const [allowBackNavigation, setAllowBackNavigation] = useState(false);
+
 
     const submit = async () => {
         if (!password) {
@@ -36,7 +38,7 @@ const PasswordScreen = () => {
             await login!(username, password);
             setTimeout(() => {
                 router.dismissAll();
-                router.push("/(tabs)");
+                router.replace("/(tabs)");
             }, 2000);
         } catch (error) {
             Alert.alert('Đăng nhập thất bại', 'Xin vui lòng kiểm tra lại thông tin');

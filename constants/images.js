@@ -10,6 +10,7 @@ import bgPhoneInput from "../assets/images/background-phone-input.png";
 import bgHeaderHome from "../assets/images/bg-header-home.png";
 import bgHeaderPage from "../assets/images/header-page.png";
 import bannerDefault from "../assets/images/banner-default.jpg";
+import bgTabbar from "../assets/images/bg-tabbar.png";
 
 
-export default {bgHeaderPage, bannerDefault, bgHeaderHome, profile, thumbnail, cards, path, logo, logoSmall, empty, splashscreen, bgPhoneInput };
+export default { bgTabbar, bgHeaderPage, bannerDefault, bgHeaderHome, profile, thumbnail, cards, path, logo, logoSmall, empty, splashscreen, bgPhoneInput };

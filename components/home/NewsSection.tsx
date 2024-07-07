@@ -3,13 +3,17 @@ import {
     Text,
     View,
     ActivityIndicator,
+    TouchableOpacity,
 } from "react-native";
 import React from "react";
 import { icons } from "@/constants";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { SERVER_URL } from "@/utils/uri";
 
 export default function NewsSection({ post }: any) {
+    const handleViewAllNews = () => {
+        router.push("/(routes)/tin-tuc/");
+    }
     return (
         <View className="mb-[100px] px-[11px] space-y-6 mt-[27px]">
             <View className="w-full flex-1">
@@ -21,12 +25,15 @@ export default function NewsSection({ post }: any) {
                         </Text>
                     </View>
                     <View className="mt-1.5">
-                        <Link
-                            href="/(routes)/tin-tuc/"
-                            className="text-[12px] font-pregular text-[#FF2D2D]"
+                        <TouchableOpacity
+                            onPress={handleViewAllNews}
                         >
-                            Xem tất cả
-                        </Link>
+                            <Text
+                                className="text-[12px] font-pregular text-[#FF2D2D]"
+                            >
+                                Xem tất cả
+                            </Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 {post && post.length != 0

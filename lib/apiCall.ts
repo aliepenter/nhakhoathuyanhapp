@@ -84,6 +84,7 @@ export const getBranches = async () => {
 export const trackPhoneNumber = async (username: string) => {
   try {
     const result = await axios.get(`${SERVER_URI}/users/${username}`);
+    
     if (result) {
       if (result.data) {
         return true;
@@ -116,7 +117,8 @@ export const logout = async () => {
   try {
     await SecureStore.deleteItemAsync(TOKEN_KEY);
     axios.defaults.headers.common['Authorization'] = '';
-    router.push('/(routes)/login');
+    router.dismissAll();
+    router.replace('/(routes)/login');
   } catch (error) {
     throw error;
   }

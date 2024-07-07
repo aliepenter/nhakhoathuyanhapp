@@ -10,10 +10,10 @@ export default function Loader() {
     >
       <AnimatedLoader
         visible={true}
-        overlayColor="rgba(255,255,255,0.75)"
-        source={require("@/assets/animation/pr3oLBeQ0s.json")}
+        overlayColor="#5EBA1B"
+        source={require("@/assets/animation/0FPn2SKuz4.json")}
         animationStyle={{ width: 250, height: 250 }}
-        speed={1.5}
+        speed={1.6}
       />
     </LinearGradient>
   );

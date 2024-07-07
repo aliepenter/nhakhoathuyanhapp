@@ -2,12 +2,13 @@ import { Alert, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { logout } from '@/lib/apiCall';
 import CustomButton from '@/components/common/CustomButton';
+import { router } from 'expo-router';
 
 const Profile = () => {
 
   const handleLogout = async () => {
     try {
-      await logout();
+      await logout()
     } catch (error) {
       Alert.alert("Đăng xuất thất bại", "Xin vui lòng thử lại sau");
     }

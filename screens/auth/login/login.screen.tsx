@@ -10,6 +10,7 @@ import CustomButton from '@/components/common/CustomButton';
 const LoginScreen = () => {
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const isIOS = Platform.OS === 'ios';
   const handleBackAction = () => {
     Alert.alert("Thoát khỏi ứng dụng", "Bạn muốn rời khỏi ứng dụng?", [
@@ -39,11 +40,14 @@ const LoginScreen = () => {
       Alert.alert('Đăng nhập thất bại', 'Xin vui lòng điền đầy đủ thông tin');
       return;
     }
+    if (!checkPhoneNumber(phoneNumber)) {
+      Alert.alert('Đăng nhập thất bại', 'Số điện thoại chưa đúng');
+      return;
+    }
     setIsSubmitting(true);
 
     try {
       const phoneNumberStatus = await trackPhoneNumber!(phoneNumber);
-
       setTimeout(() => {
         if (phoneNumberStatus) {
           router.push({
@@ -65,6 +69,11 @@ const LoginScreen = () => {
       }, 2000);
     }
   };
+
+  const checkPhoneNumber = (phoneNumber: string) => {
+    var vietnamesePhoneRegex = /^(?:\+84|0)(?:\d{9,10})$/;
+    return vietnamesePhoneRegex.test(phoneNumber);
+  }
   return (
     <ImageBackground source={images.bgPhoneInput} resizeMode='cover' className='flex-1'>
       <KeyboardAvoidingView
