@@ -18,7 +18,7 @@ export default function BannerSlide({ banners, type }: any) {
                         loop={true}
                         autoplay={true}
                         paginationStyle={{ bottom: -16 }}
-                        className="h-[170px]"
+                        className="h-[170px] md:h-[400px]"
                         autoplayTimeout={5}
                     >
                         {banners.map((item: Banner, index: number) => (
@@ -35,7 +35,7 @@ export default function BannerSlide({ banners, type }: any) {
                         ))}
                     </Swiper>
                     :
-                    <View className="h-[170px] justify-center">
+                    <View className="h-[170px] md:h-[400px] justify-center">
                         <ActivityIndicator />
                     </View>
             }

@@ -39,17 +39,17 @@ export default function NewsSection({ post }: any) {
                 {post && post.length != 0
                     ?
                     <View className="flex-wrap flex-row justify-between">
-                        {post.slice(0, 4).map((item: Post, index: number) => (
+                        {post.slice(0, 6).map((item: Post, index: number) => (
                             <Image
                                 key={index}
                                 source={{ uri: `${SERVER_URL}${item.banner_id.banner_path}` }}
-                                className="h-[142px] w-[49%] rounded-[10px] mb-5"
+                                className="h-[142px] md:h-[200px] w-[49%] md:w-[32%] rounded-[10px] mb-5"
                             />
                         ))}
                     </View>
                     :
                     // 582 324
-                    <View className="h-[324px] justify-center">
+                    <View className="h-[486px] md:h-[440px] justify-center">
                         <ActivityIndicator />
                     </View>
                 }

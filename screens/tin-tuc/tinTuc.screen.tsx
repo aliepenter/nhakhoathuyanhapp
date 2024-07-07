@@ -67,13 +67,13 @@ const PostItem = ({ loading, post }: any) => {
                         post.map((item: Post, index: number) => (
                             <TouchableOpacity
                                 key={index}
-                                className={`px-[11px] mb-[15px] w-[50%]`}
+                                className={`px-[11px] mb-[15px] w-[50%] md:w-[33.333%]`}
                                 activeOpacity={0.7}
                                 onPress={() => { }}
                             >
                                 <Image
                                     source={{ uri: `${SERVER_URL}${item.banner_id.banner_path}` }}
-                                    className="h-[135px] w-full rounded-[10px] mb-[5px]"
+                                    className="h-[135px] md:h-[200px] w-full rounded-[10px] mb-[5px]"
                                 />
                                 <Text className='font-semibold text-[12px]'>{item.title}</Text>
                             </TouchableOpacity>

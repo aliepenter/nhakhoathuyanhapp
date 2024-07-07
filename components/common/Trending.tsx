@@ -29,56 +29,42 @@ const zoomOut: any = {
   },
 };
 
-const TrendingItem = ({ activeItem, item }: any) => {
+const TrendingItem = ({ item, isLast }: any) => {
   const onPress = () =>
     router.push({
       pathname: "(routes)/play-video",
       params: { videoItem: item.video_url, headerTitle: item.video_title },
     });
   return (
-    <Animatable.View
-      animation={activeItem === item.id ? zoomIn : zoomOut}
-      duration={500}
+    <TouchableOpacity
+      className={`relative justify-center items-center ${isLast?"":"mr-2"}`}
+      activeOpacity={0.7}
+      onPress={onPress}
     >
-      <TouchableOpacity
-        className="relative justify-center items-center"
-        activeOpacity={0.7}
-        onPress={onPress}
-      >
-        <ImageBackground
-          source={item.video_thumbnail?{ uri: `${SERVER_URL}${item.video_thumbnail}` }:images.bannerDefault}
-          className="w-80 h-48 overflow-hidden rounded-[20px]"
-          resizeMode="stretch"
-        />
-        <Image
-          source={icons.play}
-          className="w-12 h-12 absolute"
-          resizeMode="contain"
-        />
-      </TouchableOpacity>
-    </Animatable.View>
+      <ImageBackground
+        source={item.video_thumbnail ? { uri: `${SERVER_URL}${item.video_thumbnail}` } : images.bannerDefault}
+        className="w-80 h-48 overflow-hidden rounded-[20px]"
+        resizeMode="stretch"  
+      />
+      <Image
+        source={icons.play}
+        className="w-12 h-12 absolute"
+        resizeMode="contain"
+      />
+    </TouchableOpacity>
   );
 };
 
 const Trending = ({ posts }: any) => {
-  const [activeItem, setActiveItem] = useState(posts[0]);
-  const viewableItemsChanged = ({ viewableItems }: any) => {
-    if (viewableItems.length > 0) {
-      setActiveItem(viewableItems[0].key);
-    }
-  };
+
 
   return (
     <FlatList
       data={posts}
       keyExtractor={(item) => item.id}
-      renderItem={({ item }) => (
-        <TrendingItem activeItem={activeItem} item={item} />
+      renderItem={({ item, index }) => (
+        <TrendingItem item={item} isLast={index === posts.length - 1}/>
       )}
-      onViewableItemsChanged={viewableItemsChanged}
-      viewabilityConfig={{
-        itemVisiblePercentThreshold: 40,
-      }}
       horizontal
       showsHorizontalScrollIndicator={false}
     />

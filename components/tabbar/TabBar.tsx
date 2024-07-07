@@ -12,7 +12,7 @@ export default function TabBars({ state, descriptors, navigation }: any) {
         await Linking.openURL('tel:0869800318');
     }, []);
     return (
-        <ImageBackground className={`h-[95px] absolute bottom-0 opacity-[0.987 ]`} source={images.bgTabbar} resizeMode='cover'>
+        <ImageBackground className={`${Platform.OS === 'ios' ? "h-[100px]" : "h-[95px]"} absolute bottom-0 opacity-[0.987]`} source={images.bgTabbar} resizeMode='stretch'>
             <View className={`flex-row justify-between items-center w-full`}>
                 {
                     state.routes.map((route: any, index: any) => {
@@ -61,7 +61,7 @@ export default function TabBars({ state, descriptors, navigation }: any) {
                                 testID={options.tabBarTestID}
                                 onPress={onPress}
                                 onLongPress={onLongPress}
-                                className={`mt-4 flex-1 items-center ${route.name === 'image-gallery/index' ? 'mr-[38px]' : ''} ${route.name === 'notification/index' ? 'ml-14' : ''}`}
+                                className={`${Platform.OS === 'ios' ? 'mt-[17px]' : 'mt-4'} flex-1 items-center ${route.name === 'image-gallery/index' ? 'mr-[38px]' : ''} ${route.name === 'notification/index' ? 'ml-14' : ''}`}
 
                             >
                                 <View className={`items-center ${isFocused ? "border-t-[#5EBA1B] border-t-2 pt-2" : "pt-2"}`}>
@@ -77,14 +77,14 @@ export default function TabBars({ state, descriptors, navigation }: any) {
                                             <Image source={iconName} resizeMode='contain' tintColor={isFocused ? '#5EBA1B' : '#8A8A8A'} className='w-[24px] h-[24px]' />
 
                                     }
-                                    <Text className={`${isFocused ? 'text-[#5EBA1B] font-pbold' : 'text-[#8A8A8A] font-pregular'} mt-2 text-[10px]`}>{tabName}</Text>
+                                    <Text className={`${isFocused ? 'text-[#5EBA1B] font-pbold' : 'text-[#8A8A8A] font-pregular'} mt-2 text-[10px] md:text-[14px]`}>{tabName}</Text>
                                 </View>
                             </TouchableOpacity>
 
                         );
                     })}
             </View>
-            <TouchableOpacity className={`${Platform.OS === 'ios' ? "left-[41%]" : "left-[42%]"}  bg-[#F1F1F1] bottom-4 absolute rounded-full`} onPress={handlePress}>
+            <TouchableOpacity className={`${Platform.OS === 'ios' ? "left-[41%] md:left-[46%]" : "left-[42%]"} bg-[#F1F1F1] bottom-4 md:bottom-6 absolute rounded-full`} onPress={handlePress}>
                 <LinearGradient
                     colors={['#1361AA', '#5EBA1B']}
                     start={{ x: 0, y: 0 }}
