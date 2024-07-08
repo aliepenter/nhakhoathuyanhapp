@@ -76,6 +76,7 @@ const PageLayout = () => {
                 <Stack.Screen options={{ headerShown: false }} name="verify-password/otpLogin" />
                 <Stack.Screen options={{ headerShown: false }} name="verify-sign-up/index" />
                 <Stack.Screen options={{ headerShown: false }} name="play-video/index" />
+                <Stack.Screen options={{ headerShown: false }} name="chinh-nha/chinhNhaDetail" />
             </Stack>
             <StatusBar barStyle={'light-content' } />
         </>

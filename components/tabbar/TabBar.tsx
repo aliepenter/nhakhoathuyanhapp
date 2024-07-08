@@ -84,7 +84,7 @@ export default function TabBars({ state, descriptors, navigation }: any) {
                         );
                     })}
             </View>
-            <TouchableOpacity className={`${Platform.OS === 'ios' ? "left-[41%] md:left-[46%]" : "left-[42%]"} bg-[#F1F1F1] bottom-4 md:bottom-6 absolute rounded-full`} onPress={handlePress}>
+            <TouchableOpacity className={`${Platform.OS === 'ios' ? "left-[41%] md:left-[46%]" : "left-[42%]"} bg-[#F1F1F1] bottom-4 absolute rounded-full`} onPress={handlePress}>
                 <LinearGradient
                     colors={['#1361AA', '#5EBA1B']}
                     start={{ x: 0, y: 0 }}

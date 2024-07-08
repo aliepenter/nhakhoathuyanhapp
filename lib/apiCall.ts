@@ -84,7 +84,7 @@ export const getBranches = async () => {
 export const trackPhoneNumber = async (username: string) => {
   try {
     const result = await axios.get(`${SERVER_URI}/users/${username}`);
-    
+
     if (result) {
       if (result.data) {
         return true;
@@ -127,7 +127,7 @@ export const logout = async () => {
 
 export const getChinhNha = async (userId: any) => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);
-  
+
   if (token) {
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -143,4 +143,52 @@ export const getChinhNha = async (userId: any) => {
   } else {
     return null;
   }
+}
+
+export const getChinhNhaChiTiet = async (id: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const chinhNhaDetail = await axios.get(`${SERVER_URI}/chinh-nha-chi-tiet/${id}`);
+      if (!chinhNhaDetail) return null;
+      return {
+        code: 200,
+        data: chinhNhaDetail.data,
+      };
+    } catch (error) {
+      return null;
+    }
+  } else {
+    return null;
+  }
+}
+
+export const getVideoCategoryById = async (chinh_nha_chi_tiet_id: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const videoCategory = await axios.get(`${SERVER_URI}/video-category/${chinh_nha_chi_tiet_id}`);
+      
+      if (!videoCategory) return null;
+      return {
+        code: 200,
+        data: videoCategory.data,
+      };
+    } catch (error) {
+      return null;
+    }
+  } else {
+    return null;
+  }
+}
+
+export const formatDate = (isoDateString: any) => {
+  const date = new Date(isoDateString);
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  return `${day}/${month}/${year}`;
 }

@@ -31,7 +31,9 @@ import map from "../assets/icons/map.png";
 import phoneBlack from "../assets/icons/phone-black.png";
 import calenderDay from "../assets/icons/calendar-day.png";
 import calenderMonth from "../assets/icons/calendar-month.png";
+import backArrow from "../assets/icons/back-arrow.png";
 export default {
+  backArrow,
   calenderDay,
   calenderMonth,
   map,

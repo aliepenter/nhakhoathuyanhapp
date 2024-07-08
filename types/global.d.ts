@@ -40,3 +40,10 @@ type Post = {
   date: string;
   content: string;
 };
+
+type ChinhNhaChiTiet = {
+  id: number;
+  thu_thuat_dieu_tri: string;
+  qua_trinh_image_id: any;
+  tinh_trang_rang_mieng: string;
+};

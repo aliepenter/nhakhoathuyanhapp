@@ -1,7 +1,8 @@
-import { View, Text, FlatList, RefreshControl, ActivityIndicator, ScrollView, TouchableOpacity } from 'react-native'
+import { View, Text, RefreshControl, ActivityIndicator, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { getChinhNha } from '@/lib/apiCall';
+import { formatDate, getChinhNha } from '@/lib/apiCall';
 import useUser from '@/hooks/auth/useUser';
+import { router } from 'expo-router';
 
 export default function ChinhNhaScreen() {
   const { user } = useUser();
@@ -43,12 +44,12 @@ export default function ChinhNhaScreen() {
     }
   };
 
-  const formatDate = (isoDateString: any) => {
-    const date = new Date(isoDateString);
-    const year = date.getUTCFullYear();
-    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
-    const day = String(date.getUTCDate()).padStart(2, '0');
-    return `${day}/${month}/${year}`;
+  const handlePress = (chinh_nha_chi_tiet_id: any, co_so: any, ngay_chinh_nha: any) => {
+    const title = `Chỉnh nha ngày ${formatDate(ngay_chinh_nha)}`;
+    router.push({
+      pathname: "(routes)/chinh-nha/chinhNhaDetail",
+      params: {  headerTitle: title, chinh_nha_chi_tiet_id: chinh_nha_chi_tiet_id },
+    });
   }
   return (
     <ScrollView className="bg-white h-full" refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
@@ -61,7 +62,7 @@ export default function ChinhNhaScreen() {
               key={index}
               className={`${index % 2 !== 0 ? "bg-[#F3F3F3]" : "bg-white"} px-[11px] py-[20px]`}
               activeOpacity={0.7}
-              onPress={() => { }}
+              onPress={() => handlePress(item.chinh_nha_chi_tiet_id, item.branch_id.ten_chi_nhanh, item.ngay_chinh_nha)}
             >
               <Text className='text-[14px]'>{`Ngày ${formatDate(item.ngay_chinh_nha)}, ${item.branch_id.ten_chi_nhanh}`}</Text>
             </TouchableOpacity>
