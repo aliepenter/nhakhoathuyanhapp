@@ -60,11 +60,11 @@ export default function ChinhNhaScreen() {
           chinhNha.map((item: ChinhNha, index: number) => (
             <TouchableOpacity
               key={index}
-              className={`${index % 2 !== 0 ? "bg-[#F3F3F3]" : "bg-white"} px-[11px] py-[20px]`}
+              className={`${index % 2 !== 0 ? "bg-[#F3F3F3]" : "bg-white"} px-[11px] py-[20px] md:py-[30px]`}
               activeOpacity={0.7}
               onPress={() => handlePress(item.chinh_nha_chi_tiet_id, item.branch_id.ten_chi_nhanh, item.ngay_chinh_nha)}
             >
-              <Text className='text-[14px]'>{`Ngày ${formatDate(item.ngay_chinh_nha)}, ${item.branch_id.ten_chi_nhanh}`}</Text>
+              <Text className='text-[14px] md:text-[20px]'>{`Ngày ${formatDate(item.ngay_chinh_nha)}, ${item.branch_id.ten_chi_nhanh}`}</Text>
             </TouchableOpacity>
           ))
           :

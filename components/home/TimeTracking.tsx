@@ -14,11 +14,11 @@ export default function TimeTracking({ schedule, totalTime }: any) {
             >
                 <View className='flex-row items-center justify-center'>
                     <Image source={icons.calenderMonth} className='w-[16px] h-[16px] mr-[3px]' resizeMode='contain' />
-                    <Text className='font-pbold font-[12px] text-white'>Lịch hẹn sắp tới</Text>
+                    <Text className='font-pbold text-[12px] text-white md:text-[16px]'>Lịch hẹn sắp tới</Text>
                 </View>
                 {schedule
                     ?
-                    <Text className='font-pextrabold text-[#FBFF49] font-[16px]'>{schedule}</Text>
+                    <Text className='font-pextrabold text-[12px] text-[#FBFF49] md:text-[16px]'>{schedule}</Text>
                     :
                     <View className="h-[23px] justify-center">
                         <ActivityIndicator />
@@ -33,11 +33,11 @@ export default function TimeTracking({ schedule, totalTime }: any) {
             >
                 <View className='flex-row items-center justify-center'>
                     <Image source={icons.calenderDay} className='w-[16px] h-[16px] mr-[3px]' resizeMode='contain' />
-                    <Text className='font-pbold font-[12px] text-white'>Thời gian niềng răng</Text>
+                    <Text className='font-pbold text-[12px] text-white md:text-[16px]'>Thời gian niềng răng</Text>
                 </View>
                 {totalTime
                     ?
-                    <Text className='font-pextrabold text-[#FBFF49] font-[16px]'>{totalTime} ngày</Text>
+                    <Text className='font-pextrabold text-[12px] text-[#FBFF49] md:text-[16px]'>{totalTime} ngày</Text>
                     :
                     <View className="h-[23px] justify-center">
                         <ActivityIndicator />

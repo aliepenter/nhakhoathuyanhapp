@@ -48,8 +48,8 @@ export default function QuaTrinhImage({ anh_1, anh_2, anh_3, anh_4, anh_5, anh_6
         },
     ]
     return (
-        <View className='mt-[13px] border-b-[2px] pb-[11px] border-b-[#E9E9E9]'>
-            <Text className='text-[16px] font-pbold text-[#5EBA1B] mb-[4px]'>2. Hình ảnh quá trình</Text>
+        <View className='mt-[13px] border-b-[2px] pb-[11px] border-b-[#E9E9E9] md:pb-[20px]'>
+            <Text className='text-[16px] md:text-[22px] font-pbold text-[#5EBA1B] mb-[4px] md:mb-[13px]'>2. Hình ảnh quá trình</Text>
             {
                 anh_1 && anh_2 && anh_3 && anh_4 && anh_5 && anh_6 && anh_7 && anh_8
                     ?
@@ -92,7 +92,7 @@ export default function QuaTrinhImage({ anh_1, anh_2, anh_3, anh_4, anh_5, anh_6
                     />
                     :
                     <View className={`flex justify-center items-center`}>
-                        <Text className={`text-[14px] ml-5`}>Không có dữ liệu</Text>
+                        <Text className={`text-[14px] md:text-[20px] ml-5`}>Không có dữ liệu</Text>
                     </View>
             }
 
@@ -107,7 +107,7 @@ const ImageItem = ({ video_thumbnail, gallery, index }: any) => {
             <TouchableOpacity activeOpacity={0.9} onPress={() => setModalVisible(true)}>
                 <Image
                     source={video_thumbnail ? { uri: `${SERVER_URL}${video_thumbnail}` } : images.bannerDefault}
-                    className={`h-[180px] w-[180px] overflow-hidden rounded-[20px] bg-[#F1F1F1] ${index === 7 ? '' : 'mr-2'}`}
+                    className={`h-[180px] w-[180px] md:h-[380px] md:w-[380px] overflow-hidden rounded-[20px] bg-[#F1F1F1] ${index === 7 ? '' : 'mr-2'}`}
                     resizeMode="contain"
                 />
             </TouchableOpacity>
@@ -124,9 +124,9 @@ const ImageItem = ({ video_thumbnail, gallery, index }: any) => {
                         onPress={() => setModalVisible(false)}
                         className='absolute bottom-10 left-5 bg-white rounded-full'
                     >
-                        <View className='flex-row justify-center items-center gap-2 px-10 py-5'>
-                            <Image source={icons.backArrow} resizeMode='contain' className='w-[25px] h-[16px]' />
-                            <Text className='font-pextrabold text-[16px] text-[#747474]'>Quay lại</Text>
+                        <View className='flex-row justify-center items-center gap-2 px-5 py-2'>
+                            <Image source={icons.backArrow} resizeMode='contain' className='w-[20px] h-[11px]' />
+                            <Text className=' text-[14px] text-[#747474]'>Quay lại</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

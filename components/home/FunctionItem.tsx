@@ -17,7 +17,7 @@ const FunctionItem = ({ icon, title, path }: any) => {
                 <Image source={icon} className='w-[40px] h-[40px]' resizeMode='contain' />
             </View>
 
-            <Text className='text-[12px] mt-[4px] font-psemibold'>{title}</Text>
+            <Text className='text-[12px] mt-[4px] font-psemibold md:text-[16px] md:mt-[6px]'>{title}</Text>
         </TouchableOpacity>
     )
 }
