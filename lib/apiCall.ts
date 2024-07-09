@@ -138,7 +138,7 @@ export const getChinhNha = async (userId: any) => {
         data: chinhNha.data,
       };
     } catch (error) {
-      return null;
+      throw error;
     }
   } else {
     return null;
@@ -147,7 +147,6 @@ export const getChinhNha = async (userId: any) => {
 
 export const getChinhNhaChiTiet = async (id: any) => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);
-
   if (token) {
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -158,7 +157,7 @@ export const getChinhNhaChiTiet = async (id: any) => {
         data: chinhNhaDetail.data,
       };
     } catch (error) {
-      return null;
+      throw error;
     }
   } else {
     return null;
@@ -171,19 +170,39 @@ export const getVideoCategoryById = async (chinh_nha_chi_tiet_id: any) => {
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       const videoCategory = await axios.get(`${SERVER_URI}/video-category/${chinh_nha_chi_tiet_id}`);
-      
-      if (!videoCategory) return null;
+      if (!videoCategory) null;
       return {
         code: 200,
         data: videoCategory.data,
       };
     } catch (error) {
-      return null;
+      throw error;
     }
   } else {
     return null;
   }
 }
+
+export const getBaiVietCategoryById = async (chinh_nha_chi_tiet_id: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const baiVietCategory = await axios.get(`${SERVER_URI}/bai-viet-category/${chinh_nha_chi_tiet_id}`);
+      
+      if (!baiVietCategory) return null;
+      return {
+        code: 200,
+        data: baiVietCategory.data,
+      };
+    } catch (error) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+}
+
 
 export const formatDate = (isoDateString: any) => {
   const date = new Date(isoDateString);

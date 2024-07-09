@@ -4,54 +4,55 @@ import { SERVER_URL } from '@/utils/uri';
 import images from '@/constants/images';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { icons } from '@/constants';
-export default function QuaTrinhImage({ anh_1, anh_2, anh_3, anh_4, anh_5, anh_6, anh_7, anh_8 }: any) {
+import { formatDate } from '@/lib/apiCall';
+export default function QuaTrinhImage({ anh }: any) {
     const gallery = [
         {
-            url: `${SERVER_URL}${anh_1}`,
+            url: `${SERVER_URL}${anh?.anh_1}`,
             props: {
             }
         },
         {
-            url: `${SERVER_URL}${anh_2}`,
+            url: `${SERVER_URL}${anh?.anh_2}`,
             props: {
             }
         },
         {
-            url: `${SERVER_URL}${anh_3}`,
+            url: `${SERVER_URL}${anh?.anh_3}`,
             props: {
             }
         },
         {
-            url: `${SERVER_URL}${anh_4}`,
+            url: `${SERVER_URL}${anh?.anh_4}`,
             props: {
             }
         },
         {
-            url: `${SERVER_URL}${anh_5}`,
+            url: `${SERVER_URL}${anh?.anh_5}`,
             props: {
             }
         },
         {
-            url: `${SERVER_URL}${anh_6}`,
+            url: `${SERVER_URL}${anh?.anh_6}`,
             props: {
             }
         },
         {
-            url: `${SERVER_URL}${anh_7}`,
+            url: `${SERVER_URL}${anh?.anh_7}`,
             props: {
             }
         },
         {
-            url: `${SERVER_URL}${anh_8}`,
+            url: `${SERVER_URL}${anh?.anh_8}`,
             props: {
             }
         },
     ]
     return (
         <View className='mt-[13px] border-b-[2px] pb-[11px] border-b-[#E9E9E9] md:pb-[20px]'>
-            <Text className='text-[16px] md:text-[22px] font-pbold text-[#5EBA1B] mb-[4px] md:mb-[13px]'>2. Hình ảnh quá trình</Text>
+            <Text className='text-[16px] md:text-[22px] font-pbold text-[#5EBA1B] mb-[4px] md:mb-[13px]'>2. Ảnh quá trình{anh?.ngay_chup?" (Chụp ngày "+formatDate(anh?.ngay_chup)+")":""}</Text>
             {
-                anh_1 && anh_2 && anh_3 && anh_4 && anh_5 && anh_6 && anh_7 && anh_8
+                anh
                     ?
                     <FlatList
                         data={[
@@ -68,21 +69,21 @@ export default function QuaTrinhImage({ anh_1, anh_2, anh_3, anh_4, anh_5, anh_6
                         renderItem={({ item, index }) => {
                             switch (item.key) {
                                 case 'anh_1':
-                                    return <ImageItem video_thumbnail={anh_1} gallery={gallery} index={index} />;
+                                    return <ImageItem video_thumbnail={anh.anh_1} gallery={gallery} index={index} />;
                                 case 'anh_2':
-                                    return <ImageItem video_thumbnail={anh_2} gallery={gallery} index={index} />;
+                                    return <ImageItem video_thumbnail={anh.anh_2} gallery={gallery} index={index} />;
                                 case 'anh_3':
-                                    return <ImageItem video_thumbnail={anh_3} gallery={gallery} index={index} />;
+                                    return <ImageItem video_thumbnail={anh.anh_3} gallery={gallery} index={index} />;
                                 case 'anh_4':
-                                    return <ImageItem video_thumbnail={anh_4} gallery={gallery} index={index} />;
+                                    return <ImageItem video_thumbnail={anh.anh_4} gallery={gallery} index={index} />;
                                 case 'anh_5':
-                                    return <ImageItem video_thumbnail={anh_5} gallery={gallery} index={index} />;
+                                    return <ImageItem video_thumbnail={anh.anh_5} gallery={gallery} index={index} />;
                                 case 'anh_6':
-                                    return <ImageItem video_thumbnail={anh_6} gallery={gallery} index={index} />;
+                                    return <ImageItem video_thumbnail={anh.anh_6} gallery={gallery} index={index} />;
                                 case 'anh_7':
-                                    return <ImageItem video_thumbnail={anh_7} gallery={gallery} index={index} />;
+                                    return <ImageItem video_thumbnail={anh.anh_7} gallery={gallery} index={index} />;
                                 case 'anh_8':
-                                    return <ImageItem video_thumbnail={anh_8} gallery={gallery} index={index} />;
+                                    return <ImageItem video_thumbnail={anh.anh_8} gallery={gallery} index={index} />;
                                 default:
                                     return null;
                             }

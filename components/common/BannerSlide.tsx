@@ -20,6 +20,10 @@ export default function BannerSlide({ banners, type }: any) {
                         paginationStyle={{ bottom: -16 }}
                         className="h-[170px] md:h-[400px]"
                         autoplayTimeout={5}
+                        pagingEnabled={true}
+                        loadMinimalLoader={<ActivityIndicator />}
+                        loadMinimal={true}
+                        loadMinimalSize={2}
                     >
                         {banners.map((item: Banner, index: number) => (
                             item.status === type

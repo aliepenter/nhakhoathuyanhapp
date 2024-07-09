@@ -57,21 +57,14 @@ export default function ChinhNhaDetailScreen() {
                     ?
                     <FlatList
                         className=' px-[11px] bg-white'
-                        data={[{ key: 'thu-thuat' }, { key: 'hinh-anh' }, { key: 'tinh-trang' }, { key: 'loi-dan' }]}
+                        data={[{ key: 'thu-thuat' },{ key: 'hinh-anh' }, { key: 'tinh-trang' }, { key: 'loi-dan' }]}
                         renderItem={({ item }) => {
                             switch (item.key) {
                                 case 'thu-thuat':
                                     return <ThuThuat thuthuat={chinhNhaData?.thu_thuat_dieu_tri} />;
                                 case 'hinh-anh':
                                     return <QuaTrinhImage
-                                        anh_1={chinhNhaData?.qua_trinh_image_id.anh_1}
-                                        anh_2={chinhNhaData?.qua_trinh_image_id.anh_2}
-                                        anh_3={chinhNhaData?.qua_trinh_image_id.anh_3}
-                                        anh_4={chinhNhaData?.qua_trinh_image_id.anh_4}
-                                        anh_5={chinhNhaData?.qua_trinh_image_id.anh_5}
-                                        anh_6={chinhNhaData?.qua_trinh_image_id.anh_6}
-                                        anh_7={chinhNhaData?.qua_trinh_image_id.anh_7}
-                                        anh_8={chinhNhaData?.qua_trinh_image_id.anh_8}
+                                        anh={chinhNhaData?.qua_trinh_image_id}
                                     />;
                                 case 'tinh-trang':
                                     return <TinhTrang tinhtrang={chinhNhaData?.tinh_trang_rang_mieng} />;
