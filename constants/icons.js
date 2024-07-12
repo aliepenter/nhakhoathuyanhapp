@@ -16,8 +16,11 @@ import notification from "../assets/icons/notification.png";
 import notificationHeader from "../assets/icons/notification-header.png";
 import notificationHighlight from "../assets/icons/notification-highlight.png";
 import gallery from "../assets/icons/gallery.png";
+import galleryWhite from "../assets/icons/gallery-white.png";
 import phoneCall from "../assets/icons/phone-call.png";
 import iconChinhNha from "../assets/icons/icon-chinh-nha.png";
+import chinhNha from "../assets/icons/chinh-nha.png";
+import chinhNhaWhite from "../assets/icons/chinh-nha-white.png";
 import iconDatLich from "../assets/icons/icon-dat-lich.png";
 import iconLichHen from "../assets/icons/icon-lich-hen.png";
 import iconThanhToan from "../assets/icons/icon-thanh-toan.png";
@@ -33,6 +36,9 @@ import calenderDay from "../assets/icons/calendar-day.png";
 import calenderMonth from "../assets/icons/calendar-month.png";
 import backArrow from "../assets/icons/back-arrow.png";
 export default {
+  chinhNha,
+  galleryWhite,
+  chinhNhaWhite,
   backArrow,
   calenderDay,
   calenderMonth,

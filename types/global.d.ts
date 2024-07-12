@@ -47,3 +47,4 @@ type ChinhNhaChiTiet = {
   qua_trinh_image_id: any;
   tinh_trang_rang_mieng: string;
 };
+

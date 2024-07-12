@@ -4,7 +4,7 @@ import { icons } from '@/constants';
 
 const FormField = ({ title, keyboardType, autoFocus, value, placeholder, handleChangeText, otherStyles, ...pros }: any) => {
     const [showPassword, setShowPassword] = useState(false);
-    
+
     return (
         <View className={`space-y-2 ${otherStyles} flex items-center`}>
             <View

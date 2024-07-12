@@ -9,7 +9,6 @@ import { router } from "expo-router";
 import { SERVER_URL } from "@/utils/uri";
 
 export default function VideoSection({ item, isLast, customImageStyle }: any) {
-    
     const onPress = () =>
         router.push({
             pathname: "(routes)/play-video",
@@ -22,7 +21,7 @@ export default function VideoSection({ item, isLast, customImageStyle }: any) {
             onPress={onPress}
         >
             <ImageBackground
-                source={item.video_thumbnail ? { uri: `${SERVER_URL}${item.video_thumbnail}` } : images.bannerDefault}
+                source={item && item.video_thumbnail ? { uri: `${SERVER_URL}${item.video_thumbnail}` } : images.bannerDefault}
                 className={`${customImageStyle ? customImageStyle : "w-80 h-48"} overflow-hidden rounded-[20px]`}
                 resizeMode="stretch"
             />

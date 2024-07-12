@@ -189,7 +189,7 @@ export const getBaiVietCategoryById = async (chinh_nha_chi_tiet_id: any) => {
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       const baiVietCategory = await axios.get(`${SERVER_URI}/bai-viet-category/${chinh_nha_chi_tiet_id}`);
-      
+
       if (!baiVietCategory) return null;
       return {
         code: 200,
@@ -203,6 +203,24 @@ export const getBaiVietCategoryById = async (chinh_nha_chi_tiet_id: any) => {
   }
 }
 
+export const getDichVuKhac = async (chinh_nha_chi_tiet_id: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const dichVuKhac = await axios.get(`${SERVER_URI}/dich-vu-khac/${chinh_nha_chi_tiet_id}`);
+      if (!dichVuKhac) return null;
+      return {
+        code: 200,
+        data: dichVuKhac.data,
+      };
+    } catch (error) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+}
 
 export const formatDate = (isoDateString: any) => {
   const date = new Date(isoDateString);
@@ -210,4 +228,27 @@ export const formatDate = (isoDateString: any) => {
   const month = String(date.getUTCMonth() + 1).padStart(2, '0');
   const day = String(date.getUTCDate()).padStart(2, '0');
   return `${day}/${month}/${year}`;
+}
+
+export const formatMoney = (amount: any) => {
+  amount = parseFloat(amount.toString().replace(/,/g, '')).toFixed(0);
+
+  if (amount === '') {
+    return '';
+  }
+
+  let formatted = '';
+  let count = 0;
+
+  for (let i = amount.length - 1; i >= 0; i--) {
+    formatted = amount[i] + formatted;
+    count++;
+
+    if (count % 3 === 0 && i > 0) {
+      formatted = '.' + formatted;
+    }
+  }
+
+  formatted += 'đ';
+  return formatted;
 }

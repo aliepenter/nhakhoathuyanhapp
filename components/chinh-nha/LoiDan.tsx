@@ -1,14 +1,18 @@
-import { View, Text, FlatList, ActivityIndicator } from 'react-native'
+import { View, Text, FlatList, ActivityIndicator, Image, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import VideoSection from '../common/VideoSection'
 import { getBaiVietCategoryById, getVideoCategoryById } from '@/lib/apiCall';
+import BaiVietSection from '../common/BaiVietSection';
 
 export default function LoiDan({ chinh_nha_chi_tiet_id }: any) {
     const [videoCategory, setVideoCategory] = useState<Array<any>>([]);
+    const [baiVietCategory, setBaiVietCategory] = useState<Array<any>>([]);
     const [hasVideo, setHasVideo] = useState<boolean>(true);
+    const [hasBaiViet, setHasBaiViet] = useState<boolean>(true);
 
     useEffect(() => {
         fetchVideoCategory();
+        fetchBaiVietCategory();
     }, [chinh_nha_chi_tiet_id]);
     const fetchVideoCategory = async () => {
         try {
@@ -21,29 +25,62 @@ export default function LoiDan({ chinh_nha_chi_tiet_id }: any) {
                             setHasVideo(false)
                         }
                     }
-                }, 1000);
+                }, 500);
+            } else {
+                setHasVideo(false)
             }
         } catch (error) {
             console.error("Error fetching data:", error);
             setHasVideo(false);
         }
     }
+
+    const fetchBaiVietCategory = async () => {
+        try {
+            if (chinh_nha_chi_tiet_id) {
+                const res = await getBaiVietCategoryById(chinh_nha_chi_tiet_id);
+                setTimeout(() => {
+                    if (res) {
+                        setBaiVietCategory(res.data);
+                        if (res.data.length === 0) {
+                            setHasBaiViet(false)
+                        }
+                    }
+                }, 500);
+            } else {
+                setHasBaiViet(false)
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            setHasBaiViet(false);
+        }
+    }
     return (
         <View className='mt-[13px] border-b-[2px] pb-[11px] border-b-[#E9E9E9] md:pb-[20px]'>
-            <Text className='text-[16px] md:text-[22px] font-pbold text-[#5EBA1B] mb-[4px] md:mb-[13px]'>4. Lời dặn sau điều trị</Text>
+            <Text className='text-[16px] md:text-[22px] font-pbold text-[#5EBA1B]'>4. Lời dặn sau điều trị</Text>
             {
-                chinh_nha_chi_tiet_id && hasVideo
-                    ?
+                (hasVideo || hasBaiViet) ? (
                     <View>
-                        <VideoLoiDanItem videoCategory={videoCategory} />
+                        {hasVideo && (
+                            <View className='mt-[17px] md:mt-[20px]'>
+                                <Text className='text-[#626262] text-[14px] font-psemibold'>Lời dặn bằng video</Text>
+                                <VideoLoiDanItem videoCategory={videoCategory} />
+                            </View>
+                        )}
+                        {hasBaiViet && (
+                            <View className='mt-[17px] md:mt-[20px]'>
+                                <Text className='text-[#626262] text-[14px] font-psemibold'>Lời dặn bằng bài viết</Text>
+                                <BaiVietLoiDanItem baiVietCategory={baiVietCategory} />
+                            </View>
+                        )}
                     </View>
-                    :
+                ) : (
                     <View className={`flex justify-center items-center`}>
-                        <Text className={`text-[14px] md:text-[20px] ml-5`}>Không có dữ liệu</Text>
+                        <Text className={`text-[14px] md:text-[20px] ml-5`}>Không có lời dặn</Text>
                     </View>
+                )
             }
-
-        </View>
+        </View >
     )
 }
 
@@ -52,18 +89,44 @@ const VideoLoiDanItem = ({ videoCategory }: any) => {
         {
             videoCategory && videoCategory.length != 0
                 ?
-                <FlatList
+                <ScrollView
+                    horizontal
                     className='mt-[10px]'
-                    data={videoCategory}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={({ item, index }) => (
-                        <VideoSection customImageStyle={`${videoCategory.length === 1 ? "w-96 h-56" : ''}`} item={item.video_id} isLast={index === videoCategory.length - 1} />
-                    )}
+                    showsHorizontalScrollIndicator={false}
+                >
+                    {
+                        videoCategory.map((item: any, index: number) => (
+                            <VideoSection key={index} customImageStyle={`${videoCategory.length === 1 ? "w-96 h-56" : ''}`} item={item.video_id} isLast={index === videoCategory.length - 1} />
+                        )
+                        )
+                    }
+                </ScrollView>
+                :
+                <View className={`${videoCategory.length === 1 ? "h-[234px]" : 'h-[202px]'} justify-center`}>
+                    <ActivityIndicator />
+                </View>
+        }
+    </>
+
+}
+const BaiVietLoiDanItem = ({ baiVietCategory }: any) => {
+    return <>
+        {
+            baiVietCategory && baiVietCategory.length != 0
+                ?
+                <ScrollView
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                />
+                    className='mt-[10px]'
+                >
+                    {
+                        baiVietCategory.map((item: any, index: number) => (
+                            <BaiVietSection key={index} customImageStyle={`${baiVietCategory.length === 1 ? "w-96 h-56" : ''}`} item={item.bai_viet_id} isLast={index} />
+                        ))
+                    }
+                </ScrollView>
                 :
-                <View className="h-48 justify-center">
+                <View className={`${baiVietCategory.length === 1 ? "h-[234px]" : 'h-[160px]'} justify-center`}>
                     <ActivityIndicator />
                 </View>
         }
