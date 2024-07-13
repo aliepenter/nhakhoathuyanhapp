@@ -222,33 +222,42 @@ export const getDichVuKhac = async (chinh_nha_chi_tiet_id: any) => {
   }
 }
 
-export const formatDate = (isoDateString: any) => {
-  const date = new Date(isoDateString);
-  const year = date.getUTCFullYear();
-  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
-  const day = String(date.getUTCDate()).padStart(2, '0');
-  return `${day}/${month}/${year}`;
+export const getCustomerLibrary = async (userId: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const customerLibrary = await axios.get(`${SERVER_URI}/customer-library/${userId}`);
+      if (!customerLibrary) return null;
+      return {
+        code: 200,
+        data: customerLibrary.data,
+      };
+    } catch (error) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
 }
 
-export const formatMoney = (amount: any) => {
-  amount = parseFloat(amount.toString().replace(/,/g, '')).toFixed(0);
+export const getAnhQuaTrinh = async (userId: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
 
-  if (amount === '') {
-    return '';
-  }
-
-  let formatted = '';
-  let count = 0;
-
-  for (let i = amount.length - 1; i >= 0; i--) {
-    formatted = amount[i] + formatted;
-    count++;
-
-    if (count % 3 === 0 && i > 0) {
-      formatted = '.' + formatted;
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const anhQuaTrinh = await axios.get(`${SERVER_URI}/qua-trinh-image/user/${userId}`);
+      if (!anhQuaTrinh) return null;
+      return {
+        code: 200,
+        data: anhQuaTrinh.data,
+      };
+    } catch (error) {
+      throw error;
     }
+  } else {
+    return null;
   }
-
-  formatted += 'đ';
-  return formatted;
 }

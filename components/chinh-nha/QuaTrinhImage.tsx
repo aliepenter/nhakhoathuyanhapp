@@ -4,7 +4,7 @@ import { SERVER_URL } from '@/utils/uri';
 import images from '@/constants/images';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { icons } from '@/constants';
-import { formatDate } from '@/lib/apiCall';
+import { formatDate } from '@/lib/commonFunctions';
 export default function QuaTrinhImage({ anh }: any) {
     const gallery = [
         {
@@ -50,47 +50,10 @@ export default function QuaTrinhImage({ anh }: any) {
     ]
     return (
         <View className='mt-[13px] border-b-[2px] pb-[11px] border-b-[#E9E9E9] md:pb-[20px]'>
-            <Text className='text-[16px] md:text-[22px] font-pbold text-[#5EBA1B] mb-[4px] md:mb-[13px]'>2. Ảnh quá trình{anh?.ngay_chup ? " (Chụp ngày " + formatDate(anh?.ngay_chup) + ")" : ""}</Text>
+            <Text className='text-[16px] md:text-[22px] font-pbold text-[#5EBA1B] mb-[4px] md:mb-[13px]'>2. Ảnh quá trình{anh?.ngay_chup ? " (Chụp ngày " + formatDate(anh?.ngay_chup, "minimize") + ")" : ""}</Text>
             {
                 anh
                     ?
-                    // <FlatList
-                    //     data={[
-                    //         { key: 'anh_1' },
-                    //         { key: 'anh_2' },
-                    //         { key: 'anh_3' },
-                    //         { key: 'anh_4' },
-                    //         { key: 'anh_5' },
-                    //         { key: 'anh_6' },
-                    //         { key: 'anh_7' },
-                    //         { key: 'anh_8' },
-                    //     ]}
-                    //     keyExtractor={(item, index) => index.toString()}
-                    //     renderItem={({ item, index }) => {
-                    //         switch (item.key) {
-                    //             case 'anh_1':
-                    //                 return <ImageItem video_thumbnail={anh.anh_1} gallery={gallery} index={index} />;
-                    //             case 'anh_2':
-                    //                 return <ImageItem video_thumbnail={anh.anh_2} gallery={gallery} index={index} />;
-                    //             case 'anh_3':
-                    //                 return <ImageItem video_thumbnail={anh.anh_3} gallery={gallery} index={index} />;
-                    //             case 'anh_4':
-                    //                 return <ImageItem video_thumbnail={anh.anh_4} gallery={gallery} index={index} />;
-                    //             case 'anh_5':
-                    //                 return <ImageItem video_thumbnail={anh.anh_5} gallery={gallery} index={index} />;
-                    //             case 'anh_6':
-                    //                 return <ImageItem video_thumbnail={anh.anh_6} gallery={gallery} index={index} />;
-                    //             case 'anh_7':
-                    //                 return <ImageItem video_thumbnail={anh.anh_7} gallery={gallery} index={index} />;
-                    //             case 'anh_8':
-                    //                 return <ImageItem video_thumbnail={anh.anh_8} gallery={gallery} index={index} />;
-                    //             default:
-                    //                 return null;
-                    //         }
-                    //     }}
-                    //     horizontal
-                    //     showsHorizontalScrollIndicator={false}
-                    // />
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                         <ImageItem video_thumbnail={anh.anh_1} gallery={gallery} index={0} />
                         <ImageItem video_thumbnail={anh.anh_2} gallery={gallery} index={1} />

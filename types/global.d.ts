@@ -48,3 +48,24 @@ type ChinhNhaChiTiet = {
   tinh_trang_rang_mieng: string;
 };
 
+type CustomerLibrary = {
+  id: number;
+  ngay_chup: string;
+  user_id: any;
+  image_path: string;
+};
+
+type AnhQuaTrinh = {
+  id: number,
+  ngay_chup: string,
+  ten_anh: string,
+  anh_1: string,
+  anh_2: string,
+  anh_3: string,
+  anh_4: string,
+  anh_5: string,
+  anh_6: string,
+  anh_7: string,
+  anh_8: string,
+  user_id: number
+}

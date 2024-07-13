@@ -34,8 +34,38 @@ import map from "../assets/icons/map.png";
 import phoneBlack from "../assets/icons/phone-black.png";
 import calenderDay from "../assets/icons/calendar-day.png";
 import calenderMonth from "../assets/icons/calendar-month.png";
+import calenderMonthBlack from "../assets/icons/calendar-month-black.png";
 import backArrow from "../assets/icons/back-arrow.png";
+import cameraGreen from "../assets/icons/camera-green.png";
+import truoc from "../assets/icons/truoc.png";
+import trai from "../assets/icons/trai.png";
+import phai from "../assets/icons/phai.png";
+import truocDuoiLen from "../assets/icons/truoc-duoi-len.png";
+import truocHa from "../assets/icons/truoc-ha.png";
+import matTren from "../assets/icons/mat-tren.png";
+import matDuoi from "../assets/icons/mat-duoi.png";
+import dot from "../assets/icons/dot.png";
+import dotActive from "../assets/icons/dot-active.png";
+import truocKhongCuoi from "../assets/icons/truoc-khong-cuoi.png";
+import truocCuoi from "../assets/icons/truoc-cuoi.png";
+import cheoCuoi from "../assets/icons/cheo-cuoi.png";
+import nghieng from "../assets/icons/nghieng.png";
 export default {
+  truocKhongCuoi,
+  truocCuoi,
+  cheoCuoi,
+  nghieng,
+  truoc,
+  dot,
+  dotActive,
+  trai,
+  phai,
+  truocDuoiLen,
+  truocHa,
+  matTren,
+  matDuoi,
+  cameraGreen,
+  calenderMonthBlack,
   chinhNha,
   galleryWhite,
   chinhNhaWhite,

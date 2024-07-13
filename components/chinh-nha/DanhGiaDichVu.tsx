@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Image, Platform, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Image, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import React from 'react';
 import FormField from '../common/FormField';
 import CustomButton from '../common/CustomButton';
@@ -13,16 +13,14 @@ export default function DanhGiaDichVu() {
             <Text className='text-[13px] text-[#757575] text-center mb-[13px]'>
                 Nếu bạn có bất kì vấn đề gì liên quan đến ca chỉnh nha này cũng như nếu bạn có những đánh giá tới phòng khám, đừng ngần ngại gửi tin nhắn cho chúng tôi. Đó sẽ là động lực quý giá giúp  Nha khoa Thùy Anh cải thiện và phát triển hơn.
             </Text>
-            <View className='bg-white rounded-2xl flex-row border-[1px] border-[#E2E2E2]'>
+            <View className='bg-white rounded-2xl flex-row border-[1px] border-[#E2E2E2]' style={styles.boxShadow}>
                 <TextInput
-                    className='flex-1 px-4 pt-2 pb-8 text-black font-semibold text-base'
-                    placeholder="Nhập tại đây..."
-                    placeholderTextColor="#7b7b8b"
+                    className={`${Platform.OS !== 'ios' ? 'pb-18' : 'pb-20'} flex-1 px-4 pt-2 text-black font-semibold text-base`}
                     multiline={true}
                     numberOfLines={6}
                 />
                 <TouchableOpacity className='absolute flex-row items-center bottom-2 right-2'>
-                    <Image className='w-[21px] h-[15px] mr-[6px]' source={icons.gallery}/>
+                    <Image className='w-[21px] h-[15px] mr-[6px]' source={icons.gallery} />
                     <Text className='text-[12px] text-[#A5A5A5]'>Ảnh đính kèm</Text>
                 </TouchableOpacity>
             </View>
@@ -38,3 +36,15 @@ export default function DanhGiaDichVu() {
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    boxShadow: {
+        shadowColor: "#000000",
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 11.7,
+    }
+});

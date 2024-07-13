@@ -1,10 +1,137 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, ActivityIndicator, Image, ScrollView, RefreshControl } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import Swiper from 'react-native-swiper'
+import { SERVER_URL } from '@/utils/uri'
+import { LinearGradient } from 'expo-linear-gradient'
+import { formatDate } from '@/lib/commonFunctions'
+import CustomButton from '@/components/common/CustomButton'
+import { icons } from '@/constants'
+import { getCustomerLibrary } from '@/lib/apiCall'
 
-export default function MyGalleryScreen() {
+export default function MyGalleryScreen({ user }: any) {
+  const [customerLibraryData, setCustomerLibraryData] = useState<Array<CustomerLibrary>>();
+  const [refreshing, setRefreshing] = useState(false);
+
+  const [loading, setLoading] = useState(true);
+  const onRefresh = async () => {
+    setRefreshing(true);
+    setLoading(true);
+    if (user) {
+      const userId = user.id;
+      await fetchCustomerLibrary(userId);
+    }
+    setRefreshing(false);
+  }
+  useEffect(() => {
+    if (user) {
+      const userId = user.id;
+      fetchCustomerLibrary(userId);
+    }
+  }, [user]);
+
+  const fetchCustomerLibrary = async (userId: number) => {
+    try {
+      const chinhNhaData = await getCustomerLibrary(userId);
+      setTimeout(() => {
+        if (chinhNhaData) {
+          setCustomerLibraryData(chinhNhaData.data);
+          setLoading(false)
+        } else {
+          setLoading(false)
+        }
+      }, 1000);
+
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setTimeout(() => {
+        setLoading(false)
+      }, 1000);
+    }
+  };
   return (
-    <View className='my-[15px]'>
-      <Text className='text-center text-[13px] text-[#757575]'>Đây là thư viện ảnh của bạn và không phải là hình ảnh dùng để chia sẻ với phòng khám. Bạn có thể chụp ảnh, lưu trữ tại đây và chia sẻ hành trình thay đổi nụ cười với bạn bè và người thân.</Text>
-    </View>
+    <ScrollView
+      className='mt-[15px]'
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+    >
+      <View>
+        <Text className='text-center text-[13px] text-[#757575]'>Đây là thư viện ảnh của bạn và không phải là hình ảnh dùng để chia sẻ với phòng khám. Bạn có thể chụp ảnh, lưu trữ tại đây và chia sẻ hành trình thay đổi nụ cười với bạn bè và người thân.</Text>
+      </View>
+      <View className="mt-[30px]">
+        <Text className='text-[12px]'><Image className='w-[16px] h-[16px]' source={icons.calenderMonthBlack} /> {customerLibraryData ? formatDate(customerLibraryData[customerLibraryData.length - 1]?.ngay_chup, 'minimize') + " - " + formatDate(customerLibraryData[0]?.ngay_chup, 'minimize') : null} (Chọn ngày chụp)</Text>
+      </View>
+      <View className="mt-[10px]">
+        {
+          !loading
+            ?
+            customerLibraryData && customerLibraryData.length != 0
+              ?
+              <Swiper
+                showsPagination={true}
+                loop={false}
+                autoplay={false}
+                paginationStyle={{ bottom: -16 }}
+                className="h-[400px]"
+                autoplayTimeout={5}
+                pagingEnabled={true}
+                loadMinimalLoader={<ActivityIndicator />}
+                loadMinimal={true}
+                loadMinimalSize={2}
+                dot={
+                  <Image
+                    source={icons.dot}
+                    className="w-[10px] h-[10px] mx-1"
+                    resizeMode='contain'
+                  />
+                }
+                activeDot={
+                  <Image
+                    source={icons.dotActive}
+                    className="w-[10px] h-[10px] mx-1"
+                    resizeMode='contain'
+                  />
+                }
+              >
+                {customerLibraryData.map((item: CustomerLibrary, index: number) => (
+
+                  <View key={index} className="flex-1 mx-[3px]">
+                    <Image
+                      source={{ uri: `${SERVER_URL}${item.image_path}` }}
+                      className="w-full h-full rounded-[10px]"
+                      resizeMode='cover'
+                    />
+                    <LinearGradient
+                      colors={["#1560A1", "#4FAA57"]}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 0 }}
+                      className={`absolute bottom-0 w-full rounded-b-[10px]`}
+                    >
+                      <Text className='py-[12px] text-center font-psemibold text-[14px] text-white'>Ảnh #{customerLibraryData.length - index} | {formatDate(item.ngay_chup, "full")}</Text>
+                    </LinearGradient>
+                  </View>
+                ))}
+              </Swiper>
+              :
+              <View className='justify-center items-center h-96'>
+                <Text className='text-center text-[13px] text-[#757575]'>Bạn chưa có bức ảnh nào, chụp ảnh lưu giữ lại khoảnh khắc thay đổi nụ cười</Text>
+              </View>
+            :
+            <View className="h-[400px] justify-center">
+              <ActivityIndicator />
+            </View>
+        }
+      </View>
+      <View>
+        <CustomButton
+          title="Chụp ảnh nụ cười hôm nay"
+          handlePress={() => { }}
+          containerStyles="mt-[45px]"
+          icon={icons.cameraGreen}
+          buttonStyle="rounded-full py-[5px] px-[19px] bg-[#EDEDED] border-[#D7D7D7] border-[1px]"
+          textStyles="font-pregular text-[12px] md:text-[16px]"
+          iconStyle="w-[20px] h-[20px] mr-[6px]"
+        />
+      </View>
+      <View className="h-[270px]"></View>
+    </ScrollView>
   )
 }

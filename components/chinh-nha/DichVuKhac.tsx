@@ -1,6 +1,7 @@
 import { View, Text, FlatList, ActivityIndicator, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { formatMoney, getDichVuKhac } from '@/lib/apiCall';
+import { getDichVuKhac } from '@/lib/apiCall';
+import { formatMoney } from '@/lib/commonFunctions';
 
 export default function DichVuKhac({ chinh_nha_chi_tiet_id }: any) {
     const [dichVuKhac, setDichVuKhac] = useState<Array<any>>([]);

@@ -36,14 +36,6 @@ const TabsLayout = () => {
             <Tabs tabBar={props => <TabBar {...props} />}>
                 <Tabs.Screen options={{ headerShown: false }} name="index" />
                 <Tabs.Screen options={{ headerShown: false }} name="image-gallery/index" />
-                {/* <Tabs.Screen
-                    name="image-gallery/index"
-                    options={{
-                        header: (props) => (
-                            <CustomHeader {...props} customStyle="bg-white" title="Thư viện nụ cười" />
-                        ),
-                    }}
-                /> */}
                 <Tabs.Screen options={{ headerShown: false }} name="notification/index" />
                 <Tabs.Screen options={{ headerShown: false }} name="profile/index" />
             </Tabs>

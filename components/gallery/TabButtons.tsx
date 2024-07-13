@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
 import { icons } from '@/constants';
 import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+
 export type TabButtonType = {
     title: string;
 }

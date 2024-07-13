@@ -1,5 +1,5 @@
-import { View, Text, FlatList, RefreshControl, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { View, Text, FlatList, RefreshControl, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, Keyboard } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
 import ThuThuat from '@/components/chinh-nha/ThuThuat';
 import CustomHeader from '@/components/common/CustomHeader';
 import { useRoute } from '@react-navigation/native';
@@ -22,8 +22,24 @@ export default function ChinhNhaDetailScreen() {
         await fetchData();
         setRefreshing(false);
     }
+    const scrollViewRef = useRef<ScrollView>(null);
+
+    const scrollToBottom = () => {
+      if (scrollViewRef.current) {
+        scrollViewRef.current.scrollToEnd({ animated: true });
+      }
+    };
     useEffect(() => {
         fetchData();
+        const keyboardDidShowListener = Keyboard.addListener(
+            Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+            () => {
+                scrollToBottom();
+            }
+        );
+        return () => {
+            keyboardDidShowListener.remove();
+        };
     }, [chinh_nha_chi_tiet_id]);
 
 
@@ -51,21 +67,23 @@ export default function ChinhNhaDetailScreen() {
             }, 500);
         }
     }
+
     return (
         <>
             <CustomHeader title={headerTitle} customStyle="bg-transparent" />
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
                 className='flex-1'
             >
                 {
                     !loading
                         ?
                         <ScrollView
-                            className='px-[11px] bg-white'
+                            ref={scrollViewRef}
+                            className={`px-[11px] bg-white`}
                             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                         >
+
                             <ThuThuat thuthuat={chinhNhaData?.thu_thuat_dieu_tri} />
                             <QuaTrinhImage anh={chinhNhaData?.qua_trinh_image_id} />
                             <TinhTrang tinhtrang={chinhNhaData?.tinh_trang_rang_mieng} />
@@ -73,12 +91,12 @@ export default function ChinhNhaDetailScreen() {
                             <DichVuKhac chinh_nha_chi_tiet_id={chinh_nha_chi_tiet_id} />
                             <DanhGiaDichVu />
                         </ScrollView>
-                        
                         :
                         <View className="bg-[#FAFAFA] h-full justify-center">
                             <ActivityIndicator />
                         </View>
                 }
+
             </KeyboardAvoidingView>
         </>
 

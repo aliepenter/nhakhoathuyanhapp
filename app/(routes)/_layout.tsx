@@ -63,7 +63,7 @@ const PageLayout = () => {
                         ),
                     }}
                 />
-                 <Stack.Screen
+                <Stack.Screen
                     name="loi-dan/index"
                     options={{
                         header: (props) => (
@@ -77,8 +77,9 @@ const PageLayout = () => {
                 <Stack.Screen options={{ headerShown: false }} name="verify-sign-up/index" />
                 <Stack.Screen options={{ headerShown: false }} name="play-video/index" />
                 <Stack.Screen options={{ headerShown: false }} name="chinh-nha/chinhNhaDetail" />
+                <Stack.Screen options={{ headerShown: false }} name="image-gallery/index" />
             </Stack>
-            <StatusBar barStyle={'light-content' } />
+            <StatusBar barStyle={'light-content'} />
         </>
     );
 };

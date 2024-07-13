@@ -1,8 +1,9 @@
 import { View, Text, RefreshControl, ActivityIndicator, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { formatDate, getChinhNha } from '@/lib/apiCall';
+import { getChinhNha } from '@/lib/apiCall';
 import useUser from '@/hooks/auth/useUser';
 import { router } from 'expo-router';
+import { formatDate } from '@/lib/commonFunctions';
 
 export default function ChinhNhaScreen() {
   const { user } = useUser();
@@ -44,8 +45,8 @@ export default function ChinhNhaScreen() {
     }
   };
 
-  const handlePress = (chinh_nha_chi_tiet_id: any, co_so: any, ngay_chinh_nha: any) => {
-    const title = `Chỉnh nha ngày ${formatDate(ngay_chinh_nha)}`;
+  const handlePress = (chinh_nha_chi_tiet_id: any,  ngay_chinh_nha: any) => {
+    const title = `Chỉnh nha ngày ${formatDate(ngay_chinh_nha, "minimize")}`;
     router.push({
       pathname: "(routes)/chinh-nha/chinhNhaDetail",
       params: {  headerTitle: title, chinh_nha_chi_tiet_id: chinh_nha_chi_tiet_id },
@@ -62,9 +63,9 @@ export default function ChinhNhaScreen() {
               key={index}
               className={`${index % 2 !== 0 ? "bg-[#F3F3F3]" : "bg-white"} px-[11px] py-[20px] md:py-[30px]`}
               activeOpacity={0.7}
-              onPress={() => handlePress(item.chinh_nha_chi_tiet_id, item.branch_id.ten_chi_nhanh, item.ngay_chinh_nha)}
+              onPress={() => handlePress(item.chinh_nha_chi_tiet_id, item.ngay_chinh_nha)}
             >
-              <Text className='text-[14px] md:text-[20px]'>{`Ngày ${formatDate(item.ngay_chinh_nha)}, ${item.branch_id.ten_chi_nhanh}`}</Text>
+              <Text className='text-[14px] md:text-[20px]'>{`Ngày ${formatDate(item.ngay_chinh_nha, "minimize")}, ${item.branch_id.ten_chi_nhanh}`}</Text>
             </TouchableOpacity>
           ))
           :

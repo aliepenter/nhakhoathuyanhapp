@@ -6,10 +6,11 @@ import {
 import React from "react";
 import { SERVER_URL } from "@/utils/uri";
 import Swiper from 'react-native-swiper';
+import { icons } from "@/constants";
 
 export default function BannerSlide({ banners, type }: any) {
     return (
-        < View className="mt-[10px] pl-[8px] pr-[8px] mb-[30px]" >
+        <View className="mt-[10px] pl-[8px] pr-[8px] mb-[30px]" >
             {
                 banners && banners.length != 0
                     ?
@@ -24,6 +25,20 @@ export default function BannerSlide({ banners, type }: any) {
                         loadMinimalLoader={<ActivityIndicator />}
                         loadMinimal={true}
                         loadMinimalSize={2}
+                        dot={
+                            <Image
+                              source={icons.dot}
+                              className="w-[10px] h-[10px] mx-1"
+                              resizeMode='contain'
+                            />
+                          }
+                          activeDot={
+                            <Image
+                              source={icons.dotActive}
+                              className="w-[10px] h-[10px] mx-1"
+                              resizeMode='contain'
+                            />
+                          }
                     >
                         {banners.map((item: Banner, index: number) => (
                             item.status === type
@@ -43,6 +58,6 @@ export default function BannerSlide({ banners, type }: any) {
                         <ActivityIndicator />
                     </View>
             }
-        </View >
+        </View>
     )
 }
