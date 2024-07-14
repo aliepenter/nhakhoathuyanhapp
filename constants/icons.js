@@ -50,7 +50,35 @@ import truocKhongCuoi from "../assets/icons/truoc-khong-cuoi.png";
 import truocCuoi from "../assets/icons/truoc-cuoi.png";
 import cheoCuoi from "../assets/icons/cheo-cuoi.png";
 import nghieng from "../assets/icons/nghieng.png";
+import caiDatThongBao from "../assets/icons/cai-dat-thong-bao.png";
+import doiMatKhau from "../assets/icons/doi-mat-khau.png";
+import dieuKhoan from "../assets/icons/dieu-khoan.png";
+import cauHoiThuongGap from "../assets/icons/cau-hoi-thuong-gap.png";
+import veChungToi from "../assets/icons/ve-chung-toi.png";
+import lienHe from "../assets/icons/lien-he.png";
+import next from "../assets/icons/next.png";
+import facebook from "../assets/icons/facebook.png";
+import zalo from "../assets/icons/zalo.png";
+import youtube from "../assets/icons/youtube.png";
+import website from "../assets/icons/website.png";
+import tiktok from "../assets/icons/tiktok.png";
+import mail from "../assets/icons/mail.png";
+import dangXuat from "../assets/icons/dang-xuat.png";
 export default {
+  dangXuat,
+  facebook,
+  zalo,
+  youtube,
+  website,
+  tiktok,
+  mail,
+  next,
+  caiDatThongBao,
+  doiMatKhau,
+  dieuKhoan,
+  cauHoiThuongGap,
+  veChungToi,
+  lienHe,
   truocKhongCuoi,
   truocCuoi,
   cheoCuoi,

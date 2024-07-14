@@ -80,10 +80,10 @@ const HomeScreen = () => {
       console.error("Error fetching data:", error);
     }
   };
-  
+
   return (
     <View className="bg-white">
-      <HeaderSection user={user} />
+      <HeaderSection user={user} showNotification={true} />
       <FlatList
         data={[{ key: 'banner' }, { key: 'functions' }, { key: 'timetracking' }, { key: 'trending' }, { key: 'news' }, { key: 'last' }]}
         renderItem={({ item }) => {

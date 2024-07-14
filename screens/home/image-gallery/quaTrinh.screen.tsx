@@ -44,11 +44,12 @@ export default function QuaTrinhScreen({ user }: any) {
   };
 
   const handlePress = (item: any) => {
-    const title = `${item.ten_anh} ngày ${formatDate(item.ngay_chup, "minimize")}`;
+    const title = `Ngày ${formatDate(item.ngay_chup, "minimize")}`;
     router.push({
       pathname: "(routes)/image-gallery",
       params: {
         headerTitle: title,
+        title: item.ten_anh,
         anh_1: item.anh_1,
         anh_2: item.anh_2,
         anh_3: item.anh_3,

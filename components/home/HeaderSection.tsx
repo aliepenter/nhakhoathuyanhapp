@@ -9,7 +9,7 @@ import { icons, images } from "@/constants";
 
 import { SERVER_URL } from "@/utils/uri";
 
-export default function HeaderSection({ user }: any) {
+export default function HeaderSection({ user, showNotification }: any) {
     return (
         <View className="h-[150px]">
             <ImageBackground source={images.bgHeaderHome} resizeMode='stretch' className='flex-1'>
@@ -24,10 +24,17 @@ export default function HeaderSection({ user }: any) {
                         <Text className="text-white text-[14px] md:text-[18px] font-semibold">{user?.dia_chi}</Text>
                     </View>
                 </View>
-                <View className="absolute top-[30%] right-6 md:top-[35%] md:right-12">
-                    <Image source={icons.notificationHeader} resizeMode='contain' className='w-[20px] h-[21px] md:w-[30px] md:h-[31px]' />
-                    <Image source={icons.notificationHighlight} resizeMode='contain' className='w-[14px] h-[14px] absolute left-2 bottom-3 md:left-4 md:bottom-5' />
-                </View>
+                {
+                    showNotification
+                        ?
+                        <View className="absolute top-[30%] right-6 md:top-[35%] md:right-12">
+                            <Image source={icons.notificationHeader} resizeMode='contain' className='w-[20px] h-[21px] md:w-[30px] md:h-[31px]' />
+                            <Image source={icons.notificationHighlight} resizeMode='contain' className='w-[14px] h-[14px] absolute left-2 bottom-3 md:left-4 md:bottom-5' />
+                        </View>
+                        :
+                        null
+                }
+
             </ImageBackground>
         </View>
     )
