@@ -30,13 +30,25 @@ export default function QuaTrinhDetailScreen() {
     const url = `${SERVER_URL}${imageUrls[currentImageIndex]}`;
     const [modalVisible, setModalVisible] = useState(false);
 
-    const [imageHeight, setImageHeight] = useState(0);
+    const [imageHeight, setImageHeight] = useState(187);
+    const [imageWidth, setImageWidth] = useState(500);
     const [loading, setLoading] = useState(true);
 
     const onImageLoad = (event: any) => {
         const { height, width } = event.nativeEvent.source;
         const ratio = (screenWidth - 40) / width
-        setImageHeight((height * ratio));
+        const detaultRatio = width / height;
+        let h = height * ratio;
+        let w = width * ratio;
+        
+        if (screenWidth > 768) {
+            if (width < height) {
+                h = h / 2;
+                w = h * detaultRatio;
+            }
+        }
+        setImageHeight(h);
+        setImageWidth(w)
         setTimeout(() => {
             setLoading(false);
         }, 200);
@@ -44,7 +56,9 @@ export default function QuaTrinhDetailScreen() {
 
     const changeImage = (index: number) => {
         setLoading(true);
-        setCurrentImageIndex(index);
+        setTimeout(() => {
+            setCurrentImageIndex(index);
+        }, 500);
     };
     const gallery = [
         {
@@ -108,19 +122,20 @@ export default function QuaTrinhDetailScreen() {
             <CustomHeader title={headerTitle} customStyle="bg-transparent" />
             <View className='mt-[20px] px-[20px]'>
                 <Text className='font-pbold text-[16px] text-center text-[#525252]'>{title}</Text>
+                <View className='flex-1'>
+                    <TouchableOpacity className={`${Platform.OS === 'ios' ? !loading ? '' : 'opacity-0' : !loading ? '' : 'hidden'} md:items-center`} activeOpacity={0.9} onPress={() => setModalVisible(true)}>
+                        <Image
+                            source={{ uri: url }}
+                            style={[{ height: imageHeight, width: imageWidth }]}
+                            className={`rounded-[10px] mt-10 bg-[#F1F1F1]`}
+                            resizeMode='contain'
+                            onLoad={onImageLoad}
 
-                <TouchableOpacity className={`${!loading ? '' : 'hidden'}`} activeOpacity={0.9} onPress={() => setModalVisible(true)}>
-                    <Image
-                        source={{ uri: url }}
-                        style={[{ height: imageHeight }]}
-                        className={`rounded-[10px] h-[187px] mt-10 bg-[#F1F1F1]`}
-                        resizeMode='contain'
-                        onLoad={onImageLoad}
-
-                    />
-                </TouchableOpacity>
-                <View className={`${!loading ? 'hidden' : ''} h-96 justify-center`}>
-                    <ActivityIndicator />
+                        />
+                    </TouchableOpacity>
+                    <View className={`${!loading ? 'hidden' : ''} absolute left-[50%] h-96 justify-center`}>
+                        <ActivityIndicator />
+                    </View>
                 </View>
 
                 <Modal

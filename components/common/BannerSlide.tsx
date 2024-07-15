@@ -22,9 +22,6 @@ export default function BannerSlide({ banners, type }: any) {
                         className="h-[170px] md:h-[400px]"
                         autoplayTimeout={5}
                         pagingEnabled={true}
-                        loadMinimalLoader={<ActivityIndicator />}
-                        loadMinimal={true}
-                        loadMinimalSize={2}
                         dot={
                             <Image
                               source={icons.dot}

@@ -54,12 +54,12 @@ export default function MyGalleryScreen({ user }: any) {
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
     >
       <View>
-        <Text className='text-center text-[13px] text-[#757575]'>Đây là thư viện ảnh của bạn và không phải là hình ảnh dùng để chia sẻ với phòng khám. Bạn có thể chụp ảnh, lưu trữ tại đây và chia sẻ hành trình thay đổi nụ cười với bạn bè và người thân.</Text>
+        <Text className='text-center text-[13px] font-pregular text-[#757575]'>Đây là thư viện ảnh của bạn và không phải là hình ảnh dùng để chia sẻ với phòng khám. Bạn có thể chụp ảnh, lưu trữ tại đây và chia sẻ hành trình thay đổi nụ cười với bạn bè và người thân.</Text>
       </View>
       <View className="mt-[30px]">
-        <Text className='text-[12px]'><Image className='w-[16px] h-[16px]' source={icons.calenderMonthBlack} /> {customerLibraryData ? formatDate(customerLibraryData[customerLibraryData.length - 1]?.ngay_chup, 'minimize') + " - " + formatDate(customerLibraryData[0]?.ngay_chup, 'minimize') : null} (Chọn ngày chụp)</Text>
+        <Text className='text-[12px] font-pregular'><Image className='w-[16px] h-[16px]' source={icons.calenderMonthBlack} /> {customerLibraryData ? formatDate(customerLibraryData[customerLibraryData.length - 1]?.ngay_chup, 'minimize') + " - " + formatDate(customerLibraryData[0]?.ngay_chup, 'minimize') : null} (Chọn ngày chụp)</Text>
       </View>
-      <View className="mt-[10px]">
+      <View className="mt-[10px] md:mx-16 md:mt-[20px]">
         {
           !loading
             ?
@@ -70,12 +70,9 @@ export default function MyGalleryScreen({ user }: any) {
                 loop={false}
                 autoplay={false}
                 paginationStyle={{ bottom: -16 }}
-                className="h-[400px]"
+                className="h-[400px] md:h-[720px]"
                 autoplayTimeout={5}
                 pagingEnabled={true}
-                loadMinimalLoader={<ActivityIndicator />}
-                loadMinimal={true}
-                loadMinimalSize={2}
                 dot={
                   <Image
                     source={icons.dot}
@@ -115,7 +112,7 @@ export default function MyGalleryScreen({ user }: any) {
                 <Text className='text-center text-[13px] text-[#757575]'>Bạn chưa có bức ảnh nào, chụp ảnh lưu giữ lại khoảnh khắc thay đổi nụ cười</Text>
               </View>
             :
-            <View className="h-[400px] justify-center">
+            <View className="h-[400px] md:h-[720px] justify-center">
               <ActivityIndicator />
             </View>
         }
