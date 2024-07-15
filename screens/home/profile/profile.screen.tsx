@@ -1,10 +1,11 @@
-import { View, Text, Alert, Image, ScrollView } from 'react-native'
+import { View, Text, Alert, Image, ScrollView, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { logout } from '@/lib/apiCall';
 import useUser from '@/hooks/auth/useUser';
 import HeaderSection from '@/components/home/HeaderSection';
 import { icons } from '@/constants';
 import CustomButton from '@/components/common/CustomButton';
+import { router } from 'expo-router';
 
 export default function ProfileScreen() {
     const { user } = useUser();
@@ -16,6 +17,9 @@ export default function ProfileScreen() {
             Alert.alert("Đăng xuất thất bại", "Xin vui lòng thử lại sau");
         }
     };
+    const handleRouter = (path: any) => {
+        router.push({ pathname: path });
+    }
     return (
         <View className='bg-[#F2F1F6] h-full'>
             <HeaderSection user={user} />
@@ -23,7 +27,7 @@ export default function ProfileScreen() {
                 <View>
                     <Text className='text-[16px] font-psemibold'>Cài đặt</Text>
                     <View className='bg-white rounded-[10px] py-3  mt-[10px] mb-[16px]'>
-                        <View className='flex-row flex-nowrap'>
+                        <TouchableOpacity onPress={() => handleRouter("(routes)/profile/notificationSettings")} className='flex-row flex-nowrap'>
                             <View className='w-[15%] justify-center items-center'>
                                 <Image source={icons.caiDatThongBao} resizeMode='cover' className='w-[18px] h-[18px]' />
                             </View>
@@ -35,8 +39,8 @@ export default function ProfileScreen() {
                             <View className='w-[10%] justify-center items-center'>
                                 <Image source={icons.next} resizeMode='cover' className='w-[18px] h-[18px]' />
                             </View>
-                        </View>
-                        <View className='flex-row flex-nowrap mt-3'>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => handleRouter("(routes)/profile/changePassword")} className='flex-row flex-nowrap mt-3'>
                             <View className='w-[15%] justify-center items-center'>
                                 <Image source={icons.doiMatKhau} resizeMode='cover' className='w-[15px] h-[15px]' />
                             </View>
@@ -48,13 +52,13 @@ export default function ProfileScreen() {
                             <View className='w-[10%] justify-center items-center'>
                                 <Image source={icons.next} resizeMode='cover' className='w-[18px] h-[18px]' />
                             </View>
-                        </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <View>
                     <Text className='text-[16px] font-psemibold'>Thông tin</Text>
                     <View className='bg-white rounded-[10px] py-3  mt-[10px] mb-[16px]'>
-                        <View className='flex-row flex-nowrap'>
+                        <TouchableOpacity onPress={() => handleRouter("(routes)/profile/privacy")} className='flex-row flex-nowrap'>
                             <View className='w-[15%] justify-center items-center'>
                                 <Image source={icons.dieuKhoan} resizeMode='cover' className='w-[14px] h-[17px]' />
                             </View>
@@ -66,8 +70,8 @@ export default function ProfileScreen() {
                             <View className='w-[10%] justify-center items-center'>
                                 <Image source={icons.next} resizeMode='cover' className='w-[18px] h-[18px]' />
                             </View>
-                        </View>
-                        <View className='flex-row flex-nowrap mt-3'>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => handleRouter("(routes)/profile/faq")} className='flex-row flex-nowrap mt-3'>
                             <View className='w-[15%] justify-center items-center'>
                                 <Image source={icons.cauHoiThuongGap} resizeMode='cover' className='w-[14px] h-[14px]' />
                             </View>
@@ -79,8 +83,8 @@ export default function ProfileScreen() {
                             <View className='w-[10%] justify-center items-center'>
                                 <Image source={icons.next} resizeMode='cover' className='w-[18px] h-[18px]' />
                             </View>
-                        </View>
-                        <View className='flex-row flex-nowrap mt-3'>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => handleRouter("(routes)/profile/aboutUs")} className='flex-row flex-nowrap mt-3'>
                             <View className='w-[15%] justify-center items-center'>
                                 <Image source={icons.veChungToi} resizeMode='cover' className='w-[18px] h-[18px]' />
                             </View>
@@ -92,8 +96,8 @@ export default function ProfileScreen() {
                             <View className='w-[10%] justify-center items-center'>
                                 <Image source={icons.next} resizeMode='cover' className='w-[18px] h-[18px]' />
                             </View>
-                        </View>
-                        <View className='flex-row flex-nowrap mt-3'>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => handleRouter("(routes)/branches")} className='flex-row flex-nowrap mt-3'>
                             <View className='w-[15%] justify-center items-center'>
                                 <Image source={icons.lienHe} resizeMode='cover' className='w-[22px] h-[22px]' />
                             </View>
@@ -105,7 +109,7 @@ export default function ProfileScreen() {
                             <View className='w-[10%] justify-center items-center'>
                                 <Image source={icons.next} resizeMode='cover' className='w-[18px] h-[18px]' />
                             </View>
-                        </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <View>
@@ -151,7 +155,7 @@ export default function ProfileScreen() {
                 </View>
                 <CustomButton
                     title="ĐĂNG XUẤT"
-                    handlePress={() => logout}
+                    handlePress={() => handleLogout()}
                     containerStyles="mt-[30px]"
                     icon={icons.dangXuat}
                     buttonStyle="rounded-full py-[10px] px-[50px] bg-[#E73E3F] border-[#D7D7D7] border-[1px]"

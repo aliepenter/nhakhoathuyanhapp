@@ -64,7 +64,9 @@ import website from "../assets/icons/website.png";
 import tiktok from "../assets/icons/tiktok.png";
 import mail from "../assets/icons/mail.png";
 import dangXuat from "../assets/icons/dang-xuat.png";
+import notificationSettings from "../assets/icons/notification-settings.png";
 export default {
+  notificationSettings,
   dangXuat,
   facebook,
   zalo,

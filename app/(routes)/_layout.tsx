@@ -71,6 +71,46 @@ const PageLayout = () => {
                         ),
                     }}
                 />
+                <Stack.Screen
+                    name="profile/privacy"
+                    options={{
+                        header: (props) => (
+                            <CustomHeader {...props} customStyle="bg-white" title="Điều kiện và điều khoản" />
+                        ),
+                    }}
+                />
+                <Stack.Screen
+                    name="profile/faq"
+                    options={{
+                        header: (props) => (
+                            <CustomHeader {...props} customStyle="bg-white" title="Câu hỏi thường gặp" />
+                        ),
+                    }}
+                />
+                <Stack.Screen
+                    name="profile/aboutUs"
+                    options={{
+                        header: (props) => (
+                            <CustomHeader {...props} customStyle="bg-white" title="Về chúng tôi" />
+                        ),
+                    }}
+                />
+                <Stack.Screen
+                    name="profile/changePassword"
+                    options={{
+                        header: (props) => (
+                            <CustomHeader {...props} customStyle="bg-white" title="Thay đổi mật khẩu" />
+                        ),
+                    }}
+                />
+                <Stack.Screen
+                    name="profile/notificationSettings"
+                    options={{
+                        header: (props) => (
+                            <CustomHeader {...props} customStyle="bg-white" title="Cài đặt thông báo" />
+                        ),
+                    }}
+                />
                 <Stack.Screen options={{ headerShown: false }} name="login/index" />
                 <Stack.Screen options={{ headerShown: false }} name="verify-password/index" />
                 <Stack.Screen options={{ headerShown: false }} name="verify-password/otpLogin" />
