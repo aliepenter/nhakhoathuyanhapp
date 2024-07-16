@@ -40,7 +40,7 @@ export default function QuaTrinhDetailScreen() {
         const detaultRatio = width / height;
         let h = height * ratio;
         let w = width * ratio;
-        
+
         if (screenWidth > 768) {
             if (width < height) {
                 h = h / 2;
@@ -122,20 +122,18 @@ export default function QuaTrinhDetailScreen() {
             <CustomHeader title={headerTitle} customStyle="bg-transparent" />
             <View className='mt-[20px] px-[20px]'>
                 <Text className='font-pbold text-[16px] text-center text-[#525252]'>{title}</Text>
-                <View className='flex-1'>
-                    <TouchableOpacity className={`${Platform.OS === 'ios' ? !loading ? '' : 'opacity-0' : !loading ? '' : 'hidden'} md:items-center`} activeOpacity={0.9} onPress={() => setModalVisible(true)}>
-                        <Image
-                            source={{ uri: url }}
-                            style={[{ height: imageHeight, width: imageWidth }]}
-                            className={`rounded-[10px] mt-10 bg-[#F1F1F1]`}
-                            resizeMode='contain'
-                            onLoad={onImageLoad}
+                <TouchableOpacity className={`${Platform.OS === 'ios' ? !loading ? '' : 'opacity-0' : !loading ? '' : 'hidden'} md:items-center`} activeOpacity={0.9} onPress={() => setModalVisible(true)}>
+                    <Image
+                        source={{ uri: url }}
+                        style={[{ height: imageHeight, width: imageWidth }]}
+                        className={`rounded-[10px] mt-10 bg-[#F1F1F1]`}
+                        resizeMode='contain'
+                        onLoad={onImageLoad}
 
-                        />
-                    </TouchableOpacity>
-                    <View className={`${!loading ? 'hidden' : ''} absolute left-[50%] h-96 justify-center`}>
-                        <ActivityIndicator />
-                    </View>
+                    />
+                </TouchableOpacity>
+                <View className={`${!loading ? 'hidden' : ''} absolute left-[50%] h-96 justify-center`}>
+                    <ActivityIndicator />
                 </View>
 
                 <Modal
@@ -158,7 +156,6 @@ export default function QuaTrinhDetailScreen() {
                         </TouchableOpacity>
                     </View>
                 </Modal>
-
             </View>
             <View className={`${Platform.OS === 'ios' ? 'mt-[20px]' : 'mt-[10px]'} flex-wrap flex-row justify-center absolute bottom-5 px-[20px]`}>
                 <TouchableOpacity className="w-[14.2857142457%] mt-2 flex-row justify-center" onPress={() => changeImage(0)}>

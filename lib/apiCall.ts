@@ -81,6 +81,24 @@ export const getBranches = async () => {
   }
 };
 
+export const getFaq = async () => {
+  try {
+    const response = await axios.get(`${SERVER_URI}/faq`);
+    return {
+      code: 200,
+      data: response.data,
+    };
+  } catch (error: any) {
+    if (error.response) {
+      return {
+        code: error.response.status,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
+
 export const trackPhoneNumber = async (username: string) => {
   try {
     const result = await axios.get(`${SERVER_URI}/users/${username}`);

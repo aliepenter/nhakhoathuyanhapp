@@ -155,7 +155,7 @@ export default function ProfileScreen() {
                 </View>
                 <CustomButton
                     title="ĐĂNG XUẤT"
-                    handlePress={() => handleLogout()}
+                    handlePress={() => handleLogout() }
                     containerStyles="mt-[30px]"
                     icon={icons.dangXuat}
                     buttonStyle="rounded-full py-[10px] px-[50px] bg-[#E73E3F] border-[#D7D7D7] border-[1px]"
