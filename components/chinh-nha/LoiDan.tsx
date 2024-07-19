@@ -3,8 +3,9 @@ import React, { useEffect, useState } from 'react'
 import VideoSection from '../common/VideoSection'
 import { getBaiVietCategoryById, getVideoCategoryById } from '@/lib/apiCall';
 import BaiVietSection from '../common/BaiVietSection';
+import { router } from 'expo-router';
 
-export default function LoiDan({ chinh_nha_chi_tiet_id }: any) {
+export default function LoiDan({ chinh_nha_id }: any) {
     const [videoCategory, setVideoCategory] = useState<Array<any>>([]);
     const [baiVietCategory, setBaiVietCategory] = useState<Array<any>>([]);
     const [hasVideo, setHasVideo] = useState<boolean>(true);
@@ -13,11 +14,11 @@ export default function LoiDan({ chinh_nha_chi_tiet_id }: any) {
     useEffect(() => {
         fetchVideoCategory();
         fetchBaiVietCategory();
-    }, [chinh_nha_chi_tiet_id]);
+    }, [chinh_nha_id]);
     const fetchVideoCategory = async () => {
         try {
-            if (chinh_nha_chi_tiet_id) {
-                const res = await getVideoCategoryById(chinh_nha_chi_tiet_id);
+            if (chinh_nha_id) {
+                const res = await getVideoCategoryById(chinh_nha_id);
                 setTimeout(() => {
                     if (res) {
                         setVideoCategory(res.data);
@@ -37,8 +38,8 @@ export default function LoiDan({ chinh_nha_chi_tiet_id }: any) {
 
     const fetchBaiVietCategory = async () => {
         try {
-            if (chinh_nha_chi_tiet_id) {
-                const res = await getBaiVietCategoryById(chinh_nha_chi_tiet_id);
+            if (chinh_nha_id) {
+                const res = await getBaiVietCategoryById(chinh_nha_id);
                 setTimeout(() => {
                     if (res) {
                         setBaiVietCategory(res.data);
@@ -110,6 +111,14 @@ const VideoLoiDanItem = ({ videoCategory }: any) => {
 
 }
 const BaiVietLoiDanItem = ({ baiVietCategory }: any) => {
+    const onPress = (item: any) => {
+        if (item) {
+            router.push({
+                pathname: "(routes)/tin-tuc/tinTucDetail",
+                params: { postThumb: item.banner_id.banner_path, postTime: item.date, postTitle: item.title, postContent: item.content, postUrl: item.website_url },
+            });
+        }
+    }
     return <>
         {
             baiVietCategory && baiVietCategory.length != 0
@@ -121,7 +130,7 @@ const BaiVietLoiDanItem = ({ baiVietCategory }: any) => {
                 >
                     {
                         baiVietCategory.map((item: any, index: number) => (
-                            <BaiVietSection key={index} customImageStyle={`${baiVietCategory.length === 1 ? "w-96 h-56" : ''}`} item={item.bai_viet_id} isLast={index} />
+                            <BaiVietSection key={index} onPress={()=>onPress(item.bai_viet_id)} customImageStyle={`${baiVietCategory.length === 1 ? "w-96 h-56" : ''}`} item={item.bai_viet_id} isLast={index} />
                         ))
                     }
                 </ScrollView>

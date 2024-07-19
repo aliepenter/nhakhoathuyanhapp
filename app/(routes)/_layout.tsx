@@ -111,6 +111,14 @@ const PageLayout = () => {
                         ),
                     }}
                 />
+                 <Stack.Screen
+                    name="tin-tuc/tinTucDetail"
+                    options={{
+                        header: (props) => (
+                            <CustomHeader {...props} customStyle="bg-white" title="Tin tức" />
+                        ),
+                    }}
+                />
                 <Stack.Screen options={{ headerShown: false }} name="login/index" />
                 <Stack.Screen options={{ headerShown: false }} name="verify-password/index" />
                 <Stack.Screen options={{ headerShown: false }} name="verify-password/otpLogin" />

@@ -39,6 +39,7 @@ type Post = {
   banner_id: any;
   date: string;
   content: string;
+  website_url: string;
 };
 
 type ChinhNhaChiTiet = {
@@ -69,3 +70,8 @@ type AnhQuaTrinh = {
   anh_8: string,
   user_id: number
 }
+type HopDong = {
+  id: number;
+  ten_hop_dong: string;
+  hop_dong_chi_tiet_id: any;
+};

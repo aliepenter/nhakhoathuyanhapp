@@ -1,7 +1,8 @@
 import { View, Text, ScrollView, RefreshControl, TouchableOpacity, ActivityIndicator, Image, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { getPosts } from '@/lib/apiCall';
+import { getOnlyNews } from '@/lib/apiCall';
 import { SERVER_URL } from '@/utils/uri';
+import { router } from 'expo-router';
 
 export default function TinTucScreen() {
     const [post, setPost] = useState([]);
@@ -19,7 +20,7 @@ export default function TinTucScreen() {
     }, []);
     const fetchNews = async () => {
         try {
-            const postData = await getPosts();
+            const postData = await getOnlyNews();
 
             setTimeout(() => {
                 if (postData) {
@@ -55,8 +56,15 @@ export default function TinTucScreen() {
         />
     )
 }
-
 const PostItem = ({ loading, post }: any) => {
+    const onPress = (item: any) => {
+        if (item) {
+            router.push({
+                pathname: "(routes)/tin-tuc/tinTucDetail",
+                params: { postThumb: item.banner_id.banner_path, postTime: item.date, postTitle: item.title, postContent: item.content, postUrl: item.website_url },
+            });
+        }
+    }
     return (
         !loading
             ?
@@ -69,7 +77,7 @@ const PostItem = ({ loading, post }: any) => {
                                 key={index}
                                 className={`px-[11px] mb-[15px] w-[50%] md:w-[33.333%]`}
                                 activeOpacity={0.7}
-                                onPress={() => { }}
+                                onPress={() => onPress(item)}
                             >
                                 <Image
                                     source={{ uri: `${SERVER_URL}${item.banner_id.banner_path}` }}

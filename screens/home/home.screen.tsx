@@ -4,7 +4,7 @@ import {
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { getVideos, getBanners, getPosts } from "@/lib/apiCall";
+import { getVideos, getBanners, getOnlyNews } from "@/lib/apiCall";
 import useUser from "@/hooks/auth/useUser";
 import FunctionItemsList from "@/components/home/FunctionItem";
 import RenderVideo from "@/components/home/RenderVideo";
@@ -43,7 +43,7 @@ const HomeScreen = () => {
 
   const fetchNews = async () => {
     try {
-      const postData = await getPosts();
+      const postData = await getOnlyNews();
       setTimeout(() => {
         if (postData) {
           setPost(postData.data);

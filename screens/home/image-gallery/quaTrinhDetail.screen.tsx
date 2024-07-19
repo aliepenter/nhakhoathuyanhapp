@@ -27,11 +27,11 @@ export default function QuaTrinhDetailScreen() {
     const imageUrls = [anh_1, anh_9, anh_10, anh_2, anh_3, anh_4, anh_5, anh_6, anh_7, anh_11, anh_8];
 
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const url = `${SERVER_URL}${imageUrls[currentImageIndex]}`;
     const [modalVisible, setModalVisible] = useState(false);
 
     const [imageHeight, setImageHeight] = useState(187);
     const [imageWidth, setImageWidth] = useState(500);
+    const [isIn, setIsIn] = useState(true);
     const [loading, setLoading] = useState(true);
 
     const onImageLoad = (event: any) => {
@@ -48,7 +48,12 @@ export default function QuaTrinhDetailScreen() {
             }
         }
         setImageHeight(h);
-        setImageWidth(w)
+        setImageWidth(w);
+        if (height > width) {
+            setIsIn(false);
+        } else {
+            setIsIn(true);
+        }
         setTimeout(() => {
             setLoading(false);
         }, 200);
@@ -60,76 +65,35 @@ export default function QuaTrinhDetailScreen() {
             setCurrentImageIndex(index);
         }, 500);
     };
-    const gallery = [
-        {
-            url: `${SERVER_URL}${anh_1}`,
-            props: {
-            }
-        },
-        {
-            url: `${SERVER_URL}${anh_9}`,
-            props: {
-            }
-        },
-        {
-            url: `${SERVER_URL}${anh_10}`,
-            props: {
-            }
-        },
-        {
-            url: `${SERVER_URL}${anh_2}`,
-            props: {
-            }
-        },
-        {
-            url: `${SERVER_URL}${anh_3}`,
-            props: {
-            }
-        },
-        {
-            url: `${SERVER_URL}${anh_4}`,
-            props: {
-            }
-        },
-        {
-            url: `${SERVER_URL}${anh_5}`,
-            props: {
-            }
-        },
-        {
-            url: `${SERVER_URL}${anh_6}`,
-            props: {
-            }
-        },
-        {
-            url: `${SERVER_URL}${anh_7}`,
-            props: {
-            }
-        },
-        {
-            url: `${SERVER_URL}${anh_11}`,
-            props: {
-            }
-        },
-        {
-            url: `${SERVER_URL}${anh_8}`,
-            props: {
-            }
-        }
-    ]
+    const iconList = [
+        icons.truoc, icons.truocHa, icons.truocDuoiLen,
+        icons.trai, icons.phai, icons.matTren,
+        icons.matDuoi, icons.truocKhongCuoi, icons.truocCuoi,
+        icons.cheoCuoi, icons.nghieng
+    ];
+
+    const activeIconList = [
+        icons.truocActive, icons.truocHaActive, icons.truocDuoiLenActive,
+        icons.traiActive, icons.phaiActive, icons.matTrenActive,
+        icons.matDuoiActive, icons.truocKhongCuoiActive, icons.truocCuoiActive,
+        icons.cheoCuoiActive, icons.nghiengActive
+    ];
     return (
         <View className='bg-white h-full'>
             <CustomHeader title={headerTitle} customStyle="bg-transparent" />
             <View className='mt-[20px] px-[20px]'>
                 <Text className='font-pbold text-[16px] text-center text-[#525252]'>{title}</Text>
-                <TouchableOpacity className={`${Platform.OS === 'ios' ? !loading ? '' : 'opacity-0' : !loading ? '' : 'hidden'} md:items-center`} activeOpacity={0.9} onPress={() => setModalVisible(true)}>
+                <TouchableOpacity
+                    className={`${Platform.OS === 'ios' ? !loading ? '' : 'opacity-0' : !loading ? '' : 'hidden'} md:items-center`}
+                    activeOpacity={0.9}
+                    onPress={() => setModalVisible(true)}
+                >
                     <Image
-                        source={{ uri: url }}
-                        style={[{ height: imageHeight, width: imageWidth }]}
-                        className={`rounded-[10px] mt-10 bg-[#F1F1F1]`}
+                        source={{ uri: `${SERVER_URL}${imageUrls[currentImageIndex]}` }}
+                        style={{ height: imageHeight, width: imageWidth }}
+                        className={`rounded-[10px] bg-[#F1F1F1] ${isIn ? 'mt-36' : 'mt-10'}`}
                         resizeMode='contain'
                         onLoad={onImageLoad}
-
                     />
                 </TouchableOpacity>
                 <View className={`${!loading ? 'hidden' : ''} absolute left-[50%] h-96 justify-center`}>
@@ -141,10 +105,17 @@ export default function QuaTrinhDetailScreen() {
                     transparent={true}
                     onRequestClose={() => setModalVisible(false)}
                 >
-                    <View
-                        className='bg-white w-full h-full'
-                    >
-                        <ImageViewer enablePreload={true} flipThreshold={200} pageAnimateTime={200} enableSwipeDown={true} swipeDownThreshold={100} onCancel={() => setModalVisible(false)} imageUrls={gallery} index={currentImageIndex} />
+                    <View className='bg-white w-full h-full'>
+                        <ImageViewer
+                            enablePreload={true}
+                            flipThreshold={200}
+                            pageAnimateTime={200}
+                            enableSwipeDown={true}
+                            swipeDownThreshold={100}
+                            onCancel={() => setModalVisible(false)}
+                            imageUrls={imageUrls.map(url => ({ url: `${SERVER_URL}${url}` }))}
+                            index={currentImageIndex}
+                        />
                         <TouchableOpacity
                             onPress={() => setModalVisible(false)}
                             className='absolute bottom-10 left-5 bg-white rounded-full'
@@ -157,94 +128,22 @@ export default function QuaTrinhDetailScreen() {
                     </View>
                 </Modal>
             </View>
+
             <View className={`${Platform.OS === 'ios' ? 'mt-[20px]' : 'mt-[10px]'} flex-wrap flex-row justify-center absolute bottom-5 px-[20px]`}>
-                <TouchableOpacity className="w-[14.2857142457%] mt-2 flex-row justify-center" onPress={() => changeImage(0)}>
-                    <Image
-                        source={icons.truoc}
-                        className="w-[36px] h-[36px]"
-                        resizeMode='contain'
-                    />
-                </TouchableOpacity>
-
-                <TouchableOpacity className="w-[14.2857142457%] mt-2 flex-row justify-center" onPress={() => changeImage(1)}>
-                    <Image
-                        source={icons.truocHa}
-                        className="w-[36px] h-[36px]"
-                        resizeMode='contain'
-                    />
-                </TouchableOpacity>
-
-                <TouchableOpacity className="w-[14.2857142457%] mt-2 flex-row justify-center" onPress={() => changeImage(2)}>
-                    <Image
-                        source={icons.truocDuoiLen}
-                        className="w-[36px] h-[36px]"
-                        resizeMode='contain'
-                    />
-                </TouchableOpacity>
-
-                <TouchableOpacity className="w-[14.2857142457%] mt-2 flex-row justify-center" onPress={() => changeImage(3)}>
-                    <Image
-                        source={icons.trai}
-                        className="w-[36px] h-[36px]"
-                        resizeMode='contain'
-                    />
-                </TouchableOpacity>
-
-                <TouchableOpacity className="w-[14.2857142457%] mt-2 flex-row justify-center" onPress={() => changeImage(4)}>
-                    <Image
-                        source={icons.phai}
-                        className="w-[36px] h-[36px]"
-                        resizeMode='contain'
-                    />
-                </TouchableOpacity>
-
-                <TouchableOpacity className="w-[14.2857142457%] mt-2 flex-row justify-center" onPress={() => changeImage(5)}>
-                    <Image
-                        source={icons.matTren}
-                        className="w-[36px] h-[36px]"
-                        resizeMode='contain'
-                    />
-                </TouchableOpacity>
-
-                <TouchableOpacity className="w-[14.2857142457%] mt-2 flex-row justify-center" onPress={() => changeImage(6)}>
-                    <Image
-                        source={icons.matDuoi}
-                        className="w-[36px] h-[36px]"
-                        resizeMode='contain'
-                    />
-                </TouchableOpacity>
-                <TouchableOpacity className="w-[14.2857142457%] mt-2 flex-row justify-center" onPress={() => changeImage(7)}>
-                    <Image
-                        source={icons.truocKhongCuoi}
-                        className="w-[36px] h-[36px]"
-                        resizeMode='contain'
-                    />
-                </TouchableOpacity>
-
-                <TouchableOpacity className="w-[14.2857142457%] mt-2 flex-row justify-center" onPress={() => changeImage(8)}>
-                    <Image
-                        source={icons.truocCuoi}
-                        className="w-[36px] h-[36px]"
-                        resizeMode='contain'
-                    />
-                </TouchableOpacity>
-
-                <TouchableOpacity className="w-[14.2857142457%] mt-2 flex-row justify-center" onPress={() => changeImage(9)}>
-                    <Image
-                        source={icons.cheoCuoi}
-                        className="w-[36px] h-[36px]"
-                        resizeMode='contain'
-                    />
-                </TouchableOpacity>
-
-                <TouchableOpacity className="w-[14.2857142457%] mt-2 flex-row justify-center" onPress={() => changeImage(10)}>
-                    <Image
-                        source={icons.nghieng}
-                        className="w-[36px] h-[36px]"
-                        resizeMode='contain'
-                    />
-                </TouchableOpacity>
+                {iconList.map((icon, index) => (
+                    <TouchableOpacity
+                        key={index}
+                        className="w-[14.2857142457%] mt-2 flex-row justify-center"
+                        onPress={() => changeImage(index)}
+                    >
+                        <Image
+                            source={index === currentImageIndex ? activeIconList[index] : icon}
+                            className="w-[36px] h-[36px]"
+                            resizeMode='contain'
+                        />
+                    </TouchableOpacity>
+                ))}
             </View>
         </View>
-    )
+    );
 }

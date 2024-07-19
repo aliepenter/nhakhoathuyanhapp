@@ -14,6 +14,14 @@ export default function NewsSection({ post }: any) {
     const handleViewAllNews = () => {
         router.push("/(routes)/tin-tuc/");
     }
+    const onPress = (item: any) => {
+        if (item) {
+            router.push({
+                pathname: "(routes)/tin-tuc/tinTucDetail",
+                params: { postThumb: item.banner_id.banner_path, postTime: item.date, postTitle: item.title, postContent: item.content, postUrl: item.website_url },
+            });
+        }
+    }
     return (
         <View className="mb-[100px] px-[11px] space-y-6 mt-[27px]">
             <View className="w-full flex-1">
@@ -40,11 +48,18 @@ export default function NewsSection({ post }: any) {
                     ?
                     <View className="flex-wrap flex-row justify-between">
                         {post.slice(0, 6).map((item: Post, index: number) => (
-                            <Image
+                            <TouchableOpacity
                                 key={index}
-                                source={{ uri: `${SERVER_URL}${item.banner_id.banner_path}` }}
+                                activeOpacity={0.7}
+                                onPress={() => onPress(item)}
                                 className="h-[142px] md:h-[200px] w-[49%] md:w-[32%] rounded-[10px] mb-5"
-                            />
+
+                            >
+                                <Image
+                                className="w-full h-full"
+                                    source={{ uri: `${SERVER_URL}${item.banner_id.banner_path}` }}
+                                />
+                            </TouchableOpacity>
                         ))}
                     </View>
                     :

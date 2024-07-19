@@ -44,7 +44,7 @@ export default function TabButtons({ buttons, selectedTab, setSelectedTab }: Tab
             end={{ x: 1, y: 0 }}
             className='rounded-[6px] justify-center'
         >
-            <Animated.View className='left-[5px] absolute bg-[#d4873f] rounded-[6px] my-[5px]' style={[animatedStyle, { width: buttonWidth - 10, height: dimentions.height - 10 }]} />
+            <Animated.View className='left-[5px] absolute bg-[#E54C4C] rounded-[6px] my-[5px]' style={[animatedStyle, { width: buttonWidth - 10, height: dimentions.height - 10 }]} />
             <View className='flex-row' onLayout={onTabbarLayout}>
                 {
                     buttons.map((button, index) => {

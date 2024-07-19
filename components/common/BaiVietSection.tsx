@@ -3,12 +3,12 @@ import React from 'react'
 import images from '@/constants/images'
 import { SERVER_URL } from '@/utils/uri'
 
-export default function BaiVietSection({ item, isLast, customImageStyle }: any) {
+export default function BaiVietSection({ item, isLast, customImageStyle, onPress }: any) {
     return (
         <TouchableOpacity
             className={`relative justify-center items-center ${isLast ? "" : "mr-2"}`}
             activeOpacity={0.7}
-            onPress={()=>{}}
+            onPress={onPress}
         >
             <Image
                 source={item && item.banner_id ? { uri: `${SERVER_URL}${item.banner_id.banner_path}` } : images.bannerDefault}

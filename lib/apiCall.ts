@@ -62,10 +62,46 @@ export const getPosts = async () => {
   }
 };
 
+export const getOnlyNews = async () => {
+  try {
+    const response = await axios.get(`${SERVER_URI}/posts/only-news`);
+    return {
+      code: 200,
+      data: response.data,
+    };
+  } catch (error: any) {
+    if (error.response) {
+      return {
+        code: error.response.status,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
+
 
 export const getBranches = async () => {
   try {
     const response = await axios.get(`${SERVER_URI}/branches`);
+    return {
+      code: 200,
+      data: response.data,
+    };
+  } catch (error: any) {
+    if (error.response) {
+      return {
+        code: error.response.status,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
+
+export const getHopDong = async () => {
+  try {
+    const response = await axios.get(`${SERVER_URI}/hop-dong`);
     return {
       code: 200,
       data: response.data,

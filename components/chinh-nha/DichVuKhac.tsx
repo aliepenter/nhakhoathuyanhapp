@@ -3,16 +3,16 @@ import React, { useEffect, useState } from 'react'
 import { getDichVuKhac } from '@/lib/apiCall';
 import { formatMoney } from '@/lib/commonFunctions';
 
-export default function DichVuKhac({ chinh_nha_chi_tiet_id }: any) {
+export default function DichVuKhac({ chinh_nha_id }: any) {
     const [dichVuKhac, setDichVuKhac] = useState<Array<any>>([]);
     const [has, setHas] = useState<boolean>(true);
     useEffect(() => {
         fetchDichVuKhac();
-    }, [chinh_nha_chi_tiet_id]);
+    }, [chinh_nha_id]);
     const fetchDichVuKhac = async () => {
         try {
-            if (chinh_nha_chi_tiet_id) {
-                const res = await getDichVuKhac(chinh_nha_chi_tiet_id);
+            if (chinh_nha_id) {
+                const res = await getDichVuKhac(chinh_nha_id);
                 setTimeout(() => {
                     if (res) {
                         setDichVuKhac(res.data);

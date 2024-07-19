@@ -12,7 +12,13 @@ import DanhGiaDichVu from '@/components/chinh-nha/DanhGiaDichVu';
 
 export default function ChinhNhaDetailScreen() {
     const route = useRoute();
-    const { chinh_nha_chi_tiet_id, headerTitle }: any = route.params;
+    const {
+        thu_thuat_dieu_tri,
+        qua_trinh_image_id,
+        tinh_trang_rang_mieng,
+        headerTitle,
+        chinh_nha_id
+    }: any = route.params;
     const [refreshing, setRefreshing] = useState(false);
     const [loading, setLoading] = useState(true);
     const [chinhNhaData, setChinhNhaData] = useState<ChinhNhaChiTiet>();
@@ -25,9 +31,9 @@ export default function ChinhNhaDetailScreen() {
     const scrollViewRef = useRef<ScrollView>(null);
 
     const scrollToBottom = () => {
-      if (scrollViewRef.current) {
-        scrollViewRef.current.scrollToEnd({ animated: true });
-      }
+        if (scrollViewRef.current) {
+            scrollViewRef.current.scrollToEnd({ animated: true });
+        }
     };
     useEffect(() => {
         fetchData();
@@ -40,13 +46,13 @@ export default function ChinhNhaDetailScreen() {
         return () => {
             keyboardDidShowListener.remove();
         };
-    }, [chinh_nha_chi_tiet_id]);
+    }, [chinh_nha_id]);
 
 
     const fetchData = async () => {
         try {
-            if (chinh_nha_chi_tiet_id) {
-                const res = await getChinhNhaChiTiet(chinh_nha_chi_tiet_id);
+            if (chinh_nha_id) {
+                const res = await getChinhNhaChiTiet(chinh_nha_id);
                 setTimeout(() => {
                     if (res) {
                         setChinhNhaData(res.data);
@@ -84,11 +90,11 @@ export default function ChinhNhaDetailScreen() {
                             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                         >
 
-                            <ThuThuat thuthuat={chinhNhaData?.thu_thuat_dieu_tri} />
-                            <QuaTrinhImage anh={chinhNhaData?.qua_trinh_image_id} />
-                            <TinhTrang tinhtrang={chinhNhaData?.tinh_trang_rang_mieng} />
-                            <LoiDan chinh_nha_chi_tiet_id={chinh_nha_chi_tiet_id} />
-                            <DichVuKhac chinh_nha_chi_tiet_id={chinh_nha_chi_tiet_id} />
+                            <ThuThuat thuthuat={thu_thuat_dieu_tri} />
+                            <QuaTrinhImage anh={qua_trinh_image_id} />
+                            <TinhTrang tinhtrang={tinh_trang_rang_mieng} />
+                            <LoiDan chinh_nha_id={chinh_nha_id} />
+                            <DichVuKhac chinh_nha_id={chinh_nha_id} />
                             <DanhGiaDichVu />
                         </ScrollView>
                         :

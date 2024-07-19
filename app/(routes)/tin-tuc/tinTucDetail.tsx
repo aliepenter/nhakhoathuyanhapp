@@ -5,8 +5,8 @@ import TinTucDetailScreen from '@/screens/tin-tuc/tinTucDetail.screen';
 
 export default function tinTucDetail() {
     const route = useRoute();
-    const { postItem, headerTitle }: any = route.params;
+    const { postThumb, postTime, postTitle, postContent, postUrl }: any = route.params;
     return (
-        <TinTucDetailScreen headerTitle={headerTitle} postItem={postItem} />
+        <TinTucDetailScreen postThumb={postThumb} postTime={postTime} postTitle={postTitle} postContent={postContent} postUrl={postUrl} />
     )
 }

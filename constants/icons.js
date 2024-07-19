@@ -44,12 +44,23 @@ import truocDuoiLen from "../assets/icons/truoc-duoi-len.png";
 import truocHa from "../assets/icons/truoc-ha.png";
 import matTren from "../assets/icons/mat-tren.png";
 import matDuoi from "../assets/icons/mat-duoi.png";
-import dot from "../assets/icons/dot.png";
-import dotActive from "../assets/icons/dot-active.png";
 import truocKhongCuoi from "../assets/icons/truoc-khong-cuoi.png";
 import truocCuoi from "../assets/icons/truoc-cuoi.png";
 import cheoCuoi from "../assets/icons/cheo-cuoi.png";
 import nghieng from "../assets/icons/nghieng.png";
+import truocActive from "../assets/icons/truoc-active.png";
+import traiActive from "../assets/icons/trai-active.png";
+import phaiActive from "../assets/icons/phai-active.png";
+import truocDuoiLenActive from "../assets/icons/truoc-duoi-len-active.png";
+import truocHaActive from "../assets/icons/truoc-ha-active.png";
+import matTrenActive from "../assets/icons/mat-tren-active.png";
+import matDuoiActive from "../assets/icons/mat-duoi-active.png";
+import truocKhongCuoiActive from "../assets/icons/truoc-khong-cuoi-active.png";
+import truocCuoiActive from "../assets/icons/truoc-cuoi-active.png";
+import cheoCuoiActive from "../assets/icons/cheo-cuoi-active.png";
+import nghiengActive from "../assets/icons/nghieng-active.png";
+import dot from "../assets/icons/dot.png";
+import dotActive from "../assets/icons/dot-active.png";
 import caiDatThongBao from "../assets/icons/cai-dat-thong-bao.png";
 import doiMatKhau from "../assets/icons/doi-mat-khau.png";
 import dieuKhoan from "../assets/icons/dieu-khoan.png";
@@ -64,8 +75,21 @@ import website from "../assets/icons/website.png";
 import tiktok from "../assets/icons/tiktok.png";
 import mail from "../assets/icons/mail.png";
 import dangXuat from "../assets/icons/dang-xuat.png";
+import hopDong from "../assets/icons/hop-dong.png";
 import notificationSettings from "../assets/icons/notification-settings.png";
 export default {
+  truocActive,
+  traiActive,
+  phaiActive,
+  truocDuoiLenActive,
+  truocHaActive,
+  matTrenActive,
+  matDuoiActive,
+  truocKhongCuoiActive,
+  truocCuoiActive,
+  cheoCuoiActive,
+  nghiengActive,
+  hopDong,
   notificationSettings,
   dangXuat,
   facebook,

@@ -45,11 +45,17 @@ export default function ChinhNhaScreen() {
     }
   };
 
-  const handlePress = (chinh_nha_chi_tiet_id: any,  ngay_chinh_nha: any) => {
+  const handlePress = (chinh_nha_chi_tiet_id: any, ngay_chinh_nha: any, id: number) => {
     const title = `Chỉnh nha ngày ${formatDate(ngay_chinh_nha, "minimize")}`;
     router.push({
       pathname: "(routes)/chinh-nha/chinhNhaDetail",
-      params: {  headerTitle: title, chinh_nha_chi_tiet_id: chinh_nha_chi_tiet_id },
+      params: {
+        headerTitle: title,
+        thu_thuat_dieu_tri: chinh_nha_chi_tiet_id.thu_thuat_dieu_tri,
+        qua_trinh_image_id: chinh_nha_chi_tiet_id.qua_trinh_image_id,
+        tinh_trang_rang_mieng: chinh_nha_chi_tiet_id.tinh_trang_rang_mieng,
+        chinh_nha_id: id
+      },
     });
   }
   return (
@@ -63,7 +69,7 @@ export default function ChinhNhaScreen() {
               key={index}
               className={`${index % 2 !== 0 ? "bg-[#F3F3F3]" : "bg-white"} px-[11px] py-[20px] md:py-[30px]`}
               activeOpacity={0.7}
-              onPress={() => handlePress(item.chinh_nha_chi_tiet_id, item.ngay_chinh_nha)}
+              onPress={() => handlePress(item.chinh_nha_chi_tiet_id, item.ngay_chinh_nha, item.id)}
             >
               <Text className='text-[14px] md:text-[20px]'>{`Ngày ${formatDate(item.ngay_chinh_nha, "minimize")}, ${item.branch_id.ten_chi_nhanh}`}</Text>
             </TouchableOpacity>

@@ -1,10 +1,8 @@
-import { View, Text } from 'react-native'
 import React from 'react'
+import HopDongScreen from '@/screens/hop-dong/hopDong.screen'
 
 export default function index() {
   return (
-    <View>
-      <Text>index</Text>
-    </View>
+    <HopDongScreen />
   )
 }
