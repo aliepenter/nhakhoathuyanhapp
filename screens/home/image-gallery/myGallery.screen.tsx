@@ -1,4 +1,4 @@
-import { View, Text, ActivityIndicator, Image, ScrollView, RefreshControl } from 'react-native'
+import { View, Text, ActivityIndicator, ScrollView, RefreshControl, Button } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Swiper from 'react-native-swiper'
 import { SERVER_URL } from '@/utils/uri'
@@ -7,11 +7,13 @@ import { formatDate } from '@/lib/commonFunctions'
 import CustomButton from '@/components/common/CustomButton'
 import { icons } from '@/constants'
 import { getCustomerLibrary } from '@/lib/apiCall'
+import { Image } from 'expo-image';
+import { router } from 'expo-router'
+import { useCameraPermissions } from 'expo-camera';
 
 export default function MyGalleryScreen({ user }: any) {
   const [customerLibraryData, setCustomerLibraryData] = useState<Array<CustomerLibrary>>();
   const [refreshing, setRefreshing] = useState(false);
-
   const [loading, setLoading] = useState(true);
   const onRefresh = async () => {
     setRefreshing(true);
@@ -48,6 +50,23 @@ export default function MyGalleryScreen({ user }: any) {
       }, 1000);
     }
   };
+  const [permission, requestPermission] = useCameraPermissions();
+
+  const handleCamera = async () => {
+    if (permission && permission.granted) {
+      router.push({
+        pathname: "(routes)/camera",
+      });
+    } else {
+      await requestPermission().then(res => {
+        if (res.granted) {
+          router.push({
+            pathname: "(routes)/camera",
+          });
+        }
+      })
+    }
+  };
   return (
     <ScrollView
       className='mt-[15px]'
@@ -77,14 +96,14 @@ export default function MyGalleryScreen({ user }: any) {
                   <Image
                     source={icons.dot}
                     className="w-[10px] h-[10px] mx-1"
-                    resizeMode='contain'
+                    contentFit='contain'
                   />
                 }
                 activeDot={
                   <Image
                     source={icons.dotActive}
                     className="w-[10px] h-[10px] mx-1"
-                    resizeMode='contain'
+                    contentFit='contain'
                   />
                 }
               >
@@ -94,7 +113,7 @@ export default function MyGalleryScreen({ user }: any) {
                     <Image
                       source={{ uri: `${SERVER_URL}${item.image_path}` }}
                       className="w-full h-full rounded-[10px]"
-                      resizeMode='cover'
+                      contentFit='cover'
                     />
                     <LinearGradient
                       colors={["#1560A1", "#4FAA57"]}
@@ -120,7 +139,7 @@ export default function MyGalleryScreen({ user }: any) {
       <View>
         <CustomButton
           title="Chụp ảnh nụ cười hôm nay"
-          handlePress={() => { }}
+          handlePress={handleCamera}
           containerStyles="mt-[45px]"
           icon={icons.cameraGreen}
           buttonStyle="rounded-full py-[5px] px-[19px] bg-[#EDEDED] border-[#D7D7D7] border-[1px]"

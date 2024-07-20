@@ -1,5 +1,4 @@
 import {
-    Image,
     View,
     ActivityIndicator,
 } from "react-native";
@@ -7,6 +6,7 @@ import React from "react";
 import { SERVER_URL } from "@/utils/uri";
 import Swiper from 'react-native-swiper';
 import { icons } from "@/constants";
+import { Image } from 'expo-image';
 
 export default function BannerSlide({ banners, type }: any) {
     return (
@@ -24,18 +24,18 @@ export default function BannerSlide({ banners, type }: any) {
                         pagingEnabled={true}
                         dot={
                             <Image
-                              source={icons.dot}
-                              className="w-[10px] h-[10px] mx-1"
-                              resizeMode='contain'
+                                source={icons.dot}
+                                className="w-[10px] h-[10px] mx-1"
+                                contentFit='contain'
                             />
-                          }
-                          activeDot={
+                        }
+                        activeDot={
                             <Image
-                              source={icons.dotActive}
-                              className="w-[10px] h-[10px] mx-1"
-                              resizeMode='contain'
+                                source={icons.dotActive}
+                                className="w-[10px] h-[10px] mx-1"
+                                contentFit='contain'
                             />
-                          }
+                        }
                     >
                         {banners.map((item: Banner, index: number) => (
                             item.status === type
@@ -44,6 +44,7 @@ export default function BannerSlide({ banners, type }: any) {
                                     <Image
                                         source={{ uri: `${SERVER_URL}${item.banner_path}` }}
                                         className="w-full h-full rounded-[10px]"
+                                        contentFit='cover'
                                     />
                                 </View>
                                 :

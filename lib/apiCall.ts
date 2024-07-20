@@ -99,23 +99,6 @@ export const getBranches = async () => {
   }
 };
 
-export const getHopDong = async () => {
-  try {
-    const response = await axios.get(`${SERVER_URI}/hop-dong`);
-    return {
-      code: 200,
-      data: response.data,
-    };
-  } catch (error: any) {
-    if (error.response) {
-      return {
-        code: error.response.status,
-      };
-    } else {
-      throw error;
-    }
-  }
-};
 
 export const getFaq = async () => {
   try {
@@ -198,6 +181,26 @@ export const getChinhNha = async (userId: any) => {
     return null;
   }
 }
+
+export const getHopDong = async (userId: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const hopDong = await axios.get(`${SERVER_URI}/hop-dong/${userId}`);
+      if (!hopDong) return null;
+      return {
+        code: 200,
+        data: hopDong.data,
+      };
+    } catch (error) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+};
 
 export const getChinhNhaChiTiet = async (id: any) => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);

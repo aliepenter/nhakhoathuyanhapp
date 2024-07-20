@@ -10,6 +10,26 @@ export const formatDate = (isoDateString: any, type: any) => {
     }
 }
 
+export const formatDateTime = (isoDateString: any) => {
+    const date = new Date(isoDateString);
+
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+
+    const dayOfWeek = date.getDay();
+    const days = ['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+    const dayOfWeekText = days[dayOfWeek];
+
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+
+    const year = date.getFullYear();
+
+    const formattedTime = `${hours}:${minutes < 10 ? '0' + minutes : minutes} ${dayOfWeekText}, ${day}/${month}/${year}`;
+
+    return formattedTime;
+}
+
 export const formatMoney = (amount: any) => {
     amount = parseFloat(amount.toString().replace(/,/g, '')).toFixed(0);
 

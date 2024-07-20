@@ -77,7 +77,17 @@ import mail from "../assets/icons/mail.png";
 import dangXuat from "../assets/icons/dang-xuat.png";
 import hopDong from "../assets/icons/hop-dong.png";
 import notificationSettings from "../assets/icons/notification-settings.png";
+import flip from "../assets/icons/flip.png";
+import flash from "../assets/icons/flash.png";
+import download from "../assets/icons/download.png";
+import download2 from "../assets/icons/download2.png";
+import trashWhite from "../assets/icons/trash-white.png";
 export default {
+  trashWhite,
+  download,
+  download2,
+  flash,
+  flip,
   truocActive,
   traiActive,
   phaiActive,

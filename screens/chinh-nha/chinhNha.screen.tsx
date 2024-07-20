@@ -51,9 +51,9 @@ export default function ChinhNhaScreen() {
       pathname: "(routes)/chinh-nha/chinhNhaDetail",
       params: {
         headerTitle: title,
-        thu_thuat_dieu_tri: chinh_nha_chi_tiet_id.thu_thuat_dieu_tri,
-        qua_trinh_image_id: chinh_nha_chi_tiet_id.qua_trinh_image_id,
-        tinh_trang_rang_mieng: chinh_nha_chi_tiet_id.tinh_trang_rang_mieng,
+        thu_thuat_dieu_tri: chinh_nha_chi_tiet_id ? chinh_nha_chi_tiet_id.thu_thuat_dieu_tri : null,
+        qua_trinh_image_id: chinh_nha_chi_tiet_id ? JSON.stringify(chinh_nha_chi_tiet_id.qua_trinh_image_id) : null,
+        tinh_trang_rang_mieng: chinh_nha_chi_tiet_id ? chinh_nha_chi_tiet_id.tinh_trang_rang_mieng : null,
         chinh_nha_id: id
       },
     });

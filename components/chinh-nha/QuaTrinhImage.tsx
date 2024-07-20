@@ -1,10 +1,11 @@
-import { View, Text, FlatList, TouchableOpacity, Image, Modal, ScrollView } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, Modal, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import { SERVER_URL } from '@/utils/uri';
 import images from '@/constants/images';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { icons } from '@/constants';
 import { formatDate } from '@/lib/commonFunctions';
+import { Image } from 'expo-image';
 export default function QuaTrinhImage({ anh }: any) {
     const gallery = [
         {
@@ -78,11 +79,12 @@ const ImageItem = ({ video_thumbnail, gallery, index }: any) => {
     const [modalVisible, setModalVisible] = useState(false);
     return (
         <View className={`flex-1 justify-center items-start my-2`}>
-            <TouchableOpacity activeOpacity={0.9} onPress={() => setModalVisible(true)}>
+            <TouchableOpacity activeOpacity={0.9} onPress={() => setModalVisible(true)} className={`rounded-[20px] bg-gray-300 h-[180px] w-[180px] md:h-[380px] md:w-[380px] ${index === 8 ? '' : 'mr-2'}`}>
                 <Image
                     source={video_thumbnail ? { uri: `${SERVER_URL}${video_thumbnail}` } : images.bannerDefault}
-                    className={`h-[180px] w-[180px] md:h-[380px] md:w-[380px] overflow-hidden rounded-[20px] bg-[#F1F1F1] ${index === 7 ? '' : 'mr-2'}`}
-                    resizeMode="contain"
+                    className={`h-full w-full overflow-hidden rounded-[20px]`}
+                    contentFit="contain"
+                    transition={500}
                 />
             </TouchableOpacity>
             <Modal
@@ -99,7 +101,7 @@ const ImageItem = ({ video_thumbnail, gallery, index }: any) => {
                         className='absolute bottom-10 left-5 bg-white rounded-full'
                     >
                         <View className='flex-row justify-center items-center gap-2 px-5 py-2'>
-                            <Image source={icons.backArrow} resizeMode='contain' className='w-[20px] h-[11px]' />
+                            <Image transition={500} source={icons.backArrow} contentFit='contain' className='w-[20px] h-[11px]' />
                             <Text className=' text-[14px] text-[#747474]'>Quay lại</Text>
                         </View>
                     </TouchableOpacity>

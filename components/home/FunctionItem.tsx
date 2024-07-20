@@ -1,7 +1,8 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 import icons from '@/constants/icons';
 import { router } from 'expo-router';
+import { Image } from 'expo-image';
 
 const FunctionItem = ({ icon, title, path }: any) => {
     const handlePress = (route: any) => {
@@ -14,7 +15,7 @@ const FunctionItem = ({ icon, title, path }: any) => {
             className='items-center w-[25%] md:w-[20%] mb-[11px]'
         >
             <View style={styles.boxShadow} className={`justify-center items-center bg-[#FAFAFA] rounded-full w-[74px] h-[74px]`}>
-                <Image source={icon} className='w-[40px] h-[40px]' resizeMode='contain' />
+                <Image source={icon} className='w-[40px] h-[40px]' contentFit='contain' transition={500}/>
             </View>
 
             <Text className='text-[12px] mt-[4px] font-psemibold md:text-[16px] md:mt-[6px]'>{title}</Text>

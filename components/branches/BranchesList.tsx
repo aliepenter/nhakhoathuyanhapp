@@ -1,6 +1,5 @@
 import {
     ActivityIndicator,
-    Image,
     Text,
     View,
     Linking,
@@ -10,6 +9,7 @@ import React, { useCallback } from "react";
 import { SERVER_URL } from "@/utils/uri";
 import CustomButton from '@/components/common/CustomButton';
 import icons from "@/constants/icons";
+import { Image } from 'expo-image';
 
 export default function BranchList({ branches }: any) {
     const handlePress = useCallback(async (url: any) => {
@@ -43,12 +43,11 @@ export default function BranchList({ branches }: any) {
         </View>
     );
 }
-
 const BranchItemDetail = ({ index, item, handlePress, branches }: any) => {
     return (
         <View className={`${index + 1 !== branches.length ? 'border-b-[1px] border-[#E9E9E9]' : ''} flex-row items-center pb-[16px] mb-[16px]`}>
-            <View>
-                <Image source={{ uri: `${SERVER_URL}${item.image_url}` }} resizeMode='contain' className='w-[95px] h-[84px] md:w-[135px] md:h-[124px]' />
+            <View className="bg-gray-300 w-[95px] h-[84px] md:w-[135px] md:h-[124px] rounded-[10px]">
+                <Image transition={500} source={{ uri: `${SERVER_URL}${item.image_url}` }} contentFit='contain' className='w-full h-full' />
             </View>
             <View className="ml-[15px] w-[72%]">
                 <View>

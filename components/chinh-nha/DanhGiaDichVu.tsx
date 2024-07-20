@@ -1,8 +1,9 @@
-import { View, Text, TextInput, Image, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import React from 'react';
 import FormField from '../common/FormField';
 import CustomButton from '../common/CustomButton';
 import { icons } from '@/constants';
+import { Image } from 'expo-image';
 
 export default function DanhGiaDichVu() {
     return (

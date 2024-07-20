@@ -1,12 +1,13 @@
 // CustomHeader.js
 
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import images from '@/constants/images';
+import { icons } from '@/constants';
 
-const CustomHeader = ({ title, customStyle, disableBackButton }: any) => {
+const CustomHeader = ({ title, customStyle, disableBackButton, downloadBtn }: any) => {
     const navigation = useNavigation();
     const handleBack = () => {
         navigation.goBack();
@@ -26,7 +27,15 @@ const CustomHeader = ({ title, customStyle, disableBackButton }: any) => {
                             <Ionicons name="arrow-back" size={24} color="white" />
                         </TouchableOpacity>
                 }
-
+                {
+                    !downloadBtn
+                        ?
+                        null
+                        :
+                        <TouchableOpacity className='absolute bottom-[10px] right-3 p-[10px]' onPress={handleBack}>
+                            <Image source={icons.download} className='w-[18px] h-[18px]' resizeMode='cover' />
+                        </TouchableOpacity>
+                }
             </ImageBackground>
         </View>
     );

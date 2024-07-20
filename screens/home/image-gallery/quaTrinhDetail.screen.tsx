@@ -61,9 +61,7 @@ export default function QuaTrinhDetailScreen() {
 
     const changeImage = (index: number) => {
         setLoading(true);
-        setTimeout(() => {
-            setCurrentImageIndex(index);
-        }, 500);
+        setCurrentImageIndex(index);
     };
     const iconList = [
         icons.truoc, icons.truocHa, icons.truocDuoiLen,
