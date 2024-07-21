@@ -1,10 +1,11 @@
 import {
   FlatList,
   RefreshControl,
+  ScrollView,
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { getVideos, getBanners, getOnlyNews } from "@/lib/apiCall";
+import { getBanners, getPosts, getTrending } from "@/lib/apiCall";
 import useUser from "@/hooks/auth/useUser";
 import FunctionItemsList from "@/components/home/FunctionItem";
 import RenderVideo from "@/components/home/RenderVideo";
@@ -12,6 +13,7 @@ import BannerSlide from "@/components/common/BannerSlide";
 import NewsSection from "@/components/home/NewsSection";
 import HeaderSection from "@/components/home/HeaderSection";
 import TimeTracking from "@/components/home/TimeTracking";
+import { calculateDaysDifference } from "@/lib/commonFunctions";
 
 
 const HomeScreen = () => {
@@ -43,7 +45,7 @@ const HomeScreen = () => {
 
   const fetchNews = async () => {
     try {
-      const postData = await getOnlyNews();
+      const postData = await getPosts();
       setTimeout(() => {
         if (postData) {
           setPost(postData.data);
@@ -56,7 +58,7 @@ const HomeScreen = () => {
   };
   const fetchVideoData = async () => {
     try {
-      const videosResponse = await getVideos();
+      const videosResponse = await getTrending();
       setTimeout(() => {
         if (videosResponse.data) {
           setVideos(videosResponse.data);
@@ -80,33 +82,19 @@ const HomeScreen = () => {
       console.error("Error fetching data:", error);
     }
   };
-
   return (
     <View className="bg-white">
       <HeaderSection user={user} showNotification={true} />
-      <FlatList
-        data={[{ key: 'banner' }, { key: 'functions' }, { key: 'timetracking' }, { key: 'trending' }, { key: 'news' }, { key: 'last' }]}
-        renderItem={({ item }) => {
-          switch (item.key) {
-            case 'banner':
-              return <BannerSlide banners={banners} type={1} />;
-            case 'functions':
-              return <FunctionItemsList />;
-            case 'timetracking':
-              return <TimeTracking schedule="07/07/2024" totalTime="250" />;
-            case 'trending':
-              return <RenderVideo videos={videos} />;
-            case 'news':
-              return <NewsSection post={post} />;
-            case 'last':
-              return <View className="h-[150px]"></View>;
-            default:
-              return null;
-          }
-        }}
-        keyExtractor={(item, index) => index.toString()}
+      <ScrollView
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-      />
+      >
+        <BannerSlide banners={banners} type={1} />
+        <FunctionItemsList />
+        <TimeTracking schedule="07/07/2024" totalTime={user && user.ngay_gan_mc != null ? calculateDaysDifference(user.ngay_gan_mc) : 0} />
+        <RenderVideo videos={videos} />
+        <NewsSection post={post} />
+        <View className="h-[150px]"></View>
+      </ScrollView>
     </View>
   );
 };

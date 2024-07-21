@@ -26,6 +26,43 @@ export const getVideos = async () => {
   }
 };
 
+export const getTrending = async () => {
+  try {
+    const response = await axios.get(`${SERVER_URI}/videos/only-trending`);
+    return {
+      code: 200,
+      data: response.data,
+    };
+  } catch (error: any) {
+    if (error.response) {
+      return {
+        code: error.response.status,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
+
+
+export const getOnlyLoiDanVideo = async () => {
+  try {
+    const response = await axios.get(`${SERVER_URI}/videos/only-loi-dan`);
+    return {
+      code: 200,
+      data: response.data,
+    };
+  } catch (error: any) {
+    if (error.response) {
+      return {
+        code: error.response.status,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
+
 export const getBanners = async () => {
   try {
     const response = await axios.get(`${SERVER_URI}/banners`);
@@ -62,6 +99,24 @@ export const getPosts = async () => {
   }
 };
 
+export const getOnlyPosts = async () => {
+  try {
+    const response = await axios.get(`${SERVER_URI}/posts/only-posts`);
+    return {
+      code: 200,
+      data: response.data,
+    };
+  } catch (error: any) {
+    if (error.response) {
+      return {
+        code: error.response.status,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
+
 export const getOnlyNews = async () => {
   try {
     const response = await axios.get(`${SERVER_URI}/posts/only-news`);
@@ -79,6 +134,25 @@ export const getOnlyNews = async () => {
     }
   }
 };
+
+export const getOnlyLoiDan = async () => {
+  try {
+    const response = await axios.get(`${SERVER_URI}/posts/only-loi-dan`);
+    return {
+      code: 200,
+      data: response.data,
+    };
+  } catch (error: any) {
+    if (error.response) {
+      return {
+        code: error.response.status,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
+
 
 
 export const getBranches = async () => {
@@ -310,6 +384,47 @@ export const getAnhQuaTrinh = async (userId: any) => {
       return {
         code: 200,
         data: anhQuaTrinh.data,
+      };
+    } catch (error) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+}
+
+
+export const getHoSoTraGopCn = async (userId: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const res = await axios.get(`${SERVER_URI}/ho-so-tra-gop-cn/${userId}`);
+      if (!res) return null;
+      return {
+        code: 200,
+        data: res.data,
+      };
+    } catch (error) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+}
+
+export const getLichSuThanhToanCn = async (userId: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const res = await axios.get(`${SERVER_URI}/lich-su-thanh-toan-cn/${userId}`);
+      if (!res) return null;
+      return {
+        code: 200,
+        data: res.data,
       };
     } catch (error) {
       throw error;

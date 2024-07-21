@@ -48,10 +48,26 @@ const PageLayout = () => {
                     }}
                 />
                 <Stack.Screen
+                    name="tin-tuc/onlyNews"
+                    options={{
+                        header: (props) => (
+                            <CustomHeader {...props} customStyle="bg-white" title="Bài viết nha khoa" />
+                        ),
+                    }}
+                />
+                <Stack.Screen
                     name="tin-tuc/index"
                     options={{
                         header: (props) => (
                             <CustomHeader {...props} customStyle="bg-white" title="Tin tức" />
+                        ),
+                    }}
+                />
+                <Stack.Screen
+                    name="video/index"
+                    options={{
+                        header: (props) => (
+                            <CustomHeader {...props} customStyle="bg-white" title="Video" />
                         ),
                     }}
                 />
@@ -111,7 +127,7 @@ const PageLayout = () => {
                         ),
                     }}
                 />
-                 <Stack.Screen
+                <Stack.Screen
                     name="tin-tuc/tinTucDetail"
                     options={{
                         header: (props) => (

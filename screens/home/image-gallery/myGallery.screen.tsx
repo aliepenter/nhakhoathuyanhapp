@@ -76,7 +76,13 @@ export default function MyGalleryScreen({ user }: any) {
         <Text className='text-center text-[13px] font-pregular text-[#757575]'>Đây là thư viện ảnh của bạn và không phải là hình ảnh dùng để chia sẻ với phòng khám. Bạn có thể chụp ảnh, lưu trữ tại đây và chia sẻ hành trình thay đổi nụ cười với bạn bè và người thân.</Text>
       </View>
       <View className="mt-[30px]">
-        <Text className='text-[12px] font-pregular'><Image className='w-[16px] h-[16px]' source={icons.calenderMonthBlack} /> {customerLibraryData ? formatDate(customerLibraryData[customerLibraryData.length - 1]?.ngay_chup, 'minimize') + " - " + formatDate(customerLibraryData[0]?.ngay_chup, 'minimize') : null} (Chọn ngày chụp)</Text>
+        {
+          customerLibraryData && customerLibraryData.length != 0
+            ?
+            <Text className='text-[12px] font-pregular'><Image className='w-[16px] h-[16px]' source={icons.calenderMonthBlack} /> {formatDate(customerLibraryData[customerLibraryData.length - 1]?.ngay_chup, 'minimize') + " - " + formatDate(customerLibraryData[0]?.ngay_chup, 'minimize')} (Chọn ngày chụp)</Text>
+            :
+            null
+        }
       </View>
       <View className="mt-[10px] md:mx-16 md:mt-[20px]">
         {

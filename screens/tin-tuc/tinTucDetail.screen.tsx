@@ -5,7 +5,6 @@ import CustomButton from '@/components/common/CustomButton';
 import { formatDateTime } from '@/lib/commonFunctions';
 const { width } = Dimensions.get('window');
 export default function TinTucDetailScreen({ postThumb, postTime, postTitle, postContent, postUrl }: any) {
-    console.log(postTime)
     const handlePress = useCallback(async (url: any) => {
         const supported = await Linking.canOpenURL(url);
         if (supported) {

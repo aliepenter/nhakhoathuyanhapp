@@ -4,7 +4,6 @@ import { getChinhNha } from '@/lib/apiCall';
 import useUser from '@/hooks/auth/useUser';
 import { router } from 'expo-router';
 import { formatDate } from '@/lib/commonFunctions';
-
 export default function ChinhNhaScreen() {
   const { user } = useUser();
   const [chinhNha, setChinhNha] = useState([]);

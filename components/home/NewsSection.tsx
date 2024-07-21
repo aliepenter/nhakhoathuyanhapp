@@ -6,7 +6,7 @@ import {
 } from "react-native";
 import React from "react";
 import { icons } from "@/constants";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import { SERVER_URL } from "@/utils/uri";
 import { Image } from 'expo-image';
 
@@ -44,10 +44,10 @@ export default function NewsSection({ post }: any) {
                         </TouchableOpacity>
                     </View>
                 </View>
-                {post && post.length != 0
-                    ?
-                    <View className="flex-wrap flex-row justify-between">
-                        {post.slice(0, 6).map((item: Post, index: number) => (
+                <View className="flex-wrap flex-row justify-between">
+                    {post && post.length != 0
+                        ?
+                        post.slice(0, 6).map((item: Post, index: number) => (
                             <TouchableOpacity
                                 key={index}
                                 activeOpacity={0.7}
@@ -62,14 +62,14 @@ export default function NewsSection({ post }: any) {
                                     transition={500}
                                 />
                             </TouchableOpacity>
-                        ))}
-                    </View>
-                    :
-                    // 582 324
-                    <View className="h-[486px] md:h-[440px] justify-center">
-                        <ActivityIndicator />
-                    </View>
-                }
+                        ))
+                        :
+                        // 582 324
+                        <View className={`h-[486px] w-full md:h-[441px] justify-center`}>
+                            <ActivityIndicator />
+                        </View>
+                    }
+                </View>
             </View>
         </View>
     )

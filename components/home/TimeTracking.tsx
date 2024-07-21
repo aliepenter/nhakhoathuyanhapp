@@ -35,7 +35,7 @@ export default function TimeTracking({ schedule, totalTime }: any) {
                     <Image source={icons.calenderDay} className='w-[16px] h-[16px] mr-[3px]' resizeMode='contain' />
                     <Text className='font-pbold text-[12px] text-white md:text-[16px]'>Thời gian niềng răng</Text>
                 </View>
-                {totalTime
+                {totalTime >= 0
                     ?
                     <Text className='font-pextrabold text-[12px] text-[#FBFF49] md:text-[16px]'>{totalTime} ngày</Text>
                     :

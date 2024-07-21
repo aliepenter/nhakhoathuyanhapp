@@ -4,6 +4,11 @@ type User = {
   so_dien_thoai: string;
   dia_chi: string;
   anh_dai_dien: string;
+  ngay_sinh: string;
+  gioi_tinh: string;
+  ngay_ktvcn: string;
+  ngay_chot_cn: string;
+  ngay_gan_mc: string
 };
 
 type Banner = {
@@ -42,6 +47,13 @@ type Post = {
   website_url: string;
 };
 
+type Video = {
+  id: number;
+  video_thumbnail: string;
+  video_url: any;
+  video_title: string;
+};
+
 type ChinhNhaChiTiet = {
   id: number;
   thu_thuat_dieu_tri: string;
@@ -74,4 +86,24 @@ type HopDong = {
   id: number;
   ten_hop_dong: string;
   hop_dong_chi_tiet_id: any;
+};
+
+
+type HoSoTraGopCn = {
+  id: number;
+  tong_so_tien: string;
+  so_tien_ban_dau: string;
+  so_tien_da_thanh_toan: string;
+  so_tien_con_lai: string;
+  so_tien_can_tra_ki_toi: string;
+  ngay_bat_dau_thanh_toan: string;
+  ngay_den_han_thanh_toan: string;
+  user_id: number;
+};
+
+type LichSuThanhToanCn = {
+  id: number;
+  so_tien: string;
+  ngay_thanh_toan: string;
+  user_id: number;
 };

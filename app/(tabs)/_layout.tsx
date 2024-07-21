@@ -5,6 +5,7 @@ import TabBar from '@/components/tabbar/TabBar';
 import { Alert, BackHandler } from 'react-native';
 import { StatusBar } from 'expo-status-bar'
 import { useFocusEffect } from '@react-navigation/native';
+import CustomHeader from '@/components/common/CustomHeader';
 
 
 const TabsLayout = () => {
@@ -35,7 +36,14 @@ const TabsLayout = () => {
         <>
             <Tabs tabBar={props => <TabBar {...props} />}>
                 <Tabs.Screen options={{ headerShown: false }} name="index" />
-                <Tabs.Screen options={{ headerShown: false }} name="image-gallery/index" />
+                <Tabs.Screen
+                    name="image-gallery/index"
+                    options={{
+                        header: (props) => (
+                            <CustomHeader {...props} customStyle="bg-white" title="Thư viện nụ cười"  disableBackButton={true}/>
+                        ),
+                    }}
+                />
                 <Tabs.Screen options={{ headerShown: false }} name="notification/index" />
                 <Tabs.Screen options={{ headerShown: false }} name="profile/index" />
             </Tabs>

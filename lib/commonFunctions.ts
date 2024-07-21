@@ -52,3 +52,12 @@ export const formatMoney = (amount: any) => {
     formatted += 'đ';
     return formatted;
 }
+
+export const calculateDaysDifference = (dateString: any) => {
+    const currentDate = new Date();
+    const providedDate = new Date(dateString);
+    const timeDifference = currentDate.getTime() - providedDate.getTime();
+    const daysDifference = Math.floor(timeDifference / (1000 * 3600 * 24));
+
+    return daysDifference;
+}

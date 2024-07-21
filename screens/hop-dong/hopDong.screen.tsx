@@ -47,19 +47,25 @@ export default function HopDongScreen() {
     return (
         <View className='flex-row justify-center gap-10 mt-[34px]'>
             {
-                hopDong && hopDong.length != 0
+                !loading
                     ?
-                    hopDong.map((item: HopDong, index: number) => (
-                        <TouchableOpacity
-                            activeOpacity={0.7}
-                            onPress={() => handlePress(item.hop_dong_chi_tiet_id, item.ten_hop_dong)}
-                            key={index}
-                            className='justify-center items-center'
-                        >
-                            <Image className='w-[115px] h-[115px]' resizeMode='cover' source={icons.hopDong} />
-                            <Text>{item.ten_hop_dong}</Text>
-                        </TouchableOpacity>
-                    ))
+                    hopDong && hopDong.length != 0
+                        ?
+                        hopDong.map((item: HopDong, index: number) => (
+                            <TouchableOpacity
+                                activeOpacity={0.7}
+                                onPress={() => handlePress(item.hop_dong_chi_tiet_id, item.ten_hop_dong)}
+                                key={index}
+                                className='justify-center items-center'
+                            >
+                                <Image className='w-[115px] h-[115px]' resizeMode='cover' source={icons.hopDong} />
+                                <Text>{item.ten_hop_dong}</Text>
+                            </TouchableOpacity>
+                        ))
+                        :
+                        <View className='justify-center items-center h-96'>
+                            <Text>Không có dữ liệu hợp đồng</Text>
+                        </View>
                     :
                     <View className={`h-[202px] justify-center`}>
                         <ActivityIndicator />

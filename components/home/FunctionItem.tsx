@@ -31,7 +31,7 @@ export default function FunctionItemsList() {
             <FunctionItem icon={icons.iconLichHen} path="/(routes)/lich-hen" title="Lịch hẹn" />
             <FunctionItem icon={icons.iconThanhToan} path="/(routes)/payment" title="Thanh toán" />
             <FunctionItem icon={icons.iconChiNhanh} path="/(routes)/branches" title="Chi nhánh" />
-            <FunctionItem icon={icons.iconTinTuc} path="/(routes)/tin-tuc" title="Tin tức" />
+            <FunctionItem icon={icons.iconTinTuc} path="/(routes)/tin-tuc/onlyNews" title="Bài viết" />
             <FunctionItem icon={icons.iconHopDong} path="/(routes)/hop-dong" title="Hợp đồng" />
             <FunctionItem icon={icons.iconLoiDan} path="/(routes)/loi-dan" title="Lời dặn" />
         </View>

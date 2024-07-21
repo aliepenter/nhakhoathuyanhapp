@@ -4,13 +4,17 @@ import {
     Text,
     View,
     ActivityIndicator,
+    TouchableOpacity,
 } from "react-native";
 import { icons } from "@/constants";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import Trending from '../common/Trending';
 export default function RenderVideo({ videos }: any) {
+    const handleViewAllNews = () => {
+        router.push("/(routes)/video/");
+    }
     return (
-        <View className="px-[11px] space-y-6 mt-[27px]">
+        <View className="px-[11px] space-y-6 mt-[27px] h-[230px]">
             <View className="w-full flex-1">
                 <View className="justify-between items-start flex-row md:mb-[10px]">
                     <View className="flex-row">
@@ -20,12 +24,15 @@ export default function RenderVideo({ videos }: any) {
                         </Text>
                     </View>
                     <View className="mt-1.5">
-                        <Link
-                            href="/sign-up"
-                            className="text-[12px] font-pregular text-[#FF2D2D] md:text-[16px]"
+                        <TouchableOpacity
+                            onPress={handleViewAllNews}
                         >
-                            Xem tất cả
-                        </Link>
+                            <Text
+                                className="text-[12px] md:text-[16px] font-pregular text-[#FF2D2D]"
+                            >
+                                Xem tất cả
+                            </Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 {videos && videos.length != 0

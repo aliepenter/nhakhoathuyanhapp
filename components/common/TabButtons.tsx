@@ -11,9 +11,11 @@ export type TabButtonType = {
 type TabButtonProps = {
     buttons: TabButtonType[];
     selectedTab: number;
+    iconIndex0: any;
+    iconIndex1: any;
     setSelectedTab: (index: number) => void
 }
-export default function TabButtons({ buttons, selectedTab, setSelectedTab }: TabButtonProps) {
+export default function TabButtons({ buttons, selectedTab, setSelectedTab, iconIndex0, iconIndex1 }: TabButtonProps) {
     const [dimentions, setDimentions] = useState({ height: 63, width: 388 })
     const buttonWidth = dimentions.width / buttons.length;
     const tabPositionX = useSharedValue(0);
@@ -54,12 +56,24 @@ export default function TabButtons({ buttons, selectedTab, setSelectedTab }: Tab
                                     selectedTab !== index
                                         ?
                                         <View className={`items-center justify-center flex-row`}>
-                                            <Image className={`${index === 0 ? 'w-[25px] h-[18px]' : 'w-[17px] h-[18px]'} mr-1`} source={index === 0 ? icons.galleryWhite : icons.chinhNhaWhite} />
+                                            {
+                                                iconIndex0 && iconIndex1
+                                                    ?
+                                                    <Image className={`${index === 0 ? 'w-[25px] h-[18px]' : 'w-[17px] h-[18px]'} mr-1`} resizeMode='cover' source={index === 0 ? iconIndex0 : iconIndex1} />
+                                                    :
+                                                    null
+                                            }
                                             <Text className={`text-[#FFFFFF] font-pbold`}>{button.title}</Text>
                                         </View>
                                         :
                                         <View className={`items-center justify-center flex-row`}>
-                                            <Image className={`${index === 0 ? 'w-[25px] h-[18px]' : 'w-[17px] h-[18px]'} mr-1`} source={index === 0 ? icons.galleryWhite : icons.chinhNhaWhite} />
+                                            {
+                                                iconIndex0 && iconIndex1
+                                                    ?
+                                                    <Image className={`${index === 0 ? 'w-[25px] h-[18px]' : 'w-[17px] h-[18px]'} mr-1`} resizeMode='cover' source={index === 0 ? iconIndex0 : iconIndex1} />
+                                                    :
+                                                    null
+                                            }
                                             <Text className={`text-[#FFFFFF] font-pbold`}>{button.title}</Text>
                                         </View>
                                 }
