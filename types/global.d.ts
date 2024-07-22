@@ -101,9 +101,10 @@ type HoSoTraGopCn = {
   user_id: number;
 };
 
-type LichSuThanhToanCn = {
+type LichSuThanhToan = {
   id: number;
   so_tien: string;
   ngay_thanh_toan: string;
   user_id: number;
+  dich_vu_id: number;
 };

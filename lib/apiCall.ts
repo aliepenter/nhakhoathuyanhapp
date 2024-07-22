@@ -420,7 +420,27 @@ export const getLichSuThanhToanCn = async (userId: any) => {
   if (token) {
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      const res = await axios.get(`${SERVER_URI}/lich-su-thanh-toan-cn/${userId}`);
+      const res = await axios.get(`${SERVER_URI}/lich-su-thanh-toan/cn/${userId}`);
+      if (!res) return null;
+      return {
+        code: 200,
+        data: res.data,
+      };
+    } catch (error) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+}
+
+export const getLichSuThanhToanDvk = async (userId: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const res = await axios.get(`${SERVER_URI}/lich-su-thanh-toan/dvk/${userId}`);
       if (!res) return null;
       return {
         code: 200,

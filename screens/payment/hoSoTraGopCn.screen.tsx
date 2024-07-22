@@ -7,7 +7,7 @@ import { getHoSoTraGopCn, getLichSuThanhToanCn } from '@/lib/apiCall';
 export default function HoSoTraGopCnScreen() {
   const { user } = useUser();
   const [hoSoTraGopCn, setHoSoTraGopCn] = useState<HoSoTraGopCn>();
-  const [lichSuThanhToanCn, setLichSuThanhToanCn] = useState<Array<LichSuThanhToanCn>>();
+  const [lichSuThanhToanCn, setLichSuThanhToanCn] = useState<Array<LichSuThanhToan>>();
   const [loading, setLoading] = useState(true);
   const [loading2, setLoading2] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -39,13 +39,13 @@ export default function HoSoTraGopCnScreen() {
         } else {
           setLoading(false)
         }
-      }, 0);
+      }, 1000);
 
     } catch (error) {
       console.error("Error fetching data:", error);
       setTimeout(() => {
         setLoading(false)
-      }, 0);
+      }, 1000);
     }
   };
   const fetchLichSuThanhToanCn = async (userId: number) => {
@@ -58,20 +58,22 @@ export default function HoSoTraGopCnScreen() {
         } else {
           setLoading2(false)
         }
-      }, 0);
+      }, 1000);
 
     } catch (error) {
       console.error("Error fetching data:", error);
       setTimeout(() => {
         setLoading2(false)
-      }, 0);
+      }, 1000);
     }
   };
   return (
     <View className='mt-[22px]'>
-      <Text className='font-psemibold text-[20px]'>Chi tiết thanh toán</Text>
+      <View className='px-[11px]'>
+        <Text className='font-psemibold text-[20px]'>Chi tiết thanh toán</Text>
+      </View>
       <View className='mt-[6px]'>
-        <View className='mb-[23px]'>
+        <View className='mb-[23px] px-[11px]'>
           {
             !loading
               ?
@@ -88,7 +90,7 @@ export default function HoSoTraGopCnScreen() {
                       <Text className='mt-1 font-pregular text-[14px] text-[#666666]'>{formatDate(hoSoTraGopCn.ngay_bat_dau_thanh_toan, 'minimize')}</Text>
                     </View>
                   </View>
-                  <View className='flex-row justify-between border-b-[1px] border-[#E9E9E9] pb-[10px] pt-[9px]'>
+                  <View className='flex-row border-b-[1px] border-[#E9E9E9] pb-[10px] pt-[9px]'>
                     <View className='w-[50%]'>
                       <Text className='font-pregular text-[12px]'>Tổng số tiền đã thanh toán</Text>
                       <Text className='mt-1 font-pbold text-[14px] text-[#FF0000]'>{formatMoney(hoSoTraGopCn.so_tien_da_thanh_toan)}</Text>
@@ -98,29 +100,29 @@ export default function HoSoTraGopCnScreen() {
                       <Text className='mt-1 font-pbold text-[14px] text-[#FF0000]'>{formatMoney(hoSoTraGopCn.so_tien_con_lai)}</Text>
                     </View>
                   </View>
-                  <View className='flex-row justify-between pt-[9px]'>
+                  <View className='flex-row pt-[9px]'>
                     <View className='w-[50%]'>
-                      <Text className='font-pregular text-[12px]'>Tổng số tiền cần thanh toán</Text>
+                      <Text className='font-pregular text-[12px]'>Số tiền cần trả kỳ tới</Text>
                       <Text className='mt-1 font-pbold text-[14px] text-[#666666]'>{formatMoney(hoSoTraGopCn.so_tien_can_tra_ki_toi)}</Text>
                     </View>
                     <View className='w-[50%]'>
-                      <Text className='font-pregular text-[12px]'>Ngày bắt đầu thanh toán</Text>
+                      <Text className='font-pregular text-[12px]'>Ngày đến hạn thanh toán</Text>
                       <Text className='mt-1 font-pregular text-[14px] text-[#666666]'>{formatDate(hoSoTraGopCn.ngay_den_han_thanh_toan, 'minimize')}</Text>
                     </View>
                   </View>
                 </View>
                 :
-                <View className='justify-center items-center h-96'>
+                <View className={`${Platform.OS === 'ios' ? 'h-[156px]' : 'h-[187px]'} justify-center items-center`}>
                   <Text>Không có dữ liệu thanh toán</Text>
                 </View>
               :
-              <View className="h-[175px] justify-center">
+              <View className={`${Platform.OS === 'ios' ? 'h-[156px]' : 'h-[187px]'} justify-center`}>
                 <ActivityIndicator />
               </View>
           }
         </View>
         <View>
-          <View className='flex-row justify-between items-center'>
+          <View className='flex-row justify-between items-center px-[11px]'>
             <Text className='font-psemibold text-[20px]'>Lịch sử thanh toán</Text>
             {!loading2 ?
               lichSuThanhToanCn && lichSuThanhToanCn.length != 0
@@ -135,7 +137,7 @@ export default function HoSoTraGopCnScreen() {
             }
           </View>
 
-          <View className='mt-[11px]'>
+          <View className='mt-[11px] px-[11px]'>
             <View className='flex-row'>
               <View className='w-[33.333333333%]'>
                 <Text className='font-pregular text-[12px]'>Ngày thanh toán</Text>
@@ -148,12 +150,12 @@ export default function HoSoTraGopCnScreen() {
               </View>
             </View>
           </View>
-          <ScrollView className='h-96 mt-[7px]' refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+          <ScrollView className={`${Platform.OS === 'ios' ? 'h-[57%]': 'h-[47%]'} mt-[7px]`} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
             {!loading2 ?
               lichSuThanhToanCn && lichSuThanhToanCn.length != 0
                 ?
-                lichSuThanhToanCn.map((item: LichSuThanhToanCn, index: number) => (
-                  <View key={index} className={`${index % 2 === 0 ? "bg-[#F3F3F3]" : "bg-white"} h-10 justify-center items-center`}>
+                lichSuThanhToanCn.map((item: LichSuThanhToan, index: number) => (
+                  <View key={index} className={`${index % 2 === 0 ? "bg-[#F3F3F3]" : "bg-white"} h-10 justify-center items-center px-[11px]`}>
                     <View className='flex-row'>
                       <View className='w-[33.333333333%] justify-center'>
                         <Text className='font-pregular text-[12px]'>{formatDate(item.ngay_thanh_toan, 'minimize')}</Text>
@@ -170,21 +172,13 @@ export default function HoSoTraGopCnScreen() {
                   </View>
                 ))
                 :
-                <View className='justify-center items-center h-96'>
+                <View className='justify-center items-center h-56'>
                   <Text>Không có dữ liệu lịch sử thanh toán</Text>
                 </View>
               :
               <View className="h-56 justify-center">
                 <ActivityIndicator />
               </View>
-            }
-            {
-              Platform.OS === 'ios'
-                ?
-                <View className='h-10'></View>
-                :
-                <View className='h-28'></View>
-
             }
           </ScrollView>
         </View>

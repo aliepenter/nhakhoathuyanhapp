@@ -82,8 +82,16 @@ import flash from "../assets/icons/flash.png";
 import download from "../assets/icons/download.png";
 import download2 from "../assets/icons/download2.png";
 import trashWhite from "../assets/icons/trash-white.png";
+import nextGreen from "../assets/icons/next-green.png";
+import previousGreen from "../assets/icons/previous-green.png";
+import circle from "../assets/icons/circle.png";
+import circleActive from "../assets/icons/circle-active.png";
 export default {
   trashWhite,
+  circle,
+  circleActive,
+  previousGreen,
+  nextGreen,
   download,
   download2,
   flash,
