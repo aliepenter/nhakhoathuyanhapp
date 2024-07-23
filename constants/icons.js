@@ -86,7 +86,55 @@ import nextGreen from "../assets/icons/next-green.png";
 import previousGreen from "../assets/icons/previous-green.png";
 import circle from "../assets/icons/circle.png";
 import circleActive from "../assets/icons/circle-active.png";
+import niengRang from "../assets/icons/nieng-rang-mac-cai.png";
+import niengRangActive from "../assets/icons/nieng-rang-mac-cai-active.png";
+import niengRangInvi from "../assets/icons/nieng-rang-invi.png";
+import niengRangInviActive from "../assets/icons/nieng-rang-invi-active.png";
+import implant from "../assets/icons/implant.png";
+import implantActive from "../assets/icons/implant-active.png";
+import ao4 from "../assets/icons/ao4.png";
+import ao4Active from "../assets/icons/ao4-active.png";
+import tayTrang from "../assets/icons/tay-trang.png";
+import tayTrangActive from "../assets/icons/tay-trang-active.png";
+import veneer from "../assets/icons/veneer.png";
+import veneerActive from "../assets/icons/veneer-active.png";
+import nhoRangKhon from "../assets/icons/nho-rang-khon.png";
+import nhoRangKhonActive from "../assets/icons/nho-rang-khon-active.png";
+import tiaLoiKhon from "../assets/icons/tia-loi.png";
+import tiaLoiKhonActive from "../assets/icons/tia-loi-active.png";
+import thaiDuongHamKhon from "../assets/icons/thai-duong-ham.png";
+import thaiDuongHamKhonActive from "../assets/icons/thai-duong-ham-active.png";
+import tutLoi from "../assets/icons/tut-loi.png";
+import tutLoiActive from "../assets/icons/tut-loi-active.png";
+import dieuTriTuy from "../assets/icons/dieu-tri-tuy.png";
+import dieuTriTuyActive from "../assets/icons/dieu-tri-tuy-active.png";
+import dichVuKhac from "../assets/icons/dich-vu-khac.png";
+import dichVuKhacActive from "../assets/icons/dich-vu-khac-active.png";
 export default {
+  niengRang,
+  niengRangActive,
+  niengRangInvi,
+  niengRangInviActive,
+  implant,
+  implantActive,
+  ao4,
+  ao4Active,
+  tayTrang,
+  tayTrangActive,
+  veneer,
+  veneerActive,
+  nhoRangKhon,
+  nhoRangKhonActive,
+  tiaLoiKhon,
+  tiaLoiKhonActive,
+  thaiDuongHamKhon,
+  thaiDuongHamKhonActive,
+  tutLoi,
+  tutLoiActive,
+  dieuTriTuy,
+  dieuTriTuyActive,
+  dichVuKhac,
+  dichVuKhacActive,
   trashWhite,
   circle,
   circleActive,

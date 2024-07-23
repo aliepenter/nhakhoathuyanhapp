@@ -5,8 +5,16 @@ export const formatDate = (isoDateString: any, type: any) => {
     const day = String(date.getUTCDate()).padStart(2, '0');
     if (type === 'full') {
         return `Ngày ${day} tháng ${month} năm ${year}`;
-    } else {
+    } else if (type === 'minimize') {
         return `${day}/${month}/${year}`;
+    } else if (type === 'day') {
+        return `${day}`;
+    } else if (type === 'month') {
+        return `${month}`;
+    } else if (type === 'year') {
+        return `${year}`;
+    } else if (type === 'isoDate') {
+        return `${year}-${month}-${day}`;
     }
 }
 
@@ -30,6 +38,21 @@ export const formatDateTime = (isoDateString: any) => {
     return formattedTime;
 }
 
+export const formatISODateToAMPM = (isoDate: string | number | Date) => {
+    const date = new Date(isoDate);
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const period = hours >= 12 ? 'CH' : 'SA';
+
+    // Chuyển đổi giờ sang định dạng 12 giờ
+    hours = hours % 12;
+    hours = hours ? hours : 12; // Đổi giờ 0 thành 12
+
+    // Định dạng chuỗi "hh:mm AM/PM"
+    const formattedTime = `${hours}:${minutes < 10 ? '0' + minutes : minutes} ${period}`;
+
+    return formattedTime;
+}
 export const formatMoney = (amount: any) => {
     amount = parseFloat(amount.toString().replace(/,/g, '')).toFixed(0);
 

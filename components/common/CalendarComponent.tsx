@@ -24,21 +24,24 @@ LocaleConfig.locales['vn'] = {
 };
 
 LocaleConfig.defaultLocale = 'vn';
-export default function CalendarComponent() {
+interface CalendarComponentProps {
+    markedDates: any;
+    onMonthChange: (month: string, year: string) => void;
+}
+export default function CalendarComponent({ markedDates, onMonthChange }: CalendarComponentProps) {
     const [selectedDate, setSelectedDate] = useState('');
     const [today, setToday] = useState(new Date().toISOString().split('T')[0]);
     const handleDayPress = (day: any) => {
         setSelectedDate(day.dateString);
     };
-    const markedDates = {
+    markedDates = {
+        ...markedDates,
         [today]: { marked: true, dotColor: 'blue' },
-        '2024-06-28': { selected: true, selectedColor: '#51B81A' },
-        '2024-07-28': { selected: true, selectedColor: '#FB3F4A' },
     };
     return (
         <View>
             <Calendar
-                onDayPress={()=>{}}
+                hideExtraDays
                 markedDates={markedDates}
                 enableSwipeMonths={true}
                 theme={{
@@ -48,6 +51,11 @@ export default function CalendarComponent() {
                     textDayHeaderFontWeight: '500',
                     textDayHeaderFontSize: 16,
 
+                }}
+                onMonthChange={(month: {
+                    year: string; month: string;
+                }) => {
+                    onMonthChange(month.month, month.year);
                 }}
                 showSixWeeks
                 disableAllTouchEventsForDisabledDays
