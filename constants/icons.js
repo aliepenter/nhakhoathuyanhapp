@@ -100,17 +100,31 @@ import veneer from "../assets/icons/veneer.png";
 import veneerActive from "../assets/icons/veneer-active.png";
 import nhoRangKhon from "../assets/icons/nho-rang-khon.png";
 import nhoRangKhonActive from "../assets/icons/nho-rang-khon-active.png";
-import tiaLoiKhon from "../assets/icons/tia-loi.png";
-import tiaLoiKhonActive from "../assets/icons/tia-loi-active.png";
-import thaiDuongHamKhon from "../assets/icons/thai-duong-ham.png";
-import thaiDuongHamKhonActive from "../assets/icons/thai-duong-ham-active.png";
+import tiaLoi from "../assets/icons/tia-loi.png";
+import tiaLoiActive from "../assets/icons/tia-loi-active.png";
+import thaiDuongHam from "../assets/icons/thai-duong-ham.png";
+import thaiDuongHamActive from "../assets/icons/thai-duong-ham-active.png";
 import tutLoi from "../assets/icons/tut-loi.png";
 import tutLoiActive from "../assets/icons/tut-loi-active.png";
 import dieuTriTuy from "../assets/icons/dieu-tri-tuy.png";
 import dieuTriTuyActive from "../assets/icons/dieu-tri-tuy-active.png";
 import dichVuKhac from "../assets/icons/dich-vu-khac.png";
 import dichVuKhacActive from "../assets/icons/dich-vu-khac-active.png";
+import nextArrow from "../assets/icons/next-arrow.png";
+import thanhCong from "../assets/icons/thanh-cong.png";
+import heart from "../assets/icons/heart.png";
+import heartGif from "../assets/icons/heart-gif.gif";
+import heartBg from "../assets/icons/heart-bg.png";
+import macCaiDamon from "../assets/icons/mac-cai-damon.png";
+import wave from "../assets/icons/wave.gif";
 export default {
+  wave,
+  macCaiDamon,
+  heart,
+  heartGif,
+  heartBg,
+  thanhCong,
+  nextArrow,
   niengRang,
   niengRangActive,
   niengRangInvi,
@@ -125,10 +139,10 @@ export default {
   veneerActive,
   nhoRangKhon,
   nhoRangKhonActive,
-  tiaLoiKhon,
-  tiaLoiKhonActive,
-  thaiDuongHamKhon,
-  thaiDuongHamKhonActive,
+  tiaLoi,
+  tiaLoiActive,
+  thaiDuongHam,
+  thaiDuongHamActive,
   tutLoi,
   tutLoiActive,
   dieuTriTuy,

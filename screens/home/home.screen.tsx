@@ -13,7 +13,7 @@ import BannerSlide from "@/components/common/BannerSlide";
 import NewsSection from "@/components/home/NewsSection";
 import HeaderSection from "@/components/home/HeaderSection";
 import TimeTracking from "@/components/home/TimeTracking";
-import { calculateDaysDifference } from "@/lib/commonFunctions";
+import { calculateDaysDifference, formatDate } from "@/lib/commonFunctions";
 
 
 const HomeScreen = () => {
@@ -90,7 +90,9 @@ const HomeScreen = () => {
       >
         <BannerSlide banners={banners} type={1} />
         <FunctionItemsList />
-        <TimeTracking schedule="07/07/2024" totalTime={user && user.ngay_gan_mc != null ? calculateDaysDifference(user.ngay_gan_mc) : 0} />
+        <TimeTracking schedule={
+          user && user.ngay_gan_mc != null ? formatDate(user.ngay_gan_mc, 'minimize') : 0
+        } totalTime={user && user.ngay_gan_mc != null ? calculateDaysDifference(user.ngay_gan_mc) : 0} />
         <RenderVideo videos={videos} />
         <NewsSection post={post} />
         <View className="h-[150px]"></View>

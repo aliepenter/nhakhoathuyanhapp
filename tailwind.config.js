@@ -29,6 +29,10 @@ module.exports = {
         pbold: ["Inter-Bold", "sans-serif"],
         pextrabold: ["Inter-ExtraBold", "sans-serif"],
         pblack: ["Inter-Black", "sans-serif"],
+        mregular: ["Mali-Regular", "sans-serif"],
+        mmedium: ["Mali-Medium", "sans-serif"],
+        mbold: ["Mali-Bold", "sans-serif"],
+
       },
     },
   },

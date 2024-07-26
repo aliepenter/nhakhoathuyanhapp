@@ -11,6 +11,22 @@ import bgHeaderHome from "../assets/images/bg-header-home.png";
 import bgHeaderPage from "../assets/images/header-page.png";
 import bannerDefault from "../assets/images/banner-default.jpg";
 import bgTabbar from "../assets/images/bg-tabbar.png";
-
-
-export default { bgTabbar, bgHeaderPage, bannerDefault, bgHeaderHome, profile, thumbnail, cards, path, logo, logoSmall, empty, splashscreen, bgPhoneInput };
+import bgLovingPage from "../assets/images/bg-loving-page.png";
+import heartFly from "../assets/images/heart-fly.gif";
+export default {
+    bgLovingPage,
+    heartFly,
+    bgTabbar,
+    bgHeaderPage,
+    bannerDefault,
+    bgHeaderHome,
+    profile,
+    thumbnail,
+    cards,
+    path,
+    logo,
+    logoSmall,
+    empty,
+    splashscreen,
+    bgPhoneInput
+};

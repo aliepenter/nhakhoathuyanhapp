@@ -25,6 +25,10 @@ export default function RootLayout() {
     "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
     "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
     "Poppins-Thin": require("../assets/fonts/Poppins-Thin.ttf"),
+    "Mali-Bold": require("../assets/fonts/Mali-Bold.ttf"),
+    "Mali-Medium": require("../assets/fonts/Mali-Medium.ttf"),
+    "Mali-Regular": require("../assets/fonts/Mali-Regular.ttf"),
+
   });
 
   useEffect(() => {

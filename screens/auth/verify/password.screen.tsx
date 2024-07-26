@@ -23,7 +23,6 @@ const PasswordScreen = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const route = useRoute();
     const { username }: any = route.params;
-
     const isIOS = Platform.OS === 'ios';
     const [allowBackNavigation, setAllowBackNavigation] = useState(false);
 

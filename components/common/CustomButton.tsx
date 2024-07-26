@@ -2,7 +2,7 @@ import { TouchableOpacity, Text, View, ActivityIndicator, Image } from 'react-na
 import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
 
-const CustomButton = ({ iconStyle, icon, title, handlePress, containerStyles, textStyles, isLoading, colorFrom, colorTo, buttonStyle }: any) => {
+const CustomButton = ({ iconStyle, icon, title, handlePress, containerStyles, textStyles, isLoading, colorFrom, colorTo, buttonStyle, iconRight }: any) => {
     return (
         <View className={`justify-center flex items-center`}>
             <TouchableOpacity
@@ -20,11 +20,11 @@ const CustomButton = ({ iconStyle, icon, title, handlePress, containerStyles, te
                             end={{ x: 1, y: 0 }}
                             className={`${buttonStyle} justify-center items-center`}
                         >
-                            <ButtonText iconStyle={iconStyle} textStyles={textStyles} title={title} isLoading={isLoading} icon={icon} />
+                            <ButtonText iconStyle={iconStyle} textStyles={textStyles} title={title} isLoading={isLoading} icon={icon} iconRight={iconRight} />
                         </LinearGradient>
                         :
                         <View className={`${buttonStyle} justify-center items-center`}>
-                            <ButtonText iconStyle={iconStyle} textStyles={textStyles} title={title} isLoading={isLoading} icon={icon} />
+                            <ButtonText iconStyle={iconStyle} textStyles={textStyles} title={title} isLoading={isLoading} icon={icon} iconRight={iconRight} />
                         </View>
                 }
             </TouchableOpacity>
@@ -34,26 +34,43 @@ const CustomButton = ({ iconStyle, icon, title, handlePress, containerStyles, te
 
 export default CustomButton
 
-const ButtonText = ({ textStyles, title, isLoading, icon, iconStyle }: any) => {
+const ButtonText = ({ textStyles, title, isLoading, icon, iconStyle, iconRight }: any) => {
     return <>
         {
             isLoading ?
                 <ActivityIndicator />
                 :
-                icon ?
+                icon
+                    ?
                     <View className='flex-row items-center justify-between'>
-                        <Image
-                            source={icon}
-                            className={`${iconStyle}`}
-                        />
-                        < Text className={`${textStyles}`}>
-                            {title}
-                        </Text >
+                        {
+                            iconRight
+                                ?
+                                <>
+                                    <Text className={`${textStyles}`}>
+                                        {title}
+                                    </Text>
+                                    <Image
+                                        source={icon}
+                                        className={`${iconStyle}`}
+                                    />
+                                </>
+                                :
+                                <>
+                                    <Image
+                                        source={icon}
+                                        className={`${iconStyle}`}
+                                    />
+                                    < Text className={`${textStyles}`}>
+                                        {title}
+                                    </Text >
+                                </>
+                        }
                     </View>
                     :
-                    < Text className={`${textStyles}`}>
+                    <Text className={`${textStyles}`}>
                         {title}
-                    </Text >
+                    </Text>
         }
     </>
 }

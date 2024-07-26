@@ -98,7 +98,7 @@ export default function LichHenScreen() {
                     {
                         !loading
                             ?
-                            <CalendarComponent markedDates={markedDates} onMonthChange={handleMonthChange} />
+                            <CalendarComponent selectedDate={null} setSelectedDate={() => { }} disableArrowLeft={false} enableDayClick={false} hideExtraDays={true} minDate={false} showSixWeeks={true} markedDates={markedDates} onMonthChange={handleMonthChange} />
                             :
                             <View className="h-96 justify-center">
                                 <ActivityIndicator />
@@ -130,7 +130,7 @@ export default function LichHenScreen() {
                     chinhNha && chinhNha.length != 0
                         ?
                         chinhNha.map((item: ChinhNha, index: number) => (
-                            index + 1 !== chinhNha.length
+                            index !== chinhNha.length
                                 ?
                                 <TouchableOpacity
                                     key={index}
@@ -146,9 +146,9 @@ export default function LichHenScreen() {
                                             checkActive(item.ngay_chinh_nha, index)
                                                 ? icons.circleActive
                                                 : icons.circle
-                                        } resizeMode='cover' className={`${Platform.OS === 'ios'?'top-[56%]':'top-[60%]'} w-[13px] h-[13px] absolute right-[-6.5px]`} />
+                                        } resizeMode='cover' className={`${Platform.OS === 'ios' ? 'top-[56%]' : 'top-[60%]'} w-[13px] h-[13px] absolute right-[-6.5px]`} />
                                     </View>
-                                    <View className={`${Platform.OS === 'ios'?'h-[90%]':''} w-[80%] items-end justify-center`}>
+                                    <View className={`${Platform.OS === 'ios' ? 'h-[90%]' : ''} w-[80%] items-end justify-center`}>
                                         <View className='bg-white w-[95%] h-[80%] rounded-[4px] border-l-[6px] border-[#51B81A]'>
                                             <View className='justify-center items-end h-[35%] w-[98%]'>
                                                 <Text className='font-pregular text-[10px]'>{formatISODateToAMPM(item.ngay_chinh_nha)}</Text>
@@ -173,7 +173,6 @@ export default function LichHenScreen() {
                         <ActivityIndicator />
                     </View>
                 }
-
             </ScrollView>
         </View>
     )

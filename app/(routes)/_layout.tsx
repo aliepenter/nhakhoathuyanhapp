@@ -144,6 +144,7 @@ const PageLayout = () => {
                 <Stack.Screen options={{ headerShown: false }} name="hop-dong/hopDongDetail" />
                 <Stack.Screen options={{ headerShown: false }} name="image-gallery/index" />
                 <Stack.Screen options={{ headerShown: false }} name="camera/index" />
+                <Stack.Screen options={{ headerShown: false }} name="loving/index" />
             </Stack>
             <StatusBar barStyle={'light-content'} />
         </>

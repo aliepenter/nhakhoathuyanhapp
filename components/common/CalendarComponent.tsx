@@ -1,5 +1,5 @@
 import { View, Image, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Agenda, Calendar, LocaleConfig } from 'react-native-calendars';
 import { icons } from '@/constants';
 
@@ -26,23 +26,38 @@ LocaleConfig.locales['vn'] = {
 LocaleConfig.defaultLocale = 'vn';
 interface CalendarComponentProps {
     markedDates: any;
+    minDate: boolean;
+    showSixWeeks: boolean;
+    hideExtraDays: boolean;
+    enableDayClick: boolean;
+    disableArrowLeft: boolean;
     onMonthChange: (month: string, year: string) => void;
+    setSelectedDate: (date: string) => void;
+    selectedDate: any;
 }
-export default function CalendarComponent({ markedDates, onMonthChange }: CalendarComponentProps) {
-    const [selectedDate, setSelectedDate] = useState('');
+export default function CalendarComponent({ disableArrowLeft, enableDayClick, hideExtraDays, markedDates, onMonthChange, minDate, showSixWeeks, selectedDate, setSelectedDate }: CalendarComponentProps) {
     const [today, setToday] = useState(new Date().toISOString().split('T')[0]);
+
+    const [currentMarkedDates, setCurrentMarkedDates] = useState<any>(markedDates);
+
+    useEffect(() => {
+        setCurrentMarkedDates({
+            ...markedDates,
+            [today]: { marked: true, dotColor: 'blue' },
+            [selectedDate]: { selected: true, selectedColor: '#FB3F4A' }
+        });
+    }, [selectedDate, markedDates, today]);
+
     const handleDayPress = (day: any) => {
-        setSelectedDate(day.dateString);
-    };
-    markedDates = {
-        ...markedDates,
-        [today]: { marked: true, dotColor: 'blue' },
+        if (enableDayClick) {
+            setSelectedDate(day.dateString);
+        }
     };
     return (
         <View>
             <Calendar
-                hideExtraDays
-                markedDates={markedDates}
+                hideExtraDays={hideExtraDays}
+                markedDates={currentMarkedDates}
                 enableSwipeMonths={true}
                 theme={{
                     monthTextColor: '#747474',
@@ -52,23 +67,28 @@ export default function CalendarComponent({ markedDates, onMonthChange }: Calend
                     textDayHeaderFontSize: 16,
 
                 }}
+                onDayPress={(day: any) => {
+                    handleDayPress(day);
+                }}
                 onMonthChange={(month: {
                     year: string; month: string;
                 }) => {
                     onMonthChange(month.month, month.year);
                 }}
-                showSixWeeks
+                disableArrowLeft={disableArrowLeft}
+                minDate={minDate ? today : null}
+                showSixWeeks={showSixWeeks}
                 disableAllTouchEventsForDisabledDays
-                renderArrow={(direction: any) => <CustomArrow direction={direction} />}
+                renderArrow={(direction: any) => <CustomArrow direction={direction} disableArrowLeft={disableArrowLeft} />}
             />
 
         </View>
     )
 }
 
-const CustomArrow = ({ direction }: any) => {
+const CustomArrow = ({ direction, disableArrowLeft }: any) => {
 
     return (
-        <Image className='w-[12px] h-[12px]' source={direction === 'left' ? icons.previousGreen : icons.nextGreen} />
+        <Image className='w-[12px] h-[12px]' source={direction === 'left' ? disableArrowLeft ? null : icons.previousGreen : icons.nextGreen} />
     );
 };
