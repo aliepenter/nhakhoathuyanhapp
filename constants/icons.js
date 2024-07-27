@@ -13,6 +13,7 @@ import eye from "../assets/icons/eye.png";
 import play from "../assets/icons/play.png";
 import booking from "../assets/icons/booking.png";
 import notification from "../assets/icons/notification.png";
+import notificationGif from "../assets/icons/notification-gif.gif";
 import notificationHeader from "../assets/icons/notification-header.png";
 import notificationHighlight from "../assets/icons/notification-highlight.png";
 import gallery from "../assets/icons/gallery.png";
@@ -118,6 +119,7 @@ import heartBg from "../assets/icons/heart-bg.png";
 import macCaiDamon from "../assets/icons/mac-cai-damon.png";
 import wave from "../assets/icons/wave.gif";
 export default {
+  notificationGif,
   wave,
   macCaiDamon,
   heart,

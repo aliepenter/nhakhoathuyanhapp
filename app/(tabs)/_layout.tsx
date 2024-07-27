@@ -44,7 +44,14 @@ const TabsLayout = () => {
                         ),
                     }}
                 />
-                <Tabs.Screen options={{ headerShown: false }} name="notification/index" />
+                <Tabs.Screen
+                    name="notification/index"
+                    options={{
+                        header: (props) => (
+                            <CustomHeader {...props} customStyle="bg-[#F2F2F2]" title="Thông báo"  disableBackButton={true}/>
+                        ),
+                    }}
+                />
                 <Tabs.Screen options={{ headerShown: false }} name="profile/index" />
             </Tabs>
             <StatusBar style='light' />

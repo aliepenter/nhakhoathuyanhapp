@@ -44,11 +44,9 @@ export const formatISODateToAMPM = (isoDate: string | number | Date) => {
     const minutes = date.getMinutes();
     const period = hours >= 12 ? 'CH' : 'SA';
 
-    // Chuyển đổi giờ sang định dạng 12 giờ
     hours = hours % 12;
-    hours = hours ? hours : 12; // Đổi giờ 0 thành 12
+    hours = hours ? hours : 12;
 
-    // Định dạng chuỗi "hh:mm AM/PM"
     const formattedTime = `${hours}:${minutes < 10 ? '0' + minutes : minutes} ${period}`;
 
     return formattedTime;

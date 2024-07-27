@@ -453,3 +453,23 @@ export const getLichSuThanhToanDvk = async (userId: any) => {
     return null;
   }
 }
+
+export const getLichSuTroChuyen = async (userId: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const res = await axios.get(`${SERVER_URI}/cuoc-tro-chuyen/${userId}`);
+      if (!res) return null;
+      return {
+        code: 200,
+        data: res.data,
+      };
+    } catch (error) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+}

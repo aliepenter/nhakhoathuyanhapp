@@ -1,10 +1,10 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-export default function LoiDanScreen() {
+export default function KhuyenMaiScreen() {
   return (
     <View>
-      <Text>LoiDanScreen</Text>
+      <Text>KhuyenMaiScreen</Text>
     </View>
   )
 }

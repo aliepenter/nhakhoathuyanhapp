@@ -108,3 +108,12 @@ type LichSuThanhToan = {
   user_id: number;
   dich_vu_id: number;
 };
+
+type CuocTroChuyen = {
+  id: number;
+  title: string;
+  createdAt: string;
+  user_id: number;
+  status: number;
+  seen: number;
+};

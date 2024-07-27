@@ -14,6 +14,7 @@ import NewsSection from "@/components/home/NewsSection";
 import HeaderSection from "@/components/home/HeaderSection";
 import TimeTracking from "@/components/home/TimeTracking";
 import { calculateDaysDifference, formatDate } from "@/lib/commonFunctions";
+import Toast from "react-native-toast-message";
 
 
 const HomeScreen = () => {
@@ -41,6 +42,7 @@ const HomeScreen = () => {
     fetchVideoData();
     fetchBannerData();
     fetchNews();
+    showToast();
   }, []);
 
   const fetchNews = async () => {
@@ -82,6 +84,16 @@ const HomeScreen = () => {
       console.error("Error fetching data:", error);
     }
   };
+  const showToast = () => {
+    Toast.show({
+      type: 'error',
+      text1: 'Thông báo',
+      text2: 'Bạn có một lời dặn mới từ bác sĩ',
+      autoHide: true,
+      visibilityTime: 10000,
+      position: 'top',
+    });
+  }
   return (
     <View className="bg-white">
       <HeaderSection user={user} showNotification={true} />

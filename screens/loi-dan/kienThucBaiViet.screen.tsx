@@ -4,7 +4,7 @@ import { getOnlyLoiDan } from '@/lib/apiCall';
 import PostItem from '@/components/common/PostItem';
 import SearchInput from '@/components/common/SearchInput';
 
-export default function LoiDanBaiVietScreen() {
+export default function KienThucBaiVietScreen() {
     const [loiDanVBaiViet, setLoiDanVBaiViet] = useState<Array<Post>>();
     const [refreshing, setRefreshing] = useState(false);
     const [loading, setLoading] = useState(true);

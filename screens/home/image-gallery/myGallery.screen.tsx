@@ -153,7 +153,7 @@ export default function MyGalleryScreen({ user }: any) {
           iconStyle="w-[20px] h-[20px] mr-[6px]"
         />
       </View>
-      <View className="h-[270px]"></View>
+      <View className="h-[170px]"></View>
     </ScrollView>
   )
 }

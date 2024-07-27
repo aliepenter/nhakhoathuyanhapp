@@ -7,7 +7,7 @@ import { icons, images } from '@/constants';
 import { getOnlyLoiDanVideo } from '@/lib/apiCall';
 import { Image } from 'expo-image'
 import VideoItem from '@/components/common/VideoItem';
-export default function LoiDanVideoScreen() {
+export default function KienThucVideoScreen() {
     const [loiDanVideo, setLoiDanVideo] = useState<Array<Post>>();
     const [refreshing, setRefreshing] = useState(false);
     const [loading, setLoading] = useState(true);

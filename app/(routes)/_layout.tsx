@@ -80,10 +80,10 @@ const PageLayout = () => {
                     }}
                 />
                 <Stack.Screen
-                    name="loi-dan/index"
+                    name="kien-thuc/index"
                     options={{
                         header: (props) => (
-                            <CustomHeader {...props} customStyle="bg-white" title="Lời dặn" />
+                            <CustomHeader {...props} customStyle="bg-white" title="Kiến thức nha khoa" />
                         ),
                     }}
                 />
@@ -136,6 +136,7 @@ const PageLayout = () => {
                     }}
                 />
                 <Stack.Screen options={{ headerShown: false }} name="login/index" />
+                <Stack.Screen options={{ headerShown: false }} name="chat/index" />
                 <Stack.Screen options={{ headerShown: false }} name="verify-password/index" />
                 <Stack.Screen options={{ headerShown: false }} name="verify-password/otpLogin" />
                 <Stack.Screen options={{ headerShown: false }} name="verify-sign-up/index" />

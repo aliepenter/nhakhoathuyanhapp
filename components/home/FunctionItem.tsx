@@ -27,13 +27,13 @@ export default function FunctionItemsList() {
     return (
         <View className="flex-row flex-wrap">
             <FunctionItem icon={icons.iconChinhNha} path="/(routes)/chinh-nha" title="Chỉnh nha" />
-            <FunctionItem icon={icons.iconLichHen} path="/(routes)/lich-hen" title="Lịch hẹn" />
-            <FunctionItem icon={icons.iconDatLich} path="/(routes)/dat-lich" title="Đặt lịch" />
             <FunctionItem icon={icons.iconThanhToan} path="/(routes)/payment" title="Thanh toán" />
+            <FunctionItem icon={icons.iconLichHen} path="/(routes)/lich-hen" title="Lịch hẹn" />
+            <FunctionItem icon={icons.iconLoiDan} path="/(routes)/tin-tuc/onlyNews" title="Lời dặn" />
             <FunctionItem icon={icons.iconChiNhanh} path="/(routes)/branches" title="Chi nhánh" />
-            <FunctionItem icon={icons.iconTinTuc} path="/(routes)/tin-tuc/onlyNews" title="Bài viết" />
             <FunctionItem icon={icons.iconHopDong} path="/(routes)/hop-dong" title="Hợp đồng" />
-            <FunctionItem icon={icons.iconLoiDan} path="/(routes)/loi-dan" title="Lời dặn" />
+            <FunctionItem icon={icons.iconDatLich} path="/(routes)/dat-lich" title="Đặt lịch" />
+            <FunctionItem icon={icons.iconTinTuc} path="/(routes)/kien-thuc" title="Kiến thức" />
         </View>
     );
 }

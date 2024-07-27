@@ -1,8 +1,8 @@
 import { SplashScreen, Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
-import { LogBox, StatusBar } from "react-native";
-import Toast from "react-native-toast-message";
+import { LogBox, StatusBar, View, Text } from "react-native";
+import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -42,13 +42,57 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
+  const toastConfig = {
+    success: (props: any) => (
+      <BaseToast
+        {...props}
+        style={{ borderLeftColor: '#51B81A' }}
+        text1Style={{
+          fontSize: 15,
+        }}
+        text2Style={{
+          fontSize: 13,
+        }}
+      />
+    ),
+    info: (props: any) => (
+      <BaseToast
+        {...props}
+        style={{ borderLeftColor: '#3EC8E7' }}
+        text1Style={{
+          fontSize: 15,
+        }}
+        text2Style={{
+          fontSize: 13,
+        }}
+      />
+    ),
+    error: (props: any) => (
+      <ErrorToast
+        {...props}
+        style={{ borderLeftColor: 'red' }}
+        text1Style={{
+          fontSize: 15,
+        }}
+        text2Style={{
+          fontSize: 13,
+        }}
+      />
+    ),
+    tomatoToast: ({ text1, props }: any) => (
+      <View style={{ height: 60, width: '100%', backgroundColor: 'tomato' }}>
+        <Text>{text1}</Text>
+        <Text>{props.uuid}</Text>
+      </View>
+    )
+  };
   return (
     <>
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="index"/>
+        <Stack.Screen name="index" />
       </Stack>
-      <StatusBar barStyle={'light-content' } />
-      <Toast />
+      <StatusBar barStyle={'light-content'} />
+      <Toast config={toastConfig} />
     </>
   );
 }
