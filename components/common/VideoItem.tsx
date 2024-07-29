@@ -1,16 +1,26 @@
-import { Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { Text, View, Pressable, ActivityIndicator } from 'react-native'
 import React from 'react'
 import { router } from 'expo-router';
 import { SERVER_URL } from '@/utils/uri';
 import { images } from '@/constants';
 import { Image } from 'expo-image'
-export default function VideoItem({ loading, post }: any) {
+type VideoItemProps = {
+    flag: boolean;
+    setFlag: (index: boolean) => void;
+    post: any;
+    loading: boolean;
+}
+export default function VideoItem({ loading, post, flag, setFlag }: VideoItemProps) {
     const onPress = (item: any) => {
         if (item) {
+            setFlag(true);
             router.push({
                 pathname: "(routes)/play-video",
                 params: { videoItem: item.video_url, headerTitle: item.video_title },
             });
+            setTimeout(() => {
+                setFlag(false)
+            }, 1000);
         }
     }
     return (
@@ -21,11 +31,11 @@ export default function VideoItem({ loading, post }: any) {
                 <View className={`flex-row flex-wrap pt-[25px]`}>
                     {
                         post.map((item: Video, index: number) => (
-                            <TouchableOpacity
+                            <Pressable
                                 key={index}
                                 className={`px-[11px] mb-[15px] w-full`}
-                                activeOpacity={0.7}
                                 onPress={() => onPress(item)}
+                                disabled={flag}
                             >
                                 <View className='w-full h-52 bg-gray-300 md:h-64 rounded-[10px]'>
                                     <Image
@@ -37,7 +47,7 @@ export default function VideoItem({ loading, post }: any) {
                                     />
                                 </View>
                                 <Text className='font-semibold text-[16px] text-center mt-[7px]'>{item.video_title}</Text>
-                            </TouchableOpacity>
+                            </Pressable>
                         ))
                     }
                 </View>

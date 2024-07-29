@@ -8,6 +8,7 @@ export default function TinTucAllScreen() {
     const [post, setPost] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [flag, setFlag] = useState<boolean>(false);
 
     const onRefresh = async () => {
         setRefreshing(true);
@@ -47,7 +48,7 @@ export default function TinTucAllScreen() {
                 renderItem={({ item }) => {
                     switch (item.key) {
                         case 'postList':
-                            return <PostItem loading={loading} post={post} />
+                            return <PostItem flag={flag} setFlag={setFlag} loading={loading} post={post} />
                         default:
                             return null;
                     }

@@ -4,14 +4,24 @@ import {
     Text,
     View,
     ActivityIndicator,
-    TouchableOpacity,
+    Pressable,
+    FlatList,
 } from "react-native";
 import { icons } from "@/constants";
 import { Link, router } from "expo-router";
-import Trending from '../common/Trending';
-export default function RenderVideo({ videos }: any) {
+import VideoSection from '../common/VideoSection';
+type RenderVideoProps = {
+    flag: boolean;
+    setFlag: (index: boolean) => void;
+    videos: any;
+}
+export default function RenderVideo({ videos, flag, setFlag }: RenderVideoProps) {
     const handleViewAllNews = () => {
+        setFlag(true);
         router.push("/(routes)/video/");
+        setTimeout(() => {
+            setFlag(false)
+        }, 1000);
     }
     return (
         <View className="px-[11px] space-y-6 mt-[27px] h-[230px]">
@@ -24,7 +34,8 @@ export default function RenderVideo({ videos }: any) {
                         </Text>
                     </View>
                     <View className="mt-1.5">
-                        <TouchableOpacity
+                        <Pressable
+                            disabled={flag}
                             onPress={handleViewAllNews}
                         >
                             <Text
@@ -32,12 +43,20 @@ export default function RenderVideo({ videos }: any) {
                             >
                                 Xem tất cả
                             </Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
                 </View>
                 {videos && videos.length != 0
                     ?
-                    <Trending posts={videos ?? []} />
+                    <FlatList
+                        data={videos}
+                        keyExtractor={(item) => item.id}
+                        renderItem={({ item, index }) => (
+                            <VideoSection item={item} isLast={index === videos.length - 1} flag={flag} setFlag={setFlag} customImageStyle={''} />
+                        )}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                    />
                     :
                     <View className="h-48 justify-center">
                         <ActivityIndicator />

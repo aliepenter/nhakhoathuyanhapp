@@ -4,8 +4,12 @@ import VideoSection from '../common/VideoSection'
 import { getBaiVietCategoryById, getVideoCategoryById } from '@/lib/apiCall';
 import BaiVietSection from '../common/BaiVietSection';
 import { router } from 'expo-router';
-
-export default function LoiDan({ chinh_nha_id }: any) {
+type LoiDanProps = {
+    flag: boolean;
+    setFlag: (index: boolean) => void;
+    chinh_nha_id: any;
+}
+export default function LoiDan({ chinh_nha_id, flag, setFlag }: LoiDanProps) {
     const [videoCategory, setVideoCategory] = useState<Array<any>>([]);
     const [baiVietCategory, setBaiVietCategory] = useState<Array<any>>([]);
     const [hasVideo, setHasVideo] = useState<boolean>(true);
@@ -65,13 +69,50 @@ export default function LoiDan({ chinh_nha_id }: any) {
                         {hasVideo && (
                             <View className='mt-[17px] md:mt-[20px]'>
                                 <Text className='text-[#626262] text-[14px] font-psemibold'>Lời dặn bằng video</Text>
-                                <VideoLoiDanItem videoCategory={videoCategory} />
+                                {
+                                    videoCategory && videoCategory.length != 0
+                                        ?
+                                        <ScrollView
+                                            horizontal
+                                            className='mt-[10px]'
+                                            showsHorizontalScrollIndicator={false}
+                                        >
+                                            {
+                                                videoCategory.map((item: any, index: number) => (
+                                                    <VideoSection flag={flag} setFlag={setFlag} key={index} customImageStyle={`${videoCategory.length === 1 ? "w-96 h-56" : ''}`} item={item.video_id} isLast={index === videoCategory.length - 1} />
+                                                )
+                                                )
+                                            }
+                                        </ScrollView>
+                                        :
+                                        <View className={`${videoCategory.length === 1 ? "h-[234px]" : 'h-[202px]'} justify-center`}>
+                                            <ActivityIndicator />
+                                        </View>
+                                }
                             </View>
                         )}
                         {hasBaiViet && (
                             <View className='mt-[17px] md:mt-[20px]'>
                                 <Text className='text-[#626262] text-[14px] font-psemibold'>Lời dặn bằng bài viết</Text>
-                                <BaiVietLoiDanItem baiVietCategory={baiVietCategory} />
+                                {
+                                    baiVietCategory && baiVietCategory.length != 0
+                                        ?
+                                        <ScrollView
+                                            horizontal
+                                            showsHorizontalScrollIndicator={false}
+                                            className='mt-[10px]'
+                                        >
+                                            {
+                                                baiVietCategory.map((item: any, index: number) => (
+                                                    <BaiVietSection flag={flag} setFlag={setFlag} key={index} customImageStyle={`${baiVietCategory.length === 1 ? "w-96 h-56" : ''}`} item={item.bai_viet_id} isLast={index === baiVietCategory.length - 1} />
+                                                ))
+                                            }
+                                        </ScrollView>
+                                        :
+                                        <View className={`${baiVietCategory.length === 1 ? "h-[234px]" : 'h-[160px]'} justify-center`}>
+                                            <ActivityIndicator />
+                                        </View>
+                                }
                             </View>
                         )}
                     </View>
@@ -85,60 +126,3 @@ export default function LoiDan({ chinh_nha_id }: any) {
     )
 }
 
-const VideoLoiDanItem = ({ videoCategory }: any) => {
-    return <>
-        {
-            videoCategory && videoCategory.length != 0
-                ?
-                <ScrollView
-                    horizontal
-                    className='mt-[10px]'
-                    showsHorizontalScrollIndicator={false}
-                >
-                    {
-                        videoCategory.map((item: any, index: number) => (
-                            <VideoSection key={index} customImageStyle={`${videoCategory.length === 1 ? "w-96 h-56" : ''}`} item={item.video_id} isLast={index === videoCategory.length - 1} />
-                        )
-                        )
-                    }
-                </ScrollView>
-                :
-                <View className={`${videoCategory.length === 1 ? "h-[234px]" : 'h-[202px]'} justify-center`}>
-                    <ActivityIndicator />
-                </View>
-        }
-    </>
-
-}
-const BaiVietLoiDanItem = ({ baiVietCategory }: any) => {
-    const onPress = (item: any) => {
-        if (item) {
-            router.push({
-                pathname: "(routes)/tin-tuc/tinTucDetail",
-                params: { postThumb: item.banner_id.banner_path, postTime: item.date, postTitle: item.title, postContent: item.content, postUrl: item.website_url },
-            });
-        }
-    }
-    return <>
-        {
-            baiVietCategory && baiVietCategory.length != 0
-                ?
-                <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    className='mt-[10px]'
-                >
-                    {
-                        baiVietCategory.map((item: any, index: number) => (
-                            <BaiVietSection key={index} onPress={()=>onPress(item.bai_viet_id)} customImageStyle={`${baiVietCategory.length === 1 ? "w-96 h-56" : ''}`} item={item.bai_viet_id} isLast={index} />
-                        ))
-                    }
-                </ScrollView>
-                :
-                <View className={`${baiVietCategory.length === 1 ? "h-[234px]" : 'h-[160px]'} justify-center`}>
-                    <ActivityIndicator />
-                </View>
-        }
-    </>
-
-}

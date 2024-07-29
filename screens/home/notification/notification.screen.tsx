@@ -2,7 +2,6 @@ import { View, Text, useWindowDimensions } from 'react-native'
 import React from 'react'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import HomThuScreen from './homThu.screen';
-import LoiDanScreenTab from '../loi-dan/loiDanTab.screen';
 import KhuyenMaiScreen from './khuyenMai.screen';
 import TroChuyenScreen from './troChuyen.screen';
 
@@ -53,7 +52,7 @@ const renderTabBar = (props: any) => (
         style={{ backgroundColor: '#F2F2F2' }}
         activeColor="#51B81A"
         inactiveColor="#656565"
-        scrollEnabled={true}
+        scrollEnabled={false}
         bounces={true}
         renderLabel={({ route, focused, color }) => {
             return (

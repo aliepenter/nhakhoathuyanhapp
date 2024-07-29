@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, RefreshControl, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { View, Text, ScrollView, RefreshControl, Pressable, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { formatDate } from '@/lib/commonFunctions';
 import { router } from 'expo-router';
@@ -6,7 +6,8 @@ import { getAnhQuaTrinh } from '@/lib/apiCall';
 
 export default function QuaTrinhScreen({ user }: any) {
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [flag, setFlag] = useState<boolean>(false);
   const [anh, setAnh] = useState<Array<AnhQuaTrinh>>();
   const onRefresh = async () => {
     setRefreshing(true);
@@ -45,6 +46,7 @@ export default function QuaTrinhScreen({ user }: any) {
 
   const handlePress = (item: any) => {
     const title = `Ngày ${formatDate(item.ngay_chup, "minimize")}`;
+    setFlag(true);
     router.push({
       pathname: "(routes)/image-gallery",
       params: {
@@ -63,6 +65,9 @@ export default function QuaTrinhScreen({ user }: any) {
         anh_11: item.anh_11,
       },
     });
+    setTimeout(() => {
+      setFlag(false);
+    }, 1000);
   }
   return (
     <ScrollView className="bg-white h-full" refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
@@ -71,14 +76,14 @@ export default function QuaTrinhScreen({ user }: any) {
         anh && anh.length != 0
           ?
           anh.map((item: AnhQuaTrinh, index: number) => (
-            <TouchableOpacity
+            <Pressable
               key={index}
               className={`${index % 2 !== 0 ? "bg-[#F3F3F3]" : "bg-white"} px-[11px] py-[20px] md:py-[30px]`}
-              activeOpacity={0.7}
               onPress={() => handlePress(item)}
+              disabled={flag}
             >
               <Text className='text-[14px] md:text-[20px]'>{`Ngày ${formatDate(item.ngay_chup, "minimize")}: ${item.ten_anh}`}</Text>
-            </TouchableOpacity>
+            </Pressable>
           ))
           :
           <View className='justify-center items-center h-96'>

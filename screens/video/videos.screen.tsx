@@ -7,7 +7,8 @@ import SearchInput from '@/components/common/SearchInput';
 export default function VideosScreen() {
     const [videos, setVideos] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [flag, setFlag] = useState<boolean>(false);
 
     const onRefresh = async () => {
         setRefreshing(true);
@@ -47,7 +48,7 @@ export default function VideosScreen() {
                 renderItem={({ item }) => {
                     switch (item.key) {
                         case 'videosList':
-                            return <VideoItem loading={loading} post={videos} />
+                            return <VideoItem loading={loading} post={videos} flag={flag} setFlag={setFlag} />
                         default:
                             return null;
                     }

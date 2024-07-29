@@ -7,7 +7,8 @@ import SearchInput from '@/components/common/SearchInput';
 export default function KienThucBaiVietScreen() {
     const [loiDanVBaiViet, setLoiDanVBaiViet] = useState<Array<Post>>();
     const [refreshing, setRefreshing] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [flag, setFlag] = useState<boolean>(false);
     const onRefresh = async () => {
         setRefreshing(true);
         setLoading(true);
@@ -45,7 +46,7 @@ export default function KienThucBaiVietScreen() {
                 renderItem={({ item }) => {
                     switch (item.key) {
                         case 'postList':
-                            return <PostItem loading={loading} post={loiDanVBaiViet} />
+                            return <PostItem flag={flag} setFlag={setFlag} loading={loading} post={loiDanVBaiViet} />
                         default:
                             return <View className='h-40'></View>;
                     }

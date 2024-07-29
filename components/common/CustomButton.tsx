@@ -1,14 +1,27 @@
-import { TouchableOpacity, Text, View, ActivityIndicator, Image } from 'react-native'
+import { Text, View, ActivityIndicator, Image, Pressable } from 'react-native'
 import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
 
-const CustomButton = ({ iconStyle, icon, title, handlePress, containerStyles, textStyles, isLoading, colorFrom, colorTo, buttonStyle, iconRight }: any) => {
+type CustomButtonProps = {
+    flag: boolean;
+    iconStyle: any;
+    icon: any;
+    title: any;
+    handlePress: () => void;
+    containerStyles: any;
+    textStyles: any;
+    isLoading: any;
+    colorFrom: any;
+    colorTo: any;
+    iconRight: any;
+    buttonStyle: any;
+}
+const CustomButton = ({ iconStyle, icon, title, handlePress, containerStyles, textStyles, isLoading, colorFrom, colorTo, buttonStyle, iconRight, flag }: CustomButtonProps) => {
     return (
         <View className={`justify-center flex items-center`}>
-            <TouchableOpacity
+            <Pressable
                 onPress={handlePress}
-                activeOpacity={0.7}
-                disabled={isLoading}
+                disabled={isLoading ? true : flag}
                 className={`${containerStyles}`}
             >
                 {
@@ -27,7 +40,7 @@ const CustomButton = ({ iconStyle, icon, title, handlePress, containerStyles, te
                             <ButtonText iconStyle={iconStyle} textStyles={textStyles} title={title} isLoading={isLoading} icon={icon} iconRight={iconRight} />
                         </View>
                 }
-            </TouchableOpacity>
+            </Pressable>
         </View >
     )
 }

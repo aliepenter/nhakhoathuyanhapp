@@ -1,25 +1,38 @@
-import { View, Text, Image, ActivityIndicator, TouchableOpacity } from 'react-native'
+import { View, Text, Image, ActivityIndicator, Pressable } from 'react-native'
 import React from 'react'
 import { icons } from '@/constants'
 import { LinearGradient } from 'expo-linear-gradient'
 import { router } from 'expo-router'
-
-export default function TimeTracking({ schedule, totalTime }: any) {
+type TimeTrackingProps = {
+    flag: boolean;
+    setFlag: (index: boolean) => void;
+    schedule: any;
+    totalTime: number;
+}
+export default function TimeTracking({ schedule, totalTime, flag, setFlag }: TimeTrackingProps) {
     const onPress = () => {
+        setFlag(true);
         router.push({
             pathname: "(routes)/loving",
         });
+        setTimeout(() => {
+            setFlag(false)
+        }, 1000);
     }
     const onPressLichHen = () => {
+        setFlag(true);
         router.push({
             pathname: "(routes)/lich-hen",
         });
+        setTimeout(() => {
+            setFlag(false)
+        }, 1000);
     }
     return (
         <View className='flex-row flex-1 justify-between px-[11px] mt-[20px]'>
-            <TouchableOpacity
+            <Pressable
                 className={`w-[48%] h-[59px] `}
-                activeOpacity={0.7}
+                disabled={flag}
                 onPress={() => onPressLichHen()}
             >
                 <LinearGradient
@@ -41,10 +54,10 @@ export default function TimeTracking({ schedule, totalTime }: any) {
                         </View>
                     }
                 </LinearGradient>
-            </TouchableOpacity>
-            <TouchableOpacity
+            </Pressable>
+            <Pressable
                 className={`w-[48%] h-[59px] `}
-                activeOpacity={0.7}
+                disabled={flag}
                 onPress={() => onPress()}
             >
                 <LinearGradient
@@ -66,7 +79,7 @@ export default function TimeTracking({ schedule, totalTime }: any) {
                         </View>
                     }
                 </LinearGradient>
-            </TouchableOpacity>
+            </Pressable>
         </View>
     )
 }

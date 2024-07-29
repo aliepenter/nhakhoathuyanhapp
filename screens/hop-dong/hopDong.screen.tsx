@@ -1,4 +1,4 @@
-import { View, Image, Text, ActivityIndicator, TouchableOpacity } from 'react-native'
+import { View, Image, Text, ActivityIndicator, TouchableOpacity, Pressable } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { icons } from '@/constants'
 import { getHopDong } from '@/lib/apiCall';
@@ -9,6 +9,7 @@ export default function HopDongScreen() {
     const [hopDong, setHopDong] = useState([]);
     const [loading, setLoading] = useState(true);
     const { user } = useUser();
+    const [flag, setFlag] = useState<boolean>(false);
 
     useEffect(() => {
         if (user) {
@@ -37,12 +38,17 @@ export default function HopDongScreen() {
         }
     };
     const handlePress = (hop_dong_chi_tiet_id: any, ten_hop_dong: any) => {
+        setFlag(true);
         router.push({
             pathname: "(routes)/hop-dong/hopDongDetail",
             params: {
                 headerTitle: ten_hop_dong,
             },
         });
+        setTimeout(() => {
+            setFlag(false)
+        }, 1000);
+
     }
     return (
         <View className='flex-row justify-center gap-10 mt-[34px]'>
@@ -52,15 +58,15 @@ export default function HopDongScreen() {
                     hopDong && hopDong.length != 0
                         ?
                         hopDong.map((item: HopDong, index: number) => (
-                            <TouchableOpacity
-                                activeOpacity={0.7}
+                            <Pressable
+                                disabled={flag}
                                 onPress={() => handlePress(item.hop_dong_chi_tiet_id, item.ten_hop_dong)}
                                 key={index}
                                 className='justify-center items-center'
                             >
                                 <Image className='w-[115px] h-[115px]' resizeMode='cover' source={icons.hopDong} />
                                 <Text>{item.ten_hop_dong}</Text>
-                            </TouchableOpacity>
+                            </Pressable>
                         ))
                         :
                         <View className='justify-center items-center h-96'>

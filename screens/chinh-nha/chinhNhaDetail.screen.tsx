@@ -11,6 +11,7 @@ import DanhGiaDichVu from '@/components/chinh-nha/DanhGiaDichVu';
 
 export default function ChinhNhaDetailScreen() {
     const route = useRoute();
+    const [flag, setFlag] = useState<boolean>(false);
     const {
         thu_thuat_dieu_tri,
         qua_trinh_image_id,
@@ -67,7 +68,7 @@ export default function ChinhNhaDetailScreen() {
                             <ThuThuat thuthuat={thu_thuat_dieu_tri} />
                             <QuaTrinhImage anh={qua_trinh_image_id ? JSON.parse(qua_trinh_image_id as string) : null} />
                             <TinhTrang tinhtrang={tinh_trang_rang_mieng} />
-                            <LoiDan chinh_nha_id={chinh_nha_id} />
+                            <LoiDan chinh_nha_id={chinh_nha_id} flag={flag} setFlag={setFlag} />
                             <DichVuKhac chinh_nha_id={chinh_nha_id} />
                             <DanhGiaDichVu />
                         </ScrollView>

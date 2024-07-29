@@ -5,10 +5,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import useUser from '@/hooks/auth/useUser';
 import { SERVER_URL } from '@/utils/uri';
 import images from '@/constants/images';
+import * as Haptics from 'expo-haptics';
 
 export default function TabBars({ state, descriptors, navigation }: any) {
     const { user } = useUser();
     const handlePress = useCallback(async () => {
+        Haptics.selectionAsync();
         await Linking.openURL('tel:0869800318');
     }, []);
     return (
@@ -20,6 +22,7 @@ export default function TabBars({ state, descriptors, navigation }: any) {
                         const isFocused = state.index === index;
 
                         const onPress = () => {
+                            Haptics.selectionAsync();
                             const event = navigation.emit({
                                 type: 'tabPress',
                                 target: route.key,

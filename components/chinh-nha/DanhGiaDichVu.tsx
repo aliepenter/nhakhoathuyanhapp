@@ -32,8 +32,7 @@ export default function DanhGiaDichVu() {
                 buttonStyle="rounded-xl  min-h-[62px]"
                 colorFrom="#2594B8"
                 colorTo="#226E9E"
-                textStyles="text-white font-psemibold text-lg"
-            />
+                textStyles="text-white font-psemibold text-lg" flag={false} iconStyle={null} icon={null} isLoading={false} iconRight={null} />
         </View>
     );
 }

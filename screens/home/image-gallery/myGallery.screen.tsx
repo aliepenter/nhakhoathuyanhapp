@@ -150,8 +150,7 @@ export default function MyGalleryScreen({ user }: any) {
           icon={icons.cameraGreen}
           buttonStyle="rounded-full py-[5px] px-[19px] bg-[#EDEDED] border-[#D7D7D7] border-[1px]"
           textStyles="font-pregular text-[12px] md:text-[16px]"
-          iconStyle="w-[20px] h-[20px] mr-[6px]"
-        />
+          iconStyle="w-[20px] h-[20px] mr-[6px]" flag={false} isLoading={undefined} colorFrom={undefined} colorTo={undefined} iconRight={undefined} />
       </View>
       <View className="h-[170px]"></View>
     </ScrollView>

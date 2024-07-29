@@ -8,8 +8,13 @@ import React from "react";
 import { icons, images } from "@/constants";
 
 import { SERVER_URL } from "@/utils/uri";
-
-export default function HeaderSection({ user, showNotification }: any) {
+type HeaderSectionProps = {
+    flag: boolean;
+    setFlag: (index: boolean) => void;
+    showNotification: any;
+    user: any;
+}
+export default function HeaderSection({ user, showNotification, flag, setFlag }: HeaderSectionProps) {
     return (
         <View className="h-[150px]">
             <ImageBackground source={images.bgHeaderHome} resizeMode='stretch' className='flex-1'>

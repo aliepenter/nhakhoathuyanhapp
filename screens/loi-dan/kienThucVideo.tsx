@@ -1,16 +1,13 @@
-import { Text, View, TouchableOpacity, ImageBackground, FlatList, RefreshControl, ActivityIndicator } from 'react-native'
+import { View, FlatList, RefreshControl } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import SearchInput from '@/components/common/SearchInput';
-import { router } from 'expo-router';
-import { SERVER_URL } from '@/utils/uri';
-import { icons, images } from '@/constants';
 import { getOnlyLoiDanVideo } from '@/lib/apiCall';
-import { Image } from 'expo-image'
 import VideoItem from '@/components/common/VideoItem';
 export default function KienThucVideoScreen() {
     const [loiDanVideo, setLoiDanVideo] = useState<Array<Post>>();
     const [refreshing, setRefreshing] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [flag, setFlag] = useState<boolean>(false);
     const onRefresh = async () => {
         setRefreshing(true);
         setLoading(true);
@@ -47,7 +44,7 @@ export default function KienThucVideoScreen() {
                 renderItem={({ item }) => {
                     switch (item.key) {
                         case 'postList':
-                            return <VideoItem loading={loading} post={loiDanVideo} />
+                            return <VideoItem loading={loading} post={loiDanVideo} flag={flag} setFlag={setFlag} />
                         default:
                             return <View className='h-40'></View>;
                     }

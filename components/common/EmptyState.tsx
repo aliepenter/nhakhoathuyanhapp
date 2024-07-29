@@ -14,11 +14,10 @@ const EmptyState = ({ title, subtitle }: any) => {
             <Text className='font-pmedium text-sm text-gray-100'>
                 {subtitle}
             </Text>
-            <CustomButton 
+            <CustomButton
                 title="Create video"
                 handlePress={() => router.push('/create')}
-                containerStyles="w-full my-5"
-            />
+                containerStyles="w-full my-5" flag={false} iconStyle={undefined} icon={undefined} textStyles={undefined} isLoading={undefined} colorFrom={undefined} colorTo={undefined} iconRight={undefined} buttonStyle={undefined} />
         </View>
     )
 }

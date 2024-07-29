@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image, ActivityIndicator, TouchableOpacity, Button, Platform } from 'react-native'
+import { View, Text, ScrollView, Image, ActivityIndicator, Pressable, Button, Platform } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import CalendarComponent from '@/components/common/CalendarComponent'
 import CustomButton from '@/components/common/CustomButton'
@@ -16,6 +16,7 @@ interface MarkedDates {
 }
 export default function LichHenScreen() {
     const { user } = useUser();
+    const [flag, setFlag] = useState<boolean>(false);
     const [chinhNha, setChinhNha] = useState<Array<ChinhNha>>();
     const [loading, setLoading] = useState(true);
     const [markedDates, setMarkedDates] = useState<MarkedDates>({});
@@ -67,6 +68,7 @@ export default function LichHenScreen() {
     };
     const handlePress = (chinh_nha_chi_tiet_id: any, ngay_chinh_nha: any, id: number) => {
         const title = `Chỉnh nha ngày ${formatDate(ngay_chinh_nha, "minimize")}`;
+        setFlag(true);
         router.push({
             pathname: "(routes)/chinh-nha/chinhNhaDetail",
             params: {
@@ -77,6 +79,9 @@ export default function LichHenScreen() {
                 chinh_nha_id: id
             },
         });
+        setTimeout(() => {
+            setFlag(false);
+        }, 1000);
     }
     const checkActive = (ngay_chinh_nha: any, index: any) => {
         if (calendarMonth == formatDate(ngay_chinh_nha, "month") && calendarYear == formatDate(ngay_chinh_nha, "year")) {
@@ -91,6 +96,12 @@ export default function LichHenScreen() {
         setCalendarMonth(month);
         setCalendarYear(year);
     };
+    const onChangeDay = () => {
+        setFlag(true);
+        setTimeout(() => {
+            setFlag(false)
+        }, 1000);
+    }
     return (
         <View>
             <View className={`${Platform.OS === 'ios' ? 'h-[54%]' : 'h-[57%]'} bg-white`}>
@@ -110,14 +121,18 @@ export default function LichHenScreen() {
                         !loading
                             ?
                             <CustomButton
+                                flag={flag}
                                 title="Đổi lịch hẹn sắp tới"
-                                handlePress={() => { }}
+                                handlePress={onChangeDay}
                                 containerStyles=""
                                 icon={icons.calenderMonthBlack}
                                 buttonStyle="bg-[#EFEFEF] rounded-[6px] py-[5px] px-[19px] border-[#E1E1E1] border-[1px]"
                                 textStyles="font-pregular text-[12px] md:text-[16px] text-[#616161]"
                                 iconStyle="w-[16px] h-[16px] mr-[6px]"
-                            />
+                                isLoading={false}
+                                colorFrom={null}
+                                colorTo={null}
+                                iconRight={null} />
                             :
                             null
                     }
@@ -132,11 +147,11 @@ export default function LichHenScreen() {
                         chinhNha.map((item: ChinhNha, index: number) => (
                             index !== chinhNha.length
                                 ?
-                                <TouchableOpacity
+                                <Pressable
                                     key={index}
                                     className={`flex-row items-center h-20`}
-                                    activeOpacity={0.7}
                                     onPress={() => handlePress(item.chinh_nha_chi_tiet_id, item.ngay_chinh_nha, item.id)}
+                                    disabled={flag}
                                 >
                                     <View className='items-center justify-center h-full py-[10px] w-[20%] border-r-[1px] border-[#D8D8D8]'>
                                         <Text className='font-pregular text-[14px] text-[#111111]'>{formatDate(item.ngay_chinh_nha, "day")}</Text>
@@ -158,7 +173,7 @@ export default function LichHenScreen() {
                                             </View>
                                         </View>
                                     </View>
-                                </TouchableOpacity>
+                                </Pressable>
                                 :
                                 <View className='h-4' key={index}>
                                     <View className='items-center h-full py-[10px] w-[20%] border-r-[1px] border-[#D8D8D8]'></View>

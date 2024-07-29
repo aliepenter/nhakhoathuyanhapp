@@ -115,8 +115,7 @@ const LoginScreen = () => {
               buttonStyle="rounded-xl min-h-[62px]"
               colorFrom="#2594B8"
               colorTo="#226E9E"
-              textStyles="text-white font-psemibold text-lg"
-            />
+              textStyles="text-white font-psemibold text-lg" flag={false} iconStyle={undefined} icon={undefined} iconRight={undefined} />
             <View className={`items-end w-[95%] ${isIOS ? 'mt-[15px]' : 'mt-[10px]'}`}>
               <Link href="/sign-up" className="text-[14px] text-white font-pregular">Đăng nhập sau</Link>
             </View>

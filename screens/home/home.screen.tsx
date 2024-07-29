@@ -23,15 +23,14 @@ const HomeScreen = () => {
   const [videos, setVideos] = useState([]);
   const [banners, setBanners] = useState([]);
   const [post, setPost] = useState([]);
-  const [schedule, setSchedule] = useState(null);
-  const [totalTime, setTotalTime] = useState(null);
+
+  const [flag, setFlag] = useState<boolean>(false);
+
   const onRefresh = async () => {
     setRefreshing(true);
     setVideos([]);
     setBanners([]);
     setPost([]);
-    setSchedule(null);
-    setTotalTime(null);
     await fetchBannerData();
     await fetchVideoData();
     await fetchNews();
@@ -96,17 +95,17 @@ const HomeScreen = () => {
   }
   return (
     <View className="bg-white">
-      <HeaderSection user={user} showNotification={true} />
+      <HeaderSection user={user} showNotification={true} flag={flag} setFlag={setFlag} />
       <ScrollView
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
         <BannerSlide banners={banners} type={1} />
-        <FunctionItemsList />
+        <FunctionItemsList flag={flag} setFlag={setFlag} />
         <TimeTracking schedule={
           user && user.ngay_gan_mc != null ? formatDate(user.ngay_gan_mc, 'minimize') : 0
-        } totalTime={user && user.ngay_gan_mc != null ? calculateDaysDifference(user.ngay_gan_mc) : 0} />
-        <RenderVideo videos={videos} />
-        <NewsSection post={post} />
+        } totalTime={user && user.ngay_gan_mc != null ? calculateDaysDifference(user.ngay_gan_mc) : 0} flag={flag} setFlag={setFlag} />
+        <RenderVideo videos={videos} flag={flag} setFlag={setFlag} />
+        <NewsSection post={post} flag={flag} setFlag={setFlag} />
         <View className="h-[150px]"></View>
       </ScrollView>
     </View>

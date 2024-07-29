@@ -2,24 +2,36 @@ import {
     Text,
     View,
     ActivityIndicator,
-    TouchableOpacity,
+    Pressable,
 } from "react-native";
 import React from "react";
 import { icons } from "@/constants";
 import { router } from "expo-router";
 import { SERVER_URL } from "@/utils/uri";
 import { Image } from 'expo-image';
-
-export default function NewsSection({ post }: any) {
+type NewsSectionProps = {
+    flag: boolean;
+    setFlag: (index: boolean) => void;
+    post: any;
+}
+export default function NewsSection({ post, flag, setFlag }: NewsSectionProps) {
     const handleViewAllNews = () => {
+        setFlag(true);
         router.push("/(routes)/tin-tuc/");
+        setTimeout(() => {
+            setFlag(false)
+        }, 1000);
     }
     const onPress = (item: any) => {
         if (item) {
+            setFlag(true);
             router.push({
                 pathname: "(routes)/tin-tuc/tinTucDetail",
                 params: { postThumb: item.banner_id.banner_path, postTime: item.date, postTitle: item.title, postContent: item.content, postUrl: item.website_url },
             });
+            setTimeout(() => {
+                setFlag(false)
+            }, 1000);
         }
     }
     return (
@@ -33,7 +45,8 @@ export default function NewsSection({ post }: any) {
                         </Text>
                     </View>
                     <View className="mt-1.5">
-                        <TouchableOpacity
+                        <Pressable
+                            disabled={flag}
                             onPress={handleViewAllNews}
                         >
                             <Text
@@ -41,17 +54,17 @@ export default function NewsSection({ post }: any) {
                             >
                                 Xem tất cả
                             </Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
                 </View>
                 <View className="flex-wrap flex-row justify-between">
                     {post && post.length != 0
                         ?
                         post.slice(0, 6).map((item: Post, index: number) => (
-                            <TouchableOpacity
+                            <Pressable
                                 key={index}
-                                activeOpacity={0.7}
                                 onPress={() => onPress(item)}
+                                disabled={flag}
                                 className="h-[142px] md:h-[200px] w-[49%] md:w-[32%] rounded-[10px] mb-5 bg-gray-300"
 
                             >
@@ -61,7 +74,7 @@ export default function NewsSection({ post }: any) {
                                     contentFit='cover'
                                     transition={500}
                                 />
-                            </TouchableOpacity>
+                            </Pressable>
                         ))
                         :
                         // 582 324

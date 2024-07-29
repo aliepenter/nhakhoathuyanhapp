@@ -1,4 +1,4 @@
-import { View, Text, Image, RefreshControl, ActivityIndicator, ScrollView, TouchableOpacity, Platform } from 'react-native'
+import { View, Text, Image, RefreshControl, ActivityIndicator, ScrollView, Platform, Pressable } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { getChinhNha } from '@/lib/apiCall';
 import useUser from '@/hooks/auth/useUser';
@@ -10,6 +10,7 @@ export default function ChinhNhaScreen() {
   const [chinhNha, setChinhNha] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [flag, setFlag] = useState<boolean>(false);
   const onRefresh = async () => {
     setRefreshing(true);
     setLoading(true);
@@ -47,6 +48,7 @@ export default function ChinhNhaScreen() {
 
   const handlePress = (chinh_nha_chi_tiet_id: any, ngay_chinh_nha: any, id: number) => {
     const title = `Chỉnh nha ngày ${formatDate(ngay_chinh_nha, "minimize")}`;
+    setFlag(true);
     router.push({
       pathname: "(routes)/chinh-nha/chinhNhaDetail",
       params: {
@@ -57,6 +59,9 @@ export default function ChinhNhaScreen() {
         chinh_nha_id: id
       },
     });
+    setTimeout(() => {
+      setFlag(false)
+    }, 1000);
   }
   return (
     <ScrollView className="bg-[#F5F5F5] h-full px-[11px]" refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
@@ -67,10 +72,10 @@ export default function ChinhNhaScreen() {
           chinhNha.map((item: ChinhNha, index: number) => (
             index !== chinhNha.length
               ?
-              <TouchableOpacity
+              <Pressable
                 key={index}
                 className={`flex-row items-center h-20`}
-                activeOpacity={0.7}
+                disabled={flag}
                 onPress={() => handlePress(item.chinh_nha_chi_tiet_id, item.ngay_chinh_nha, item.id)}
               >
                 <View className='justify-center h-full py-[10px] w-[20%] border-r-[1px] border-[#D8D8D8]'>
@@ -89,7 +94,7 @@ export default function ChinhNhaScreen() {
                     </View>
                   </View>
                 </View>
-              </TouchableOpacity>
+              </Pressable>
               :
               <View className='h-4' key={index}>
                 <View className='items-center h-full py-[10px] w-[20%] border-r-[1px] border-[#D8D8D8]'></View>

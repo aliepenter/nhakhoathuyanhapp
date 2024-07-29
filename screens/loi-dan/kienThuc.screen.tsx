@@ -1,8 +1,6 @@
 import { View, Text } from 'react-native'
 import React, { useState } from 'react'
 import TabButtons, { TabButtonType } from '@/components/common/TabButtons';
-import LoiDanBaiVietScreen from './kienThucBaiViet.screen';
-import LoiDanVideoScreen from './kienThucVideo';
 import KienThucBaiVietScreen from './kienThucBaiViet.screen';
 import KienThucVideoScreen from './kienThucVideo';
 export enum CustomTab {

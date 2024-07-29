@@ -48,14 +48,6 @@ const PageLayout = () => {
                     }}
                 />
                 <Stack.Screen
-                    name="tin-tuc/onlyNews"
-                    options={{
-                        header: (props) => (
-                            <CustomHeader {...props} customStyle="bg-white" title="Bài viết nha khoa" />
-                        ),
-                    }}
-                />
-                <Stack.Screen
                     name="tin-tuc/index"
                     options={{
                         header: (props) => (
@@ -132,6 +124,14 @@ const PageLayout = () => {
                     options={{
                         header: (props) => (
                             <CustomHeader {...props} customStyle="bg-white" title="Tin tức" />
+                        ),
+                    }}
+                />
+                <Stack.Screen
+                    name="loi-dan/index"
+                    options={{
+                        header: (props) => (
+                            <CustomHeader {...props} customStyle="bg-white" title="Lời dặn" />
                         ),
                     }}
                 />
