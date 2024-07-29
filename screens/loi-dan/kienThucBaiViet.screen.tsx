@@ -40,7 +40,9 @@ export default function KienThucBaiVietScreen() {
     };
     return (
         <>
-            <SearchInput placeholder="Tìm kiếm bài viết" />
+            <View className='px-[11px] bg-white'>
+                <SearchInput placeholder="Tìm kiếm bài viết" />
+            </View>
             <FlatList
                 data={[{ key: 'postList' }, { key: 'empty' }]}
                 renderItem={({ item }) => {
@@ -48,7 +50,7 @@ export default function KienThucBaiVietScreen() {
                         case 'postList':
                             return <PostItem flag={flag} setFlag={setFlag} loading={loading} post={loiDanVBaiViet} />
                         default:
-                            return <View className='h-40'></View>;
+                            return <></>;
                     }
                 }}
                 keyExtractor={(item, index) => index.toString()}

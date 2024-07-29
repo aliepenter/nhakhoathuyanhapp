@@ -117,9 +117,9 @@ export const getOnlyPosts = async () => {
   }
 };
 
-export const getOnlyNews = async () => {
+export const getOnlySale = async () => {
   try {
-    const response = await axios.get(`${SERVER_URI}/posts/only-news`);
+    const response = await axios.get(`${SERVER_URI}/posts/only-sale`);
     return {
       code: 200,
       data: response.data,
@@ -461,6 +461,25 @@ export const getLichSuTroChuyen = async (userId: any) => {
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       const res = await axios.get(`${SERVER_URI}/cuoc-tro-chuyen/${userId}`);
+      if (!res) return null;
+      return {
+        code: 200,
+        data: res.data,
+      };
+    } catch (error) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+}
+
+export const getLoiDan = async (userId: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const res = await axios.get(`${SERVER_URI}/loi-dan/${userId}`);
       if (!res) return null;
       return {
         code: 200,

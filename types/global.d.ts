@@ -117,3 +117,13 @@ type CuocTroChuyen = {
   status: number;
   seen: number;
 };
+
+type LoiDan = {
+  id: number;
+  noi_dung: string;
+  tieu_de: string;
+  ngay_tao: string;
+  user_id: number;
+  seen: number;
+  chinh_nha_id: any
+};

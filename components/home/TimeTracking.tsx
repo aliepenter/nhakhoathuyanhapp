@@ -1,8 +1,10 @@
-import { View, Text, Image, ActivityIndicator, Pressable } from 'react-native'
-import React from 'react'
-import { icons } from '@/constants'
-import { LinearGradient } from 'expo-linear-gradient'
-import { router } from 'expo-router'
+import { View, Text, Image, ActivityIndicator, Pressable } from 'react-native';
+import React from 'react';
+import { icons } from '@/constants';
+import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
+import * as Haptics from 'expo-haptics';
+
 type TimeTrackingProps = {
     flag: boolean;
     setFlag: (index: boolean) => void;
@@ -12,6 +14,7 @@ type TimeTrackingProps = {
 export default function TimeTracking({ schedule, totalTime, flag, setFlag }: TimeTrackingProps) {
     const onPress = () => {
         setFlag(true);
+        Haptics.selectionAsync();
         router.push({
             pathname: "(routes)/loving",
         });
@@ -21,6 +24,7 @@ export default function TimeTracking({ schedule, totalTime, flag, setFlag }: Tim
     }
     const onPressLichHen = () => {
         setFlag(true);
+        Haptics.selectionAsync();
         router.push({
             pathname: "(routes)/lich-hen",
         });

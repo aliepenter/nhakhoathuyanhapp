@@ -38,7 +38,10 @@ export default function KienThucVideoScreen() {
     };
     return (
         <>
-            <SearchInput placeholder="Tìm kiếm video" />
+            <View className='px-[11px] bg-white'>
+                <SearchInput placeholder="Tìm kiếm video" />
+            </View>
+
             <FlatList
                 data={[{ key: 'postList' }, { key: 'empty' }]}
                 renderItem={({ item }) => {
@@ -46,7 +49,7 @@ export default function KienThucVideoScreen() {
                         case 'postList':
                             return <VideoItem loading={loading} post={loiDanVideo} flag={flag} setFlag={setFlag} />
                         default:
-                            return <View className='h-40'></View>;
+                            return <></>;
                     }
                 }}
                 keyExtractor={(item, index) => index.toString()}

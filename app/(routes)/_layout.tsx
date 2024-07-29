@@ -75,7 +75,7 @@ const PageLayout = () => {
                     name="kien-thuc/index"
                     options={{
                         header: (props) => (
-                            <CustomHeader {...props} customStyle="bg-white" title="Kiến thức nha khoa" />
+                            <CustomHeader {...props} customStyle="bg-[#F2F2F2]" title="Kiến thức nha khoa" />
                         ),
                     }}
                 />

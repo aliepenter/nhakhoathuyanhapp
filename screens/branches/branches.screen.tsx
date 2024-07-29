@@ -53,7 +53,7 @@ export default function BranchesScreen() {
                 renderItem={({ item }) => {
                     switch (item.key) {
                         case 'banner':
-                            return <BannerSlide banners={banners} type={3} />;
+                            return <BannerSlide banners={banners} type={4} />;
                         case 'branches':
                             return <BranchList branches={branches} />;
                         default:

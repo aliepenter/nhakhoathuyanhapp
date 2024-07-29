@@ -25,6 +25,9 @@ export default function ChinhNhaDetailScreen() {
         setRefreshing(true);
         setLoading(true);
         setRefreshing(false);
+        setTimeout(() => {
+            setLoading(false);
+        }, 500);
     }
     const scrollViewRef = useRef<ScrollView>(null);
 
@@ -46,8 +49,7 @@ export default function ChinhNhaDetailScreen() {
         return () => {
             keyboardDidShowListener.remove();
         };
-    }, [chinh_nha_id]);
-
+    }, []);
 
     return (
         <>
@@ -64,10 +66,9 @@ export default function ChinhNhaDetailScreen() {
                             className={`px-[11px] bg-white`}
                             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                         >
-
                             <ThuThuat thuthuat={thu_thuat_dieu_tri} />
                             <QuaTrinhImage anh={qua_trinh_image_id ? JSON.parse(qua_trinh_image_id as string) : null} />
-                            <TinhTrang tinhtrang={tinh_trang_rang_mieng} />
+                            <TinhTrang tinhtrang={tinh_trang_rang_mieng ? JSON.parse(tinh_trang_rang_mieng as string).noi_dung : null} />
                             <LoiDan chinh_nha_id={chinh_nha_id} flag={flag} setFlag={setFlag} />
                             <DichVuKhac chinh_nha_id={chinh_nha_id} />
                             <DanhGiaDichVu />
