@@ -127,3 +127,11 @@ type LoiDan = {
   seen: number;
   chinh_nha_id: any
 };
+
+type Message = {
+  id: number;
+  noi_dung: string;
+  createdAt: string;
+  nguoi_gui_id: number;
+  cuoc_tro_chuyen_id: any;
+};

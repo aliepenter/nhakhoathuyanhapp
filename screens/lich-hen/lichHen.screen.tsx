@@ -57,7 +57,7 @@ export default function LichHenScreen() {
                 } else {
                     setLoading(false)
                 }
-            }, 500);
+            }, 1500);
 
         } catch (error) {
             console.error("Error fetching data:", error);

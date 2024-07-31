@@ -118,7 +118,9 @@ import heartGif from "../assets/icons/heart-gif.gif";
 import heartBg from "../assets/icons/heart-bg.png";
 import macCaiDamon from "../assets/icons/mac-cai-damon.png";
 import wave from "../assets/icons/wave.gif";
+import send from "../assets/icons/send.png";
 export default {
+  send,
   notificationGif,
   wave,
   macCaiDamon,

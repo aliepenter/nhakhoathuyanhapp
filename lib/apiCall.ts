@@ -154,7 +154,6 @@ export const getOnlyLoiDan = async () => {
 };
 
 
-
 export const getBranches = async () => {
   try {
     const response = await axios.get(`${SERVER_URI}/branches`);
@@ -353,6 +352,25 @@ export const getDichVuKhac = async (chinh_nha_chi_tiet_id: any) => {
   }
 }
 
+export const getMessages = async (cuoc_tro_chuyen_id: number) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const res = await axios.get(`${SERVER_URI}/messages/${cuoc_tro_chuyen_id}`);
+      if (!res) return null;
+      return {
+        code: 200,
+        data: res.data,
+      };
+    } catch (error) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+}
+
 export const getCustomerLibrary = async (userId: any) => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);
 
@@ -473,6 +491,7 @@ export const getLichSuTroChuyen = async (userId: any) => {
     return null;
   }
 }
+
 
 export const getLoiDan = async (userId: any) => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);
