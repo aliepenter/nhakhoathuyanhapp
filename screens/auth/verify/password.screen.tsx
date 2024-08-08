@@ -33,8 +33,10 @@ const PasswordScreen = () => {
             return;
         }
         setIsSubmitting(true);
+
         try {
             await login!(username, password);
+
             setTimeout(() => {
                 router.dismissAll();
                 router.replace("/(tabs)");

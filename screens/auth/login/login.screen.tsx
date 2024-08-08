@@ -45,7 +45,6 @@ const LoginScreen = () => {
       return;
     }
     setIsSubmitting(true);
-
     try {
       const phoneNumberStatus = await trackPhoneNumber!(phoneNumber);
       setTimeout(() => {
