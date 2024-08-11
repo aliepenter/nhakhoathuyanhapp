@@ -1,22 +1,39 @@
-export const formatDate = (isoDateString: any, type: any) => {
+export const formatDate = (isoDateString: any, type: DateFormatType, timeZone: string = 'Asia/Ho_Chi_Minh'): string => {
     const date = new Date(isoDateString);
-    const year = date.getUTCFullYear();
-    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
-    const day = String(date.getUTCDate()).padStart(2, '0');
-    if (type === 'full') {
-        return `Ngày ${day} tháng ${month} năm ${year}`;
-    } else if (type === 'minimize') {
-        return `${day}/${month}/${year}`;
-    } else if (type === 'day') {
-        return `${day}`;
-    } else if (type === 'month') {
-        return `${month}`;
-    } else if (type === 'year') {
-        return `${year}`;
-    } else if (type === 'isoDate') {
-        return `${year}-${month}-${day}`;
+
+    const options: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+        timeZone: timeZone
+    };
+
+    const formattedDate = new Intl.DateTimeFormat('en-GB', options).format(date);
+    const [day, month, year, hour, minute, second] = formattedDate.split(/[\s:/,]/).map(part => part.trim());
+    switch (type) {
+        case 'full':
+            return `Ngày ${day} tháng ${month} năm ${year}`;
+        case 'minimize':
+            return `${day}/${month}/${year}`;
+        case 'day':
+            return `${day}`;
+        case 'month':
+            return `${month}`;
+        case 'year':
+            return `${year}`;
+        case 'isoDate':
+            return `${year}-${month}-${day}`;
+        case 'path':
+            return `${day}${month}${year}`;
+        default:
+            throw new Error(`Unknown format type: ${type}`);
     }
-}
+};
+
 
 export const formatDateTime = (isoDateString: any) => {
     const date = new Date(isoDateString);

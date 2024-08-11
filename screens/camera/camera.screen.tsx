@@ -6,6 +6,8 @@ import { icons } from '@/constants';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from 'expo-router';
 import PreviewScreen from './preview.screen';
+import * as ImagePicker from 'expo-image-picker';
+
 type CameraScreenProps = {};
 
 export default function CameraScreen(props: CameraScreenProps) {
@@ -19,6 +21,19 @@ export default function CameraScreen(props: CameraScreenProps) {
     const handleBack = () => {
         navigation.goBack();
     };
+    const handleGallery = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [3, 4],
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            setPicture(result.assets[0].uri);
+        }
+
+    }
     const takePicture = async () => {
         const res = await cameraRef.current?.takePictureAsync({});
         setPicture(res!.uri)
@@ -47,7 +62,11 @@ export default function CameraScreen(props: CameraScreenProps) {
             >
             </CameraView>
             <View className='bottom-0 flex-row bg-black items-center h-40 w-full justify-center'>
-                <View className='w-[15%]'></View>
+                <View className='w-[15%] flex justify-center items-center'>
+                    <TouchableOpacity className='w-[60px] h-[60px] rounded-full flex items-center justify-center' onPress={handleGallery}>
+                        <Image source={icons.galleryWhite} className='w-[50%] h-[50%]' contentFit='contain' />
+                    </TouchableOpacity>
+                </View>
                 <View className='w-[70%] flex justify-center items-center'>
                     <TouchableOpacity className='w-[70px] h-[70px]' onPress={takePicture}>
                         <View className='bg-white w-full h-full flex items-center justify-center rounded-full'>

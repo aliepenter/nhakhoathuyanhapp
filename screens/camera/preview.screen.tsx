@@ -6,6 +6,8 @@ import { useNavigation } from 'expo-router';
 import * as MediaLibrary from 'expo-media-library';
 import { icons } from '@/constants';
 import Toast from 'react-native-toast-message'
+import axios from 'axios';
+import { ADMIN_URI, SERVER_URI } from '@/utils/uri';
 interface PictureViewProps {
     picture: string;
     setPicture: React.Dispatch<React.SetStateAction<string>>
@@ -35,6 +37,25 @@ export default function PreviewScreen({ picture, setPicture }: PictureViewProps)
             showToast();
         }
     };
+    const handleUpload = async () => {
+        try {
+            const formData = new FormData();
+            formData.append('file', {
+                uri: picture,
+                type: 'image/jpeg',
+                name: 'test.jpg'
+            } as any);
+            await axios.post(`${ADMIN_URI}/api/customer`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+        } catch (error) {
+            console.error('Error uploading file:', error);
+        }
+    };
+
     return (
         <View className='w-full h-full'>
             <View className='bg-black h-28 w-full justify-end'>
@@ -45,10 +66,10 @@ export default function PreviewScreen({ picture, setPicture }: PictureViewProps)
             <Image source={picture} className='w-full flex-1' />
             <View className='bg-black h-40 w-full flex flex-row justify-center items-center'>
                 <View className='flex flex-row'>
-                    <View className='w-[33.333333%] h-full items-center'>
+                    <TouchableOpacity onPress={handleUpload} className='w-[33.333333%] h-full items-center'>
                         <Image source={icons.upload} className='w-[30px] h-[30px]' />
                         <Text className='text-white mt-2'>Sử dụng ảnh</Text>
-                    </View>
+                    </TouchableOpacity>
                     <TouchableOpacity onPress={handleSave} className='w-[33.333333%] h-full items-center'>
                         <Image source={icons.download2} className='w-[30px] h-[30px]' />
                         <Text className='text-white mt-2'>Tải về máy</Text>

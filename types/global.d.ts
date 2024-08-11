@@ -10,6 +10,7 @@ type User = {
   ngay_chot_cn: string;
   ngay_gan_mc: string
 };
+type DateFormatType = 'full' | 'minimize' | 'day' | 'month' | 'year' | 'isoDate' | 'path';
 
 type Banner = {
   id: number;

@@ -79,7 +79,7 @@ export default function MyGalleryScreen({ user }: any) {
         {
           customerLibraryData && customerLibraryData.length != 0
             ?
-            <Text className='text-[12px] font-pregular'><Image className='w-[16px] h-[16px]' source={icons.calenderMonthBlack} /> {formatDate(customerLibraryData[customerLibraryData.length - 1]?.ngay_chup, 'minimize') + " - " + formatDate(customerLibraryData[0]?.ngay_chup, 'minimize')} (Chọn ngày chụp)</Text>
+            <Text className='text-[12px] font-pregular'><Image className='w-[16px] h-[16px]' source={icons.calenderMonthBlack} /> {formatDate(customerLibraryData[customerLibraryData.length - 1]?.ngay_chup, 'minimize') + " - " + formatDate(customerLibraryData[0]?.ngay_chup, 'minimize')}</Text>
             :
             null
         }
