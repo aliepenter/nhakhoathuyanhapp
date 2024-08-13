@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from 'expo-router';
 import PreviewScreen from './preview.screen';
 import * as ImagePicker from 'expo-image-picker';
+import { useRoute } from '@react-navigation/native';
 
 type CameraScreenProps = {};
 
@@ -14,6 +15,8 @@ export default function CameraScreen(props: CameraScreenProps) {
     const cameraRef = React.useRef<CameraView>(null);
     const [picture, setPicture] = React.useState<string>("");
     const [facing, setFacing] = useState<'front' | 'back'>('front');
+    const route = useRoute();
+    const { statusImage, id }: any = route.params;
     function toggleCameraFacing() {
         setFacing(current => (current === 'back' ? 'front' : 'back'));
     }
@@ -23,12 +26,11 @@ export default function CameraScreen(props: CameraScreenProps) {
     };
     const handleGallery = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [3, 4],
             quality: 1,
         });
-
         if (!result.canceled) {
             setPicture(result.assets[0].uri);
         }
@@ -39,7 +41,7 @@ export default function CameraScreen(props: CameraScreenProps) {
         setPicture(res!.uri)
     }
     if (picture) {
-        return <PreviewScreen picture={picture} setPicture={setPicture} />
+        return <PreviewScreen picture={picture} setPicture={setPicture} status={statusImage} id={id}/>
     }
     return (
         <View className='flex-1 justify-center'>

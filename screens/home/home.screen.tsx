@@ -95,7 +95,7 @@ const HomeScreen = () => {
   }
   return (
     <View className="bg-white">
-      <HeaderSection user={user} showNotification={true} flag={flag} setFlag={setFlag} />
+      <HeaderSection user={user} showNotification={true} />
       <ScrollView
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >

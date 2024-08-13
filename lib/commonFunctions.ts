@@ -99,3 +99,32 @@ export const calculateDaysDifference = (dateString: any) => {
 
     return daysDifference;
 }
+
+export const getToday = (type: string) => {
+    const date = new Date();
+
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+
+    let currentDate = ``;
+    if (type === 'path') {
+        currentDate = `${day}${month}${year}_${hours}${minutes}${seconds}`;
+    } else if (type === 'path_minimize') {
+        currentDate = `${day}${month}${year}`;
+    } else {
+        currentDate = `${day}/${month}/${year}`;
+    }
+    return currentDate;
+}
+
+
+export const formatInformation = (id: number | undefined, date: string | undefined, phoneNumber: string | undefined) => {
+    if (!id || !date || !phoneNumber) return false;
+    const year = new Date(date).getFullYear();
+
+    return `${id}${year}${phoneNumber}`;
+}

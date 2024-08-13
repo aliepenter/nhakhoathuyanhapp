@@ -3,18 +3,23 @@ import React, { useEffect, useState } from 'react'
 import Swiper from 'react-native-swiper'
 import { SERVER_URL } from '@/utils/uri'
 import { LinearGradient } from 'expo-linear-gradient'
-import { formatDate } from '@/lib/commonFunctions'
+import { formatDate, getToday } from '@/lib/commonFunctions'
 import CustomButton from '@/components/common/CustomButton'
 import { icons } from '@/constants'
 import { getCustomerLibrary } from '@/lib/apiCall'
 import { Image } from 'expo-image';
 import { router } from 'expo-router'
 import { useCameraPermissions } from 'expo-camera';
+import { useRoute } from '@react-navigation/native'
 
 export default function MyGalleryScreen({ user }: any) {
   const [customerLibraryData, setCustomerLibraryData] = useState<Array<CustomerLibrary>>();
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [hasImage, setHasImage] = useState(false);
+  const [id, setId] = useState<number | null>(null);
+  const route = useRoute();
+  const { refresh }: any = route.params || {};
   const onRefresh = async () => {
     setRefreshing(true);
     setLoading(true);
@@ -29,7 +34,7 @@ export default function MyGalleryScreen({ user }: any) {
       const userId = user.id;
       fetchCustomerLibrary(userId);
     }
-  }, [user]);
+  }, [user, refresh !== undefined ? refresh : null]);
 
   const fetchCustomerLibrary = async (userId: number) => {
     try {
@@ -38,6 +43,7 @@ export default function MyGalleryScreen({ user }: any) {
         if (chinhNhaData) {
           setCustomerLibraryData(chinhNhaData.data);
           setLoading(false)
+          handleCheckTodayIsShoot(chinhNhaData.data);
         } else {
           setLoading(false)
         }
@@ -51,17 +57,28 @@ export default function MyGalleryScreen({ user }: any) {
     }
   };
   const [permission, requestPermission] = useCameraPermissions();
-
+  const handleCheckTodayIsShoot = (data: any[] | undefined) => {
+    const todayImageData = data?.find(image => formatDate(image.ngay_chup, 'path') === getToday('path_minimize'));
+    if (todayImageData) {
+      setHasImage(true);
+      setId(todayImageData.id)
+    } else {
+      setHasImage(false);
+      setId(null)
+    }
+  }
   const handleCamera = async () => {
     if (permission && permission.granted) {
       router.push({
         pathname: "(routes)/camera",
+        params: { statusImage: String(hasImage), id: id }
       });
     } else {
       await requestPermission().then(res => {
         if (res.granted) {
           router.push({
             pathname: "(routes)/camera",
+            params: { statusImage: String(hasImage), id: id }
           });
         }
       })
@@ -91,7 +108,7 @@ export default function MyGalleryScreen({ user }: any) {
             customerLibraryData && customerLibraryData.length != 0
               ?
               <Swiper
-                showsPagination={true}
+                showsPagination={false}
                 loop={false}
                 autoplay={false}
                 paginationStyle={{ bottom: -16 }}
@@ -144,7 +161,7 @@ export default function MyGalleryScreen({ user }: any) {
       </View>
       <View>
         <CustomButton
-          title="Chụp ảnh nụ cười hôm nay"
+          title={hasImage ? 'Thay đổi ảnh nụ cười hôm nay' : 'Chụp ảnh nụ cười hôm nay'}
           handlePress={handleCamera}
           containerStyles="mt-[45px]"
           icon={icons.cameraGreen}

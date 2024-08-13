@@ -9,19 +9,22 @@ import { icons, images } from "@/constants";
 
 import { SERVER_URL } from "@/utils/uri";
 type HeaderSectionProps = {
-    flag: boolean;
-    setFlag: (index: boolean) => void;
     showNotification: any;
     user: any;
 }
-export default function HeaderSection({ user, showNotification, flag, setFlag }: HeaderSectionProps) {
+export default function HeaderSection({ user, showNotification }: HeaderSectionProps) {
     return (
         <View className="h-[150px]">
             <ImageBackground source={images.bgHeaderHome} resizeMode='stretch' className='flex-1'>
                 <View className="flex-row flex-1 justify-start ml-7 mt-8 items-center">
-                    <Image source={{ uri: `${SERVER_URL}${user?.anh_dai_dien}` }} resizeMode='contain' className='rounded-[50px] w-[100px] h-[100px]' />
-                    <View className="ml-6">
-                        <View className="flex-row items-center">
+                    <View>
+                        <Image source={{ uri: `${SERVER_URL}${user?.anh_dai_dien}` }} resizeMode='contain' className='rounded-[50px] w-[100px] h-[100px]' />
+                        <View className="absolute bg-white bottom-[5px] right-[5px] rounded-[50px] w-[20px] h-[20px] justify-center items-center">
+                            <Image source={icons.booking} resizeMode='contain' className='w-[70%] h-[70%]' />
+                        </View>
+                    </View>
+                    <View className="ml-4">
+                        <View className="flex-row items-center w-[70%]">
                             <Text className="text-white text-[14px] md:text-[18px]">Xin chào, </Text>
                             <Text className="text-white text-[14px] md:text-[18px] font-pbold">{user?.ho_va_ten}</Text>
                         </View>

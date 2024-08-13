@@ -2,57 +2,94 @@ import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import React, { useState } from 'react';
 import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from 'expo-router';
+import { router, useNavigation } from 'expo-router';
 import * as MediaLibrary from 'expo-media-library';
 import { icons } from '@/constants';
 import Toast from 'react-native-toast-message'
 import axios from 'axios';
-import { ADMIN_URI, SERVER_URI } from '@/utils/uri';
+import { ADMIN_URI } from '@/utils/uri';
+import { formatInformation, getToday } from '@/lib/commonFunctions';
+import useUser from '@/hooks/auth/useUser';
+import { createCustomerLibrary, updateCustomerLibrary } from '@/lib/apiCall';
 interface PictureViewProps {
     picture: string;
+    status: string;
+    id: number | null
     setPicture: React.Dispatch<React.SetStateAction<string>>
 }
-export default function PreviewScreen({ picture, setPicture }: PictureViewProps) {
+export default function PreviewScreen({ picture, setPicture, status, id }: PictureViewProps) {
+    const { user } = useUser();
     const [permissionResponse, requestPermission] = MediaLibrary.usePermissions();
     const handleBack = () => {
         setPicture("");
     };
-    const showToast = () => {
-        Toast.show({
-            type: 'success',
-            text1: 'Thành công',
-            text2: 'Ảnh đã được lưu vào thư viện của bạn'
-        });
-    }
     const handleSave = async () => {
         if (permissionResponse && permissionResponse.status !== 'granted') {
             await requestPermission().then(async res => {
                 if (res.granted) {
                     await MediaLibrary.saveToLibraryAsync(picture);
-                    showToast();
+                    Toast.show({
+                        type: 'success',
+                        text1: 'Thành công',
+                        text2: 'Ảnh đã được lưu vào thư viện của bạn'
+                    });
                 }
             });
         } else {
             await MediaLibrary.saveToLibraryAsync(picture);
-            showToast();
+            Toast.show({
+                type: 'success',
+                text1: 'Thành công',
+                text2: 'Ảnh đã được lưu vào thư viện của bạn'
+            });
         }
     };
+    const path = formatInformation(user?.id, user?.ngay_sinh, user?.so_dien_thoai);
     const handleUpload = async () => {
+        const fileName = `${getToday('path')}.jpg`;
+        const filePath = `khach-hang/${path}/library/ca-nhan`;
         try {
             const formData = new FormData();
             formData.append('file', {
                 uri: picture,
                 type: 'image/jpeg',
-                name: 'test.jpg'
+                name: fileName
             } as any);
+            formData.append('path', filePath);
             await axios.post(`${ADMIN_URI}/api/customer`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-
         } catch (error) {
             console.error('Error uploading file:', error);
+        }
+        const anh: any = {
+            image_path: `/img/${filePath}/${fileName}`,
+            user_id: user?.id
+        };
+        try {
+            if (status == 'true') {
+                await updateCustomerLibrary(id, anh);
+            } else {
+                await createCustomerLibrary(anh);
+            }
+            Toast.show({
+                type: 'success',
+                text1: 'Thành công',
+                text2: 'Ảnh đã được tải lên'
+            });
+            setPicture("");
+            router.dismissAll();
+            router.replace({
+                pathname: "(tabs)/image-gallery",
+                params: { refresh: Date.now() }
+            });
+        } catch (error) {
+            Toast.show({
+                type: 'error',
+                text1: 'Đã có lỗi xảy ra, xin thử lại sau',
+            });
         }
     };
 

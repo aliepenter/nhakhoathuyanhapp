@@ -27,9 +27,7 @@ export default function ProfileScreen() {
     }
     return (
         <View className='bg-[#F2F1F6] h-full'>
-            <HeaderSection user={user} flag={false} setFlag={function (index: boolean): void {
-                throw new Error('Function not implemented.');
-            }} showNotification={undefined} />
+            <HeaderSection user={user} showNotification={undefined} />
             <ScrollView className='px-[20px] py-[13px]'>
                 <View>
                     <Text className='text-[16px] font-psemibold'>Cài đặt</Text>
