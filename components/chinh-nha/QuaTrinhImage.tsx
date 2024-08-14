@@ -79,7 +79,7 @@ const ImageItem = ({ video_thumbnail, gallery, index }: any) => {
     const [modalVisible, setModalVisible] = useState(false);
     return (
         <View className={`flex-1 justify-center items-start my-2`}>
-            <TouchableOpacity activeOpacity={0.9} onPress={() => setModalVisible(true)} className={`rounded-[20px] bg-gray-300 h-[180px] w-[180px] md:h-[380px] md:w-[380px] ${index === 8 ? '' : 'mr-2'}`}>
+            <TouchableOpacity activeOpacity={0.9} onPress={() => setModalVisible(true)} className={`rounded-[20px] h-[180px] w-[180px] md:h-[380px] md:w-[380px] ${index === 8 ? '' : 'mr-2'}`}>
                 <Image
                     source={video_thumbnail ? { uri: `${SERVER_URL}${video_thumbnail}` } : images.bannerDefault}
                     className={`h-full w-full overflow-hidden rounded-[20px]`}

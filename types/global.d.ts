@@ -110,6 +110,15 @@ type LichSuThanhToan = {
   dich_vu_id: number;
 };
 
+type DichVuKhac = {
+  id: number;
+  gia_thanh: string;
+  ngay_kham: string;
+  user_id: number;
+  ten_dich_vu: number;
+};
+
+
 type CuocTroChuyen = {
   id: number;
   title: string;
