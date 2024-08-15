@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import useUser from '@/hooks/auth/useUser';
 import { icons } from '@/constants';
 import { router } from 'expo-router';
-import { getLichSuTroChuyen, getLoiDan } from '@/lib/apiCall';
+import { getChinhNhaByLoiDan, getLichSuTroChuyen, getLoiDan } from '@/lib/apiCall';
 import { formatDate } from '@/lib/commonFunctions';
 export default function LoiDanScreen() {
   const { user } = useUser();
@@ -49,22 +49,25 @@ export default function LoiDanScreen() {
       }, 1000);
     }
   };
-  const handlePress = (chinh_nha_chi_tiet_id: any, ngay_chinh_nha: any, loi_dan: any, id: number) => {
-    const title = `Chỉnh nha ngày ${formatDate(ngay_chinh_nha, "minimize")}`;
-    setFlag(true);
-    router.push({
-      pathname: "(routes)/chinh-nha/chinhNhaDetail",
-      params: {
-        headerTitle: title,
-        thu_thuat_dieu_tri: chinh_nha_chi_tiet_id ? chinh_nha_chi_tiet_id.thu_thuat_dieu_tri : null,
-        qua_trinh_image_id: chinh_nha_chi_tiet_id ? JSON.stringify(chinh_nha_chi_tiet_id.qua_trinh_image_id) : null,
-        tinh_trang_rang_mieng: loi_dan ? JSON.stringify(loi_dan) : null,
-        chinh_nha_id: id
-      },
-    });
-    setTimeout(() => {
-      setFlag(false)
-    }, 1000);
+  const handlePress = async (item: LoiDan) => {
+    const res = await getChinhNhaByLoiDan(item.id);
+    if (res) {
+      const title = `Chỉnh nha ngày ${formatDate(res.data.ngay_chinh_nha, "minimize")}`;
+      setFlag(true);
+      router.push({
+        pathname: "(routes)/chinh-nha/chinhNhaDetail",
+        params: {
+          headerTitle: title,
+          thu_thuat_dieu_tri: res.data.thu_thuat_dieu_tri ? res.data.thu_thuat_dieu_tri : null,
+          qua_trinh_image_id: res.data.qua_trinh_image_id ? JSON.stringify(res.data.qua_trinh_image_id) : null,
+          tinh_trang_rang_mieng: res.data.loi_dan_id ? JSON.stringify(res.data.loi_dan_id) : null,
+          chinh_nha_id: res.data.id
+        },
+      });
+      setTimeout(() => {
+        setFlag(false)
+      }, 1000);
+    }
   }
   return (
     <ScrollView className='bg-white flex-1' refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
@@ -76,7 +79,7 @@ export default function LoiDanScreen() {
             loiDan.map((item: LoiDan, index: number) => {
               const isLastItem = index === loiDan.length - 1;
               return (
-                <TouchableOpacity disabled={flag} key={index} onPress={() => handlePress(item.chinh_nha_id.chinh_nha_chi_tiet_id, item.chinh_nha_id.ngay_chinh_nha, item, item.chinh_nha_id.id)}
+                <TouchableOpacity disabled={flag} key={index} onPress={() => handlePress(item)}
                   className={`my-[7px] mt-[14px] rounded-[7px] bg-[#F5F5F5] p-[10px] ${isLastItem ? 'mb-5' : ''}`} style={styles.boxShadow}>
                   <View className={`flex-row items-center justify-center flex-wrap ${item.seen === 1 ? 'opacity-50' : ''}`}>
                     <View className='w-[80%] items-start'>

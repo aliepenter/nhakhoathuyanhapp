@@ -255,6 +255,26 @@ export const getChinhNha = async (userId: any) => {
   }
 }
 
+export const getChinhNhaByLoiDan = async (id: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const chinhNha = await axios.get(`${SERVER_URI}/chinh-nha/by-loi-dan/${id}`);
+      if (!chinhNha) return null;
+      return {
+        code: 200,
+        data: chinhNha.data,
+      };
+    } catch (error) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+}
+
 export const getHopDong = async (userId: any) => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);
 
@@ -275,24 +295,6 @@ export const getHopDong = async (userId: any) => {
   }
 };
 
-export const getChinhNhaChiTiet = async (id: any) => {
-  const token = await SecureStore.getItemAsync(TOKEN_KEY);
-  if (token) {
-    try {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      const chinhNhaDetail = await axios.get(`${SERVER_URI}/chinh-nha-chi-tiet/${id}`);
-      if (!chinhNhaDetail) return null;
-      return {
-        code: 200,
-        data: chinhNhaDetail.data,
-      };
-    } catch (error) {
-      throw error;
-    }
-  } else {
-    return null;
-  }
-}
 
 export const getVideoCategoryById = async (chinh_nha_chi_tiet_id: any) => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);

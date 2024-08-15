@@ -92,9 +92,7 @@ const ImageItem = ({ video_thumbnail, gallery, index }: any) => {
                 transparent={true}
                 onRequestClose={() => setModalVisible(false)}
             >
-                <View
-                    className='bg-white w-full h-full'
-                >
+                <View className='bg-white w-full h-full'>
                     <ImageViewer enablePreload={true} flipThreshold={200} pageAnimateTime={200} enableSwipeDown={true} swipeDownThreshold={100} onCancel={() => setModalVisible(false)} imageUrls={gallery} index={index} />
                     <TouchableOpacity
                         onPress={() => setModalVisible(false)}

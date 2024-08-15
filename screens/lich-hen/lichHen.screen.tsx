@@ -66,21 +66,21 @@ export default function LichHenScreen() {
             }, 500);
         }
     };
-    const handlePress = (chinh_nha_chi_tiet_id: any, ngay_chinh_nha: any, id: number) => {
-        const title = `Chỉnh nha ngày ${formatDate(ngay_chinh_nha, "minimize")}`;
+    const handlePress = (item: ChinhNha) => {
+        const title = `Chỉnh nha ngày ${formatDate(item.ngay_chinh_nha, "minimize")}`;
         setFlag(true);
         router.push({
             pathname: "(routes)/chinh-nha/chinhNhaDetail",
             params: {
                 headerTitle: title,
-                thu_thuat_dieu_tri: chinh_nha_chi_tiet_id ? chinh_nha_chi_tiet_id.thu_thuat_dieu_tri : null,
-                qua_trinh_image_id: chinh_nha_chi_tiet_id ? JSON.stringify(chinh_nha_chi_tiet_id.qua_trinh_image_id) : null,
-                tinh_trang_rang_mieng: chinh_nha_chi_tiet_id ? JSON.stringify(chinh_nha_chi_tiet_id.loi_dan_id) : null,
-                chinh_nha_id: id
+                thu_thuat_dieu_tri: item.thu_thuat_dieu_tri ? item.thu_thuat_dieu_tri : null,
+                qua_trinh_image_id: item.qua_trinh_image_id ? JSON.stringify(item.qua_trinh_image_id) : null,
+                tinh_trang_rang_mieng: item.loi_dan_id ? JSON.stringify(item.loi_dan_id) : null,
+                chinh_nha_id: item.id
             },
         });
         setTimeout(() => {
-            setFlag(false);
+            setFlag(false)
         }, 1000);
     }
     const checkActive = (ngay_chinh_nha: any, index: any) => {
@@ -150,7 +150,7 @@ export default function LichHenScreen() {
                                 <Pressable
                                     key={index}
                                     className={`flex-row items-center h-20`}
-                                    onPress={() => handlePress(item.chinh_nha_chi_tiet_id, item.ngay_chinh_nha, item.id)}
+                                    onPress={() => handlePress(item)}
                                     disabled={flag}
                                 >
                                     <View className='items-center justify-center h-full py-[10px] w-[20%] border-r-[1px] border-[#D8D8D8]'>

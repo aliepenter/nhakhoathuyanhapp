@@ -36,7 +36,9 @@ type ChinhNha = {
   ngay_chinh_nha: string;
   branch_id: any;
   user_id: number;
-  chinh_nha_chi_tiet_id: number;
+  thu_thuat_dieu_tri: string;
+  qua_trinh_image_id: number;
+  loi_dan_id: number;
 };
 
 type Post = {
@@ -135,7 +137,6 @@ type LoiDan = {
   ngay_tao: string;
   user_id: number;
   seen: number;
-  chinh_nha_id: any
 };
 
 type Message = {
