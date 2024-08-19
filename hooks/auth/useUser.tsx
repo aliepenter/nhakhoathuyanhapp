@@ -10,45 +10,26 @@ export default function useUser() {
     const [error, setError] = useState("");
     const [refetch, setRefetch] = useState(false);
     useEffect(() => {
-        const subscription = async () => {
+        const fetchUser = async () => {
+            setLoading(true);
             try {
-
                 const token = await SecureStore.getItemAsync(TOKEN_KEY);
                 if (!token) {
-                    setTimeout(() => {
-                        setLoading(false);
-                    }, 2000);
+                    setLoading(false);
+                    return;
                 }
                 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-                await axios.get(`${SERVER_URI}/auth/profile`)
-                    .then((res: any) => {
-                        setUser(res.data);
-                        setTimeout(() => {
-                            setLoading(false);
-                        }, 2000);
-                    })
-                    .catch((error: any) => {
-
-                        setError("Đã có lỗi xảy ra, xin vui lòng thử lại sau");
-                        setTimeout(() => {
-                            setLoading(false);
-                        }, 2000);
-                    }).finally(() => {
-                        setTimeout(() => {
-                            setLoading(false);
-                        }, 2000);
-                    });
-
-            } catch (error) {
-
-                setError("Đã có lỗi xảy ra, xin vui lòng thử lại sau")
-                setTimeout(() => {
-                    setLoading(false);
-                }, 2000);
+                const res = await axios.get(`${SERVER_URI}/auth/profile`);
+                setUser(res.data);
+                setError("");
+            } catch (err) {
+                setError("Đã có lỗi xảy ra, xin vui lòng thử lại sau");
+            } finally {
+                setLoading(false);
             }
         };
-        subscription();
+        fetchUser();
     }, [refetch]);
-    return { loading, user, error, setRefetch, refetch };
 
+    return { loading, user, error, setRefetch };
 }

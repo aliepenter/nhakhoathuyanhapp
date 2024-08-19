@@ -2,13 +2,10 @@ import { Image, Linking, Platform, Text, TouchableOpacity, View, StyleSheet, Ima
 import React, { useCallback } from 'react';
 import icons from '@/constants/icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import useUser from '@/hooks/auth/useUser';
-import { SERVER_URL } from '@/utils/uri';
 import images from '@/constants/images';
 import * as Haptics from 'expo-haptics';
 
 export default function TabBars({ state, descriptors, navigation }: any) {
-    const { user } = useUser();
     const handlePress = useCallback(async () => {
         Haptics.selectionAsync();
         await Linking.openURL('tel:0869800318');
@@ -69,22 +66,15 @@ export default function TabBars({ state, descriptors, navigation }: any) {
                             >
                                 <View className={`items-center ${isFocused ? "border-t-[#5EBA1B] border-t-2 pt-2" : "pt-2"}`}>
                                     {
-                                        route.name === "profile/index"
+                                        route.name === "notification/index"
                                             ?
-                                            user && user.anh_dai_dien ?
-                                                <Image source={{ uri: `${SERVER_URL}${user.anh_dai_dien}` }} resizeMode='stretch' className='rounded-full w-[24px] h-[24px]' />
-                                                :
+                                            <View className="">
                                                 <Image source={iconName} resizeMode='contain' tintColor={isFocused ? '#5EBA1B' : '#8A8A8A'} className='w-[24px] h-[24px]' />
-
+                                                <Image source={icons.notificationHighlight} resizeMode='contain' className='w-[14px] h-[14px] absolute left-3 bottom-3' />
+                                            </View>
                                             :
-                                            route.name === "notification/index"
-                                                ?
-                                                <View className="">
-                                                    <Image source={iconName} resizeMode='contain' tintColor={isFocused ? '#5EBA1B' : '#8A8A8A'} className='w-[24px] h-[24px]' />
-                                                    <Image source={icons.notificationHighlight} resizeMode='contain' className='w-[14px] h-[14px] absolute left-3 bottom-3' />
-                                                </View>
-                                                :
-                                                <Image source={iconName} resizeMode='contain' tintColor={isFocused ? '#5EBA1B' : '#8A8A8A'} className='w-[24px] h-[24px]' />
+                                            <Image source={iconName} resizeMode='contain' tintColor={isFocused ? '#5EBA1B' : '#8A8A8A'} className='w-[24px] h-[24px]' />
+
                                     }
                                     <Text className={`${isFocused ? 'text-[#5EBA1B] font-pbold' : 'text-[#8A8A8A] font-pregular'} mt-2 text-[10px] md:text-[14px]`}>{tabName}</Text>
                                 </View>

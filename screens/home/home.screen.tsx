@@ -11,21 +11,23 @@ import FunctionItemsList from "@/components/home/FunctionItem";
 import RenderVideo from "@/components/home/RenderVideo";
 import BannerSlide from "@/components/common/BannerSlide";
 import NewsSection from "@/components/home/NewsSection";
-import HeaderSection from "@/components/home/HeaderSection";
 import TimeTracking from "@/components/home/TimeTracking";
 import { calculateDaysDifference, formatDate } from "@/lib/commonFunctions";
 import Toast from "react-native-toast-message";
 
-
 const HomeScreen = () => {
-  const { user } = useUser();
   const [refreshing, setRefreshing] = useState(false);
   const [videos, setVideos] = useState([]);
   const [banners, setBanners] = useState([]);
   const [post, setPost] = useState([]);
-
+  const { user } = useUser();
   const [flag, setFlag] = useState<boolean>(false);
-
+  useEffect(() => {
+    fetchVideoData();
+    fetchBannerData();
+    fetchNews();
+    showToast();
+  }, [user]);
   const onRefresh = async () => {
     setRefreshing(true);
     setVideos([]);
@@ -36,13 +38,6 @@ const HomeScreen = () => {
     await fetchNews();
     setRefreshing(false);
   };
-
-  useEffect(() => {
-    fetchVideoData();
-    fetchBannerData();
-    fetchNews();
-    showToast();
-  }, []);
 
   const fetchNews = async () => {
     try {
@@ -95,7 +90,6 @@ const HomeScreen = () => {
   }
   return (
     <View className="bg-white">
-      <HeaderSection user={user} showNotification={true} />
       <ScrollView
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
@@ -106,7 +100,6 @@ const HomeScreen = () => {
         } totalTime={user && user.ngay_gan_mc != null ? calculateDaysDifference(user.ngay_gan_mc) : 0} flag={flag} setFlag={setFlag} />
         <RenderVideo videos={videos} flag={flag} setFlag={setFlag} />
         <NewsSection post={post} flag={flag} setFlag={setFlag} />
-        <View className="h-[150px]"></View>
       </ScrollView>
     </View>
   );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tabs } from 'expo-router';
 
 import TabBar from '@/components/tabbar/TabBar';
@@ -6,10 +6,41 @@ import { Alert, BackHandler } from 'react-native';
 import { StatusBar } from 'expo-status-bar'
 import { useFocusEffect } from '@react-navigation/native';
 import CustomHeader from '@/components/common/CustomHeader';
+import HeaderSection from '@/components/home/HeaderSection';
+import useUser from '@/hooks/auth/useUser';
+import { getAvatar } from '@/lib/apiCall';
 
 
 const TabsLayout = () => {
-    const handleBackAction = () => {
+    const { user } = useUser();
+    const [flag, setFlag] = useState<boolean>(false);
+    const [loading, setLoading] = useState(true);
+    const [disable, setDisable] = useState(false);
+    const [refetch, setRefetch] = useState<number>();
+    const [settings, setSettings] = useState<Settings>();
+    useEffect(() => {
+        if (user) {
+            const userId = user.id;
+            fetchAvatar(userId);
+        }
+    }, [user, refetch]);
+
+    const fetchAvatar = async (userId: number) => {
+        setDisable(true);
+        try {
+            const res = await getAvatar(userId);
+            if (res) {
+                setSettings(res.data);
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        } finally {
+            setLoading(false);
+            setTimeout(() => setDisable(false), 5000);
+        }
+    };
+
+    const handleBackAction = React.useCallback(() => {
         Alert.alert("Thoát khỏi ứng dụng", "Bạn muốn rời khỏi ứng dụng?", [
             {
                 text: "Hủy bỏ",
@@ -22,7 +53,8 @@ const TabsLayout = () => {
             },
         ])
         return true;
-    }
+    }, []);
+
 
     useFocusEffect(
         React.useCallback(() => {
@@ -35,12 +67,21 @@ const TabsLayout = () => {
     return (
         <>
             <Tabs tabBar={props => <TabBar {...props} />}>
-                <Tabs.Screen options={{ headerShown: false }} name="index" />
+                <Tabs.Screen options={{
+                    header: (props) => (
+                        <HeaderSection user={user} setRefetch={setRefetch} showNotification={true} editAvatar={false} setFlag={setFlag} flag={flag} settings={{
+                            id: settings?.id,
+                            setting_type: settings?.setting_type,
+                            value: settings?.value,
+                            user_id: settings?.user_id
+                        }} loading={loading} disable={disable} />
+                    ),
+                }} name="index" />
                 <Tabs.Screen
                     name="image-gallery/index"
                     options={{
                         header: (props) => (
-                            <CustomHeader {...props} customStyle="bg-white" title="Thư viện nụ cười"  disableBackButton={true}/>
+                            <CustomHeader {...props} customStyle="bg-white" title="Thư viện nụ cười" disableBackButton={true} />
                         ),
                     }}
                 />
@@ -48,11 +89,20 @@ const TabsLayout = () => {
                     name="notification/index"
                     options={{
                         header: (props) => (
-                            <CustomHeader {...props} customStyle="bg-[#F2F2F2]" title="Thông báo"  disableBackButton={true}/>
+                            <CustomHeader {...props} customStyle="bg-[#F2F2F2]" title="Thông báo" disableBackButton={true} />
                         ),
                     }}
                 />
-                <Tabs.Screen options={{ headerShown: false }} name="profile/index" />
+                <Tabs.Screen options={{
+                    header: (props) => (
+                        <HeaderSection user={user} setRefetch={setRefetch} showNotification={false} editAvatar={true} setFlag={setFlag} flag={flag} settings={{
+                            id: settings?.id,
+                            setting_type: settings?.setting_type,
+                            value: settings?.value,
+                            user_id: settings?.user_id
+                        }} loading={loading} disable={disable} />
+                    ),
+                }} name="profile/index" />
             </Tabs>
             <StatusBar style='light' />
         </>
@@ -60,3 +110,5 @@ const TabsLayout = () => {
 };
 
 export default TabsLayout;
+
+

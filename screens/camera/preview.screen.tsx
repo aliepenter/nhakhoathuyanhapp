@@ -10,7 +10,7 @@ import axios from 'axios';
 import { ADMIN_URI } from '@/utils/uri';
 import { formatInformation, getToday } from '@/lib/commonFunctions';
 import useUser from '@/hooks/auth/useUser';
-import { createCustomerLibrary, updateCustomerLibrary } from '@/lib/apiCall';
+import { createCustomerLibrary, updateAvatar, updateCustomerLibrary } from '@/lib/apiCall';
 interface PictureViewProps {
     picture: string;
     status: string;

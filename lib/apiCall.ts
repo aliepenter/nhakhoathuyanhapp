@@ -434,6 +434,26 @@ export const updateCustomerLibrary = async (id: number | null, data: any) => {
   }
 };
 
+// PUT UPDATE AVATAR
+export const updateAvatar = async (id: number | null, data: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const response = await axios.put(`${SERVER_URI}/settings/${id}`, data);
+      return {
+        code: 200,
+        data: response.data,
+      };
+    } catch (error: any) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+};
+
 
 export const getAnhQuaTrinh = async (userId: any) => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);
@@ -543,6 +563,25 @@ export const getLoiDan = async (userId: any) => {
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       const res = await axios.get(`${SERVER_URI}/loi-dan/${userId}`);
+      if (!res) return null;
+      return {
+        code: 200,
+        data: res.data,
+      };
+    } catch (error) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+}
+
+export const getAvatar = async (userId: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const res = await axios.get(`${SERVER_URI}/settings/user/${userId}`);
       if (!res) return null;
       return {
         code: 200,

@@ -71,14 +71,14 @@ export default function MyGalleryScreen({ user }: any) {
     if (permission && permission.granted) {
       router.push({
         pathname: "(routes)/camera",
-        params: { statusImage: String(hasImage), id: id }
+        params: { statusImage: String(hasImage), id: id, statusUpload: 'customLibrary' }
       });
     } else {
       await requestPermission().then(res => {
         if (res.granted) {
           router.push({
             pathname: "(routes)/camera",
-            params: { statusImage: String(hasImage), id: id }
+            params: { statusImage: String(hasImage), id: id, statusUpload: 'customLibrary' }
           });
         }
       })

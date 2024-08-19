@@ -1,16 +1,23 @@
 import { View, Text, Alert, Image, ScrollView, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
-import { logout } from '@/lib/apiCall';
-import useUser from '@/hooks/auth/useUser';
+import React, { useEffect, useState } from 'react'
+import { getAvatar, logout } from '@/lib/apiCall';
 import HeaderSection from '@/components/home/HeaderSection';
 import { icons } from '@/constants';
 import CustomButton from '@/components/common/CustomButton';
 import { router } from 'expo-router';
+import useUser from '@/hooks/auth/useUser';
 
 export default function ProfileScreen() {
-    const { user } = useUser();
     const [flag, setFlag] = useState<boolean>(false);
-
+    const [loading, setLoading] = useState(true);
+    const { user, setRefetch } = useUser();
+    const [settings, setSettings] = useState<Settings>();
+    useEffect(() => {
+        if (user) {
+            const userId = user.id;
+            fetchAvatar(userId);
+        }
+    }, [user]);
     const handleLogout = async () => {
         try {
             await logout()
@@ -25,9 +32,23 @@ export default function ProfileScreen() {
             setFlag(false)
         }, 1000);
     }
+
+    const fetchAvatar = async (userId: number) => {
+        try {
+            const res = await getAvatar(userId);
+            if (res) {
+                setSettings(res.data);
+                setLoading(false)
+            } else {
+                setLoading(false)
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            setLoading(false)
+        }
+    };
     return (
         <View className='bg-[#F2F1F6] h-full'>
-            <HeaderSection user={user} showNotification={undefined} />
             <ScrollView className='px-[20px] py-[13px]'>
                 <View>
                     <Text className='text-[16px] font-psemibold'>Cài đặt</Text>

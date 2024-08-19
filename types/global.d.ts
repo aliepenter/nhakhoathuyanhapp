@@ -146,3 +146,10 @@ type Message = {
   nguoi_gui_id: number;
   cuoc_tro_chuyen_id: any;
 };
+
+type Settings = {
+  id: number;
+  setting_type: number;
+  value: string;
+  user_id: number;
+};

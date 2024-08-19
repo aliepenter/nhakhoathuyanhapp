@@ -34,14 +34,15 @@ export default function CameraScreen(props: CameraScreenProps) {
         if (!result.canceled) {
             setPicture(result.assets[0].uri);
         }
-
     }
     const takePicture = async () => {
-        const res = await cameraRef.current?.takePictureAsync({});
+        const res = await cameraRef.current?.takePictureAsync({
+            quality: 1,
+        });
         setPicture(res!.uri)
     }
     if (picture) {
-        return <PreviewScreen picture={picture} setPicture={setPicture} status={statusImage} id={id}/>
+        return <PreviewScreen picture={picture} setPicture={setPicture} status={statusImage} id={id} />
     }
     return (
         <View className='flex-1 justify-center'>
