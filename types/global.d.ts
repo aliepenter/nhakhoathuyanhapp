@@ -1,5 +1,6 @@
 type User = {
   id: number;
+  avatar_id: number;
   ho_va_ten: string;
   so_dien_thoai: string;
   dia_chi: string;

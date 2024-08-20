@@ -17,11 +17,11 @@ const TabsLayout = () => {
     const [loading, setLoading] = useState(true);
     const [disable, setDisable] = useState(false);
     const [refetch, setRefetch] = useState<number>();
-    const [settings, setSettings] = useState<Settings>();
+    const [avatar, setAvatar] = useState<Settings>();
     useEffect(() => {
         if (user) {
-            const userId = user.id;
-            fetchAvatar(userId);
+            const id = user.avatar_id;
+            fetchAvatar(id);
         }
     }, [user, refetch]);
 
@@ -30,7 +30,7 @@ const TabsLayout = () => {
         try {
             const res = await getAvatar(userId);
             if (res) {
-                setSettings(res.data);
+                setAvatar(res.data);
             }
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -69,12 +69,10 @@ const TabsLayout = () => {
             <Tabs tabBar={props => <TabBar {...props} />}>
                 <Tabs.Screen options={{
                     header: (props) => (
-                        <HeaderSection user={user} setRefetch={setRefetch} showNotification={true} editAvatar={false} setFlag={setFlag} flag={flag} settings={{
-                            id: settings?.id,
-                            setting_type: settings?.setting_type,
-                            value: settings?.value,
-                            user_id: settings?.user_id
-                        }} loading={loading} disable={disable} />
+                        <HeaderSection user={user} setRefetch={setRefetch} showNotification={true} editAvatar={false} setFlag={setFlag} flag={flag} avatar={{
+                            id: avatar?.id,
+                            value: avatar?.value,
+                        }} loading={loading} disable={disable} customBgColor="bg-white"/>
                     ),
                 }} name="index" />
                 <Tabs.Screen
@@ -95,12 +93,10 @@ const TabsLayout = () => {
                 />
                 <Tabs.Screen options={{
                     header: (props) => (
-                        <HeaderSection user={user} setRefetch={setRefetch} showNotification={false} editAvatar={true} setFlag={setFlag} flag={flag} settings={{
-                            id: settings?.id,
-                            setting_type: settings?.setting_type,
-                            value: settings?.value,
-                            user_id: settings?.user_id
-                        }} loading={loading} disable={disable} />
+                        <HeaderSection user={user} setRefetch={setRefetch} showNotification={false} editAvatar={true} setFlag={setFlag} flag={flag} avatar={{
+                            id: avatar?.id,
+                            value: avatar?.value,
+                        }} loading={loading} disable={disable} customBgColor="bg-[#F2F1F6]" />
                     ),
                 }} name="profile/index" />
             </Tabs>

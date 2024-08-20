@@ -441,7 +441,7 @@ export const updateAvatar = async (id: number | null, data: any) => {
   if (token) {
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      const response = await axios.put(`${SERVER_URI}/settings/${id}`, data);
+      const response = await axios.put(`${SERVER_URI}/avatar/${id}`, data);
       return {
         code: 200,
         data: response.data,
@@ -581,7 +581,7 @@ export const getAvatar = async (userId: any) => {
   if (token) {
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      const res = await axios.get(`${SERVER_URI}/settings/user/${userId}`);
+      const res = await axios.get(`${SERVER_URI}/avatar/${userId}`);
       if (!res) return null;
       return {
         code: 200,

@@ -18,15 +18,16 @@ import Toast from "react-native-toast-message";
 type HeaderSectionProps = {
     showNotification: boolean;
     editAvatar: boolean;
-    settings: any;
+    avatar: any;
     loading: boolean;
     disable: boolean;
     flag: boolean;
     user: any;
     setRefetch: (index: number) => void;
     setFlag: (index: boolean) => void;
+    customBgColor: string,
 }
-export default function HeaderSection({ disable, user, loading, settings, showNotification, editAvatar, setFlag, flag, setRefetch }: HeaderSectionProps) {
+export default function HeaderSection({ disable, user, loading, avatar, showNotification, editAvatar, setFlag, flag, setRefetch, customBgColor }: HeaderSectionProps) {
     const handleCamera = async () => {
         setFlag(true);
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -36,7 +37,7 @@ export default function HeaderSection({ disable, user, loading, settings, showNo
             quality: 1,
         });
         if (!result.canceled) {
-            if (result.assets[0].uri && settings?.id) {
+            if (result.assets[0].uri && avatar?.id) {
                 const path = formatInformation(user?.id, user?.ngay_sinh, user?.so_dien_thoai);
 
                 const fileName = `${getToday('path')}.jpg`;
@@ -58,10 +59,10 @@ export default function HeaderSection({ disable, user, loading, settings, showNo
                     console.error('Error uploading file:', error);
                 }
                 const anh: any = {
-                    value: `/img/${filePath}/${fileName}`
+                    value: `img/${filePath}/${fileName}`
                 };
                 try {
-                    await updateAvatar(settings.id, anh);
+                    await updateAvatar(avatar.id, anh);
                     setRefetch(Date.now());
                     Toast.show({
                         type: 'success',
@@ -83,16 +84,18 @@ export default function HeaderSection({ disable, user, loading, settings, showNo
     };
 
     return (
-        <View className="h-[150px]">
-            <ImageBackground source={images.bgHeaderHome} resizeMode='stretch' className='flex-1'>
+        <View className={`${customBgColor} h-[150px]`}>
+            <ImageBackground source={images.bgHeaderPage} resizeMode='stretch' className='flex-1'>
                 <View className="flex-row flex-1 justify-start ml-7 mt-8 items-center">
                     <View>
                         {
                             !loading
                                 ?
-                                settings
+                                avatar
                                     ?
-                                    <Image source={{ uri: `${SERVER_URL}${settings.value}` }} resizeMode='contain' className='rounded-[50px] w-[100px] h-[100px]' />
+                                    <View className="h-[100px] w-[100px] bg-gray-500 rounded-full">
+                                        <Image source={{ uri: `${SERVER_URL}${avatar.value}` }} resizeMode='contain' alt="avatar" fadeDuration={.5} className='rounded-full w-full h-full' />
+                                    </View>
                                     :
                                     <View className="h-[100px] w-[100px] bg-gray-500 rounded-full justify-center items-center">
                                     </View>

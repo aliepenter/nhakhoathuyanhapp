@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, ActivityIndicator, Platform } from 'react-native';
 import React, { useState } from 'react';
 import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
@@ -10,7 +10,7 @@ import axios from 'axios';
 import { ADMIN_URI } from '@/utils/uri';
 import { formatInformation, getToday } from '@/lib/commonFunctions';
 import useUser from '@/hooks/auth/useUser';
-import { createCustomerLibrary, updateAvatar, updateCustomerLibrary } from '@/lib/apiCall';
+import { createCustomerLibrary, updateCustomerLibrary } from '@/lib/apiCall';
 interface PictureViewProps {
     picture: string;
     status: string;
@@ -18,6 +18,7 @@ interface PictureViewProps {
     setPicture: React.Dispatch<React.SetStateAction<string>>
 }
 export default function PreviewScreen({ picture, setPicture, status, id }: PictureViewProps) {
+    const [loading, setLoading] = React.useState<boolean>(false);
     const { user } = useUser();
     const [permissionResponse, requestPermission] = MediaLibrary.usePermissions();
     const handleBack = () => {
@@ -46,6 +47,7 @@ export default function PreviewScreen({ picture, setPicture, status, id }: Pictu
     };
     const path = formatInformation(user?.id, user?.ngay_sinh, user?.so_dien_thoai);
     const handleUpload = async () => {
+        setLoading(true);
         const fileName = `${getToday('path')}.jpg`;
         const filePath = `khach-hang/${path}/library/ca-nhan`;
         try {
@@ -65,8 +67,9 @@ export default function PreviewScreen({ picture, setPicture, status, id }: Pictu
             console.error('Error uploading file:', error);
         }
         const anh: any = {
-            image_path: `/img/${filePath}/${fileName}`,
-            user_id: user?.id
+            image_path: `img/${filePath}/${fileName}`,
+            user_id: user?.id,
+            system: Platform.OS === 'ios' ? 1 : 0
         };
         try {
             if (status == 'true') {
@@ -90,6 +93,8 @@ export default function PreviewScreen({ picture, setPicture, status, id }: Pictu
                 type: 'error',
                 text1: 'Đã có lỗi xảy ra, xin thử lại sau',
             });
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -102,20 +107,29 @@ export default function PreviewScreen({ picture, setPicture, status, id }: Pictu
             </View>
             <Image source={picture} className='w-full flex-1' />
             <View className='bg-black h-40 w-full flex flex-row justify-center items-center'>
-                <View className='flex flex-row'>
-                    <TouchableOpacity onPress={handleUpload} className='w-[33.333333%] h-full items-center'>
-                        <Image source={icons.upload} className='w-[30px] h-[30px]' />
-                        <Text className='text-white mt-2'>Sử dụng ảnh</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={handleSave} className='w-[33.333333%] h-full items-center'>
-                        <Image source={icons.download2} className='w-[30px] h-[30px]' />
-                        <Text className='text-white mt-2'>Tải về máy</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={handleBack} className='w-[33.333333%] h-full items-center'>
-                        <Image source={icons.trashWhite} className='w-[30px] h-[30px]' />
-                        <Text className='text-white mt-2'>Xóa ảnh</Text>
-                    </TouchableOpacity>
-                </View>
+                {
+                    !loading
+                        ?
+                        <View className='flex flex-row'>
+                            <TouchableOpacity onPress={handleUpload} className='w-[33.333333%] h-full items-center'>
+                                <Image source={icons.upload} className='w-[30px] h-[30px]' />
+                                <Text className='text-white mt-2'>Sử dụng ảnh</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={handleSave} className='w-[33.333333%] h-full items-center'>
+                                <Image source={icons.download2} className='w-[30px] h-[30px]' />
+                                <Text className='text-white mt-2'>Tải về máy</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={handleBack} className='w-[33.333333%] h-full items-center'>
+                                <Image source={icons.trashWhite} className='w-[30px] h-[30px]' />
+                                <Text className='text-white mt-2'>Xóa ảnh</Text>
+                            </TouchableOpacity>
+                        </View>
+                        :
+                        <View className={`justify-center`}>
+                            <ActivityIndicator />
+                        </View>
+                }
+
             </View>
         </View>
     )
