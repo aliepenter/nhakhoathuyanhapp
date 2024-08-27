@@ -110,13 +110,13 @@ export default function HeaderSection({ disable, user, loading, avatar, showNoti
                                 !disable
                                     ?
                                     <TouchableOpacity disabled={flag} onPress={handleCamera}>
-                                        <View className="absolute bg-white bottom-[5px] right-[5px] rounded-[50px] w-[20px] h-[20px] justify-center items-center">
-                                            <Image source={icons.edit} resizeMode='contain' className='w-[70%] h-[70%]' />
+                                        <View className="absolute bg-black bottom-[5px] right-[5px] rounded-[50px] w-[20px] h-[20px] justify-center items-center">
+                                            <Image source={icons.edit} resizeMode='contain' className='w-[60%] h-[60%]' />
                                         </View>
                                     </TouchableOpacity>
                                     :
-                                    <View className="absolute opacity-40 bg-white bottom-[5px] right-[5px] rounded-[50px] w-[20px] h-[20px] justify-center items-center">
-                                        <Image source={icons.edit} resizeMode='contain' className='w-[70%] h-[70%]' />
+                                    <View className="absolute opacity-40 bg-black bottom-[5px] right-[5px] rounded-[50px] w-[20px] h-[20px] justify-center items-center">
+                                        <Image source={icons.edit} resizeMode='contain' className='w-[60%] h-[60%]' />
                                     </View>
                                 :
                                 null

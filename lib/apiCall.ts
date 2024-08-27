@@ -235,6 +235,26 @@ export const logout = async () => {
 
 }
 
+export const getAllAccount = async (username: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const acc = await axios.get(`${SERVER_URI}/users/find-by-phone/${username}`);
+      if (!acc) return null;
+      return {
+        code: 200,
+        data: acc.data,
+      };
+    } catch (error) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+}
+
 export const getChinhNha = async (userId: any) => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);
 
@@ -354,6 +374,25 @@ export const getDichVuKhac = async (chinh_nha_chi_tiet_id: any) => {
   }
 }
 
+export const getDichVuKhacByUserId = async (userId: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const dichVuKhac = await axios.get(`${SERVER_URI}/dich-vu-khac/by-user/${userId}`);
+      if (!dichVuKhac) return null;
+      return {
+        code: 200,
+        data: dichVuKhac.data,
+      };
+    } catch (error) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+}
+
 export const getMessages = async (cuoc_tro_chuyen_id: number) => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);
   if (token) {
@@ -454,6 +493,25 @@ export const updateAvatar = async (id: number | null, data: any) => {
   }
 };
 
+// PUT UPDATE MAIN STATUS USER
+export const updateMainStatus = async (id: number | null) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const response = await axios.put(`${SERVER_URI}/users/update-main-status/${id}`);
+      return {
+        code: 200,
+        data: response.data,
+      };
+    } catch (error: any) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+};
+
 
 export const getAnhQuaTrinh = async (userId: any) => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);
@@ -496,33 +554,13 @@ export const getHoSoTraGopCn = async (userId: any) => {
   }
 }
 
-export const getLichSuThanhToanCn = async (userId: any) => {
+export const getLichSuThanhToanCn = async (hstgcnid: string) => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);
 
   if (token) {
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      const res = await axios.get(`${SERVER_URI}/lich-su-thanh-toan/cn/${userId}`);
-      if (!res) return null;
-      return {
-        code: 200,
-        data: res.data,
-      };
-    } catch (error) {
-      throw error;
-    }
-  } else {
-    return null;
-  }
-}
-
-export const getLichSuThanhToanDvk = async (userId: any) => {
-  const token = await SecureStore.getItemAsync(TOKEN_KEY);
-
-  if (token) {
-    try {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      const res = await axios.get(`${SERVER_URI}/lich-su-thanh-toan/dvk/${userId}`);
+      const res = await axios.get(`${SERVER_URI}/lich-su-thanh-toan/${hstgcnid}`);
       if (!res) return null;
       return {
         code: 200,

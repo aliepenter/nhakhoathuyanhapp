@@ -128,3 +128,23 @@ export const formatInformation = (id: number | undefined, date: string | undefin
 
     return `${id}${year}${phoneNumber}`;
 }
+
+
+export const calculatePaymentDetails = (tong_so_tien: string, so_tien_can_tra_ki_toi: string, data: any) => {
+    const tongSoTienDaThanhToan = data.reduce((total: any, item: { so_tien: any; }) => total + item.so_tien, 0);
+
+    const soTienConLai = parseInt(tong_so_tien) - tongSoTienDaThanhToan;
+
+    const soTienCanTraKiToi = soTienConLai >= parseInt(so_tien_can_tra_ki_toi) ? parseInt(so_tien_can_tra_ki_toi) : soTienConLai;
+
+    const currentDate = new Date();
+    const nextPaymentDate = new Date(currentDate.setMonth(currentDate.getMonth() + 1));
+    const ngayDenHanThanhToan = nextPaymentDate.toISOString().split('T')[0];
+
+    return {
+        so_tien_da_thanh_toan: tongSoTienDaThanhToan,
+        so_tien_con_lai: soTienConLai,
+        so_tien_can_tra_ki_toi: soTienCanTraKiToi,
+        ngay_den_han_thanh_toan: ngayDenHanThanhToan
+    };
+};

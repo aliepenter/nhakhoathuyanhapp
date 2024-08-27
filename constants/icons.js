@@ -120,7 +120,11 @@ import macCaiDamon from "../assets/icons/mac-cai-damon.png";
 import wave from "../assets/icons/wave.gif";
 import send from "../assets/icons/send.png";
 import edit from "../assets/icons/edit.png";
+import switchIcon from "../assets/icons/switch.png";
+import tick from "../assets/icons/tick.png";
 export default {
+  tick,
+  switchIcon,
   edit,
   send,
   notificationGif,

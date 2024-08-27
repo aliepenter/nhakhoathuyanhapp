@@ -1,23 +1,34 @@
 import { View, Text, Alert, Image, ScrollView, TouchableOpacity } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { getAvatar, logout } from '@/lib/apiCall';
-import HeaderSection from '@/components/home/HeaderSection';
+import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react'
+import { getAllAccount, getAvatar, logout, updateMainStatus } from '@/lib/apiCall';
 import { icons } from '@/constants';
 import CustomButton from '@/components/common/CustomButton';
 import { router } from 'expo-router';
 import useUser from '@/hooks/auth/useUser';
+import {
+    BottomSheetModal,
+    BottomSheetBackdrop,
+    BottomSheetScrollView
+} from '@gorhom/bottom-sheet';
+import { SERVER_URL } from '@/utils/uri';
+import * as Updates from 'expo-updates';
+import Toast from 'react-native-toast-message';
 
 export default function ProfileScreen() {
     const [flag, setFlag] = useState<boolean>(false);
     const [loading, setLoading] = useState(true);
     const { user, setRefetch } = useUser();
-    const [settings, setSettings] = useState<Settings>();
+    const snapPoints = useMemo(() => ["40%"], []);
+    const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+    const [account, setAccount] = useState<Array<User>>();
+
     useEffect(() => {
         if (user) {
-            const userId = user.id;
-            fetchAvatar(userId);
+            const sdt = user.so_dien_thoai;
+            fetchAccount(sdt);
         }
     }, [user]);
+
     const handleLogout = async () => {
         try {
             await logout()
@@ -32,12 +43,20 @@ export default function ProfileScreen() {
             setFlag(false)
         }, 1000);
     }
-
-    const fetchAvatar = async (userId: number) => {
+    const openBottomSheet = () => {
+        setFlag(true);
+        if (bottomSheetModalRef.current) {
+            bottomSheetModalRef.current.present();
+        }
+        setTimeout(() => {
+            setFlag(false);
+        }, 1000);
+    };
+    const fetchAccount = async (sdt: string) => {
         try {
-            const res = await getAvatar(userId);
-            if (res) {
-                setSettings(res.data);
+            const resAccount = await getAllAccount(sdt)
+            if (resAccount) {
+                setAccount(resAccount.data)
                 setLoading(false)
             } else {
                 setLoading(false)
@@ -47,6 +66,31 @@ export default function ProfileScreen() {
             setLoading(false)
         }
     };
+    const renderBackdrop = useCallback(
+        (props: any) => (
+            <BottomSheetBackdrop
+                {...props}
+                disappearsOnIndex={-1}
+                appearsOnIndex={0}
+                opacity={0.3}
+                backgroundColor="black"
+            />
+        ),
+        []
+    );
+    const handleSwitch = async (id: number) => {
+        try {
+            await updateMainStatus(id);
+            setRefetch(true);
+            await Updates.reloadAsync();
+        } catch (error) {
+            Toast.show({
+                type: 'error',
+                text1: 'Đã có lỗi xảy ra, xin thử lại sau',
+            });
+        }
+
+    }
     return (
         <View className='bg-[#F2F1F6] h-full'>
             <ScrollView className='px-[20px] py-[13px]'>
@@ -79,6 +123,26 @@ export default function ProfileScreen() {
                                 <Image source={icons.next} resizeMode='cover' className='w-[18px] h-[18px]' />
                             </View>
                         </TouchableOpacity>
+                        {
+                            account && account.length > 1
+                                ?
+                                <TouchableOpacity disabled={flag} onPress={() => openBottomSheet()} className='flex-row flex-nowrap mt-3'>
+                                    <View className='w-[15%] justify-center items-center'>
+                                        <Image source={icons.switchIcon} resizeMode='cover' className='w-[15px] h-[15px]' />
+                                    </View>
+                                    <View className='w-[75%]'>
+                                        <Text className='text-[14px]'>
+                                            Chuyển đổi tài khoản
+                                        </Text>
+                                    </View>
+                                    <View className='w-[10%] justify-center items-center'>
+                                        <Image source={icons.next} resizeMode='cover' className='w-[18px] h-[18px]' />
+                                    </View>
+                                </TouchableOpacity>
+                                :
+                                null
+                        }
+
                     </View>
                 </View>
                 <View>
@@ -189,6 +253,43 @@ export default function ProfileScreen() {
                     iconStyle="w-[18px] h-[18px] mr-[15px]" flag={false} isLoading={undefined} colorFrom={undefined} colorTo={undefined} iconRight={undefined} />
                 <View className='h-[150px]'></View>
             </ScrollView>
+            <BottomSheetModal
+                ref={bottomSheetModalRef}
+                index={0}
+                snapPoints={snapPoints}
+                enablePanDownToClose={true}
+                backdropComponent={renderBackdrop}
+            >
+                <BottomSheetScrollView>
+                    <Text className='text-center py-4 text-lg font-pbold'>Chuyển đổi tài khoản</Text>
+                    {account?.map((item: User, index: any) => {
+                        const isSelected = user && user.id === item.id;
+
+                        const itemContent = (
+                            <View className='flex-row justify-start items-center'>
+                                <Image
+                                    source={{ uri: `${SERVER_URL}${item.avatar_id.value}` }}
+                                    className="w-[45px] h-[45px] rounded-full"
+                                    resizeMode='cover'
+                                />
+                                <Text className='font-psemibold ml-3'>{item.ho_va_ten}</Text>
+                            </View>
+                        );
+
+                        return isSelected ? (
+                            <View key={index} className='flex-row justify-between items-center mb-2 bg-[#E1E1E1] mx-5 p-2 rounded-[15px]'>
+                                {itemContent}
+                                <Image source={icons.tick} resizeMode='cover' className='w-[20px] h-[20px]' />
+                            </View>
+                        ) : (
+                            <TouchableOpacity onPress={() => handleSwitch(item.id)} key={index} className='flex-row justify-between items-center mb-2 bg-[#E1E1E1] mx-5 p-2 rounded-[15px]'>
+                                {itemContent}
+                            </TouchableOpacity>
+                        );
+                    })}
+                </BottomSheetScrollView>
+
+            </BottomSheetModal>
         </View>
     )
 }

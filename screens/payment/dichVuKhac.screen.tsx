@@ -1,7 +1,7 @@
 import { View, Text, ActivityIndicator, ScrollView, RefreshControl, Platform } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { formatDate, formatMoney } from '@/lib/commonFunctions';
-import { getDichVuKhac, getLichSuThanhToanDvk } from '@/lib/apiCall';
+import { getDichVuKhacByUserId } from '@/lib/apiCall';
 import useUser from '@/hooks/auth/useUser';
 
 export default function DichVuKhacScreen() {
@@ -26,7 +26,7 @@ export default function DichVuKhacScreen() {
     }, [user]);
     const fetchLichSuThanhToanDvk = async (userId: number) => {
         try {
-            const dvk = await getDichVuKhac(userId);
+            const dvk = await getDichVuKhacByUserId(userId);
             setTimeout(() => {
                 if (dvk) {
                     setLichSuThanhToanDvk(dvk.data);

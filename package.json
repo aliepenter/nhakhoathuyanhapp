@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.0",
+    "@gorhom/bottom-sheet": "^4.6.4",
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-native-community/slider": "4.5.2",
     "@react-navigation/native": "^6.1.17",
@@ -38,6 +39,7 @@
     "expo-splash-screen": "~0.27.4",
     "expo-status-bar": "~1.12.1",
     "expo-system-ui": "~3.0.7",
+    "expo-updates": "^0.25.24",
     "expo-web-browser": "~13.0.3",
     "lodash.debounce": "^4.0.8",
     "nativewind": "^2.0.11",
@@ -50,6 +52,7 @@
     "react-native-config": "^1.5.1",
     "react-native-date-picker": "^5.0.4",
     "react-native-dotenv": "^3.4.11",
+    "react-native-gesture-handler": "~2.16.1",
     "react-native-image-zoom-viewer": "^3.0.1",
     "react-native-pager-view": "6.3.0",
     "react-native-reanimated": "~3.10.1",

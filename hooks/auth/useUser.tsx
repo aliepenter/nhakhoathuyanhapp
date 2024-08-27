@@ -20,7 +20,10 @@ export default function useUser() {
                 }
                 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                 const res = await axios.get(`${SERVER_URI}/auth/profile`);
-                setUser(res.data);
+                if (res) {
+                    const userActive = res.data.find((user: { main_status: number; }) => user.main_status === 1)
+                    setUser(userActive);
+                }
                 setError("");
             } catch (err) {
                 setError("Đã có lỗi xảy ra, xin vui lòng thử lại sau");

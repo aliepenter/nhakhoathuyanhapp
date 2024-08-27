@@ -12,7 +12,7 @@ const CustomHeader = ({ title, customStyle, disableBackButton, downloadBtn }: an
     const handleBack = () => {
         navigation.goBack();
     };
-    const truncatedTitle = title && title.length > 30 ? `${title.slice(0, 27)}...` : title;
+    const truncatedTitle = title && title.length > 30 ? `${title.slice(0, 25)}...` : title;
 
     return (
         <View className={`${customStyle ? customStyle : ""} h-[98px]`}>

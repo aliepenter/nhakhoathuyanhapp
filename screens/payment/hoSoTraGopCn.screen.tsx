@@ -1,24 +1,30 @@
 import { View, Text, ScrollView, RefreshControl, ActivityIndicator, Platform } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { formatDate, formatMoney } from '@/lib/commonFunctions'
+import { calculatePaymentDetails, formatDate, formatMoney } from '@/lib/commonFunctions'
 import useUser from '@/hooks/auth/useUser';
 import { getHoSoTraGopCn, getLichSuThanhToanCn } from '@/lib/apiCall';
-
+interface PaymentState {
+  so_tien_da_thanh_toan: number;
+  so_tien_con_lai: number;
+  so_tien_can_tra_ki_toi: number;
+  ngay_den_han_thanh_toan: string;
+}
 export default function HoSoTraGopCnScreen() {
   const { user } = useUser();
   const [hoSoTraGopCn, setHoSoTraGopCn] = useState<HoSoTraGopCn>();
   const [lichSuThanhToanCn, setLichSuThanhToanCn] = useState<Array<LichSuThanhToan>>();
-  const [loading, setLoading] = useState(true);
   const [loading2, setLoading2] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [thongTinThanhToan, setThongTinThanhToan] = useState<PaymentState>();
   const onRefresh = async () => {
     setRefreshing(true);
-    setLoading(true);
     setLoading2(true);
     if (user) {
       const userId = user.id;
       await fetchHoSoTraGopCn(userId);
-      await fetchLichSuThanhToanCn(userId);
+      if (hoSoTraGopCn) {
+        await fetchLichSuThanhToanCn(hoSoTraGopCn);
+      }
     }
     setRefreshing(false);
   };
@@ -26,47 +32,41 @@ export default function HoSoTraGopCnScreen() {
     if (user) {
       const userId = user.id;
       fetchHoSoTraGopCn(userId);
-      fetchLichSuThanhToanCn(userId)
     }
   }, [user]);
   const fetchHoSoTraGopCn = async (userId: number) => {
     try {
       const hoSoTraGopCnData = await getHoSoTraGopCn(userId);
-      setTimeout(() => {
-        if (hoSoTraGopCnData) {
-          setHoSoTraGopCn(hoSoTraGopCnData.data);
-          setLoading(false)
-        } else {
-          setLoading(false)
-        }
-      }, 1000);
-
+      if (hoSoTraGopCnData) {
+        setHoSoTraGopCn(hoSoTraGopCnData.data);
+        fetchLichSuThanhToanCn(hoSoTraGopCnData.data)
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
-      setTimeout(() => {
-        setLoading(false)
-      }, 1000);
     }
   };
-  const fetchLichSuThanhToanCn = async (userId: number) => {
+  const fetchLichSuThanhToanCn = async (hstgcn: HoSoTraGopCn) => {
     try {
-      const lsttcn = await getLichSuThanhToanCn(userId);
+      const lsttcn = await getLichSuThanhToanCn(hstgcn.id.toString());
       setTimeout(() => {
         if (lsttcn) {
+          const calculatedData = calculatePaymentDetails(hstgcn.tong_so_tien, hstgcn.so_tien_can_tra_ki_toi, lsttcn.data);
+          setThongTinThanhToan(calculatedData)
           setLichSuThanhToanCn(lsttcn.data);
           setLoading2(false)
         } else {
           setLoading2(false)
         }
-      }, 1000);
+      }, 200);
 
     } catch (error) {
       console.error("Error fetching data:", error);
       setTimeout(() => {
         setLoading2(false)
-      }, 1000);
+      }, 200);
     }
   };
+
   return (
     <View className='mt-[22px]'>
       <View className='px-[11px]'>
@@ -75,7 +75,7 @@ export default function HoSoTraGopCnScreen() {
       <View className='mt-[6px]'>
         <View className='mb-[23px] px-[11px]'>
           {
-            !loading
+            !loading2
               ?
               hoSoTraGopCn
                 ?
@@ -93,21 +93,21 @@ export default function HoSoTraGopCnScreen() {
                   <View className='flex-row border-b-[1px] border-[#E9E9E9] pb-[10px] pt-[9px]'>
                     <View className='w-[50%]'>
                       <Text className='font-pregular text-[12px]'>Tổng số tiền đã thanh toán</Text>
-                      <Text className='mt-1 font-pbold text-[14px] text-[#FF0000]'>{formatMoney(hoSoTraGopCn.so_tien_da_thanh_toan)}</Text>
+                      <Text className='mt-1 font-pbold text-[14px] text-[#FF0000]'>{thongTinThanhToan ? formatMoney(thongTinThanhToan.so_tien_da_thanh_toan) : 0}</Text>
                     </View>
                     <View className='w-[50%]'>
                       <Text className='font-pregular text-[12px]'>Số tiền còn lại</Text>
-                      <Text className='mt-1 font-pbold text-[14px] text-[#FF0000]'>{formatMoney(hoSoTraGopCn.so_tien_con_lai)}</Text>
+                      <Text className='mt-1 font-pbold text-[14px] text-[#FF0000]'>{thongTinThanhToan ? formatMoney(thongTinThanhToan.so_tien_con_lai) : 0}</Text>
                     </View>
                   </View>
                   <View className='flex-row pt-[9px]'>
                     <View className='w-[50%]'>
                       <Text className='font-pregular text-[12px]'>Số tiền cần trả kỳ tới</Text>
-                      <Text className='mt-1 font-pbold text-[14px] text-[#666666]'>{formatMoney(hoSoTraGopCn.so_tien_can_tra_ki_toi)}</Text>
+                      <Text className='mt-1 font-pbold text-[14px] text-[#666666]'>{thongTinThanhToan ? formatMoney(thongTinThanhToan.so_tien_can_tra_ki_toi) : 0}</Text>
                     </View>
                     <View className='w-[50%]'>
                       <Text className='font-pregular text-[12px]'>Ngày đến hạn thanh toán</Text>
-                      <Text className='mt-1 font-pregular text-[14px] text-[#666666]'>{formatDate(hoSoTraGopCn.ngay_den_han_thanh_toan, 'minimize')}</Text>
+                      <Text className='mt-1 font-pregular text-[14px] text-[#666666]'>{thongTinThanhToan ? formatDate(thongTinThanhToan.ngay_den_han_thanh_toan, 'minimize') : 0}</Text>
                     </View>
                   </View>
                 </View>
@@ -150,7 +150,7 @@ export default function HoSoTraGopCnScreen() {
               </View>
             </View>
           </View>
-          <ScrollView className={`${Platform.OS === 'ios' ? 'h-[57%]': 'h-[47%]'} mt-[7px]`} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+          <ScrollView className={`${Platform.OS === 'ios' ? 'h-[57%]' : 'h-[47%]'} mt-[7px]`} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
             {!loading2 ?
               lichSuThanhToanCn && lichSuThanhToanCn.length != 0
                 ?

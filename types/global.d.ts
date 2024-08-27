@@ -1,6 +1,6 @@
 type User = {
   id: number;
-  avatar_id: number;
+  avatar_id: any;
   ho_va_ten: string;
   so_dien_thoai: string;
   dia_chi: string;
@@ -9,7 +9,8 @@ type User = {
   gioi_tinh: string;
   ngay_ktvcn: string;
   ngay_chot_cn: string;
-  ngay_gan_mc: string
+  ngay_gan_mc: string;
+  main_status: number
 };
 type DateFormatType = 'full' | 'minimize' | 'day' | 'month' | 'year' | 'isoDate' | 'path';
 
@@ -96,12 +97,8 @@ type HopDong = {
 type HoSoTraGopCn = {
   id: number;
   tong_so_tien: string;
-  so_tien_ban_dau: string;
-  so_tien_da_thanh_toan: string;
-  so_tien_con_lai: string;
   so_tien_can_tra_ki_toi: string;
   ngay_bat_dau_thanh_toan: string;
-  ngay_den_han_thanh_toan: string;
   user_id: number;
 };
 
@@ -153,4 +150,9 @@ type Settings = {
   setting_type: number;
   value: string;
   user_id: number;
+};
+
+type Avatar = {
+  id: number;
+  value: string;
 };

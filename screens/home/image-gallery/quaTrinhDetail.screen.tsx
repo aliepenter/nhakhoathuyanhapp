@@ -24,7 +24,7 @@ export default function QuaTrinhDetailScreen() {
         headerTitle,
         title
     }: any = route.params;
-    const imageUrls = [anh_1, anh_9, anh_10, anh_2, anh_3, anh_4, anh_5, anh_6, anh_7, anh_11, anh_8];
+    const imageUrls = [anh_1, anh_9, anh_10, anh_2, anh_3, anh_4, anh_5, anh_7, anh_6, anh_11, anh_8];
 
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [modalVisible, setModalVisible] = useState(false);

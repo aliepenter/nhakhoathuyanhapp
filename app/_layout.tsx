@@ -3,6 +3,7 @@ import { useFonts } from "expo-font";
 import { useEffect } from "react";
 import { LogBox, StatusBar, View, Text } from "react-native";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
+
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
