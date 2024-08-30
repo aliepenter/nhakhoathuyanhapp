@@ -131,7 +131,7 @@ export const formatInformation = (id: number | undefined, date: string | undefin
 
 
 export const calculatePaymentDetails = (tong_so_tien: string, so_tien_can_tra_ki_toi: string, data: any) => {
-    const tongSoTienDaThanhToan = data.reduce((total: any, item: { so_tien: any; }) => total + item.so_tien, 0);
+    const tongSoTienDaThanhToan = data.reduce((total: any, item: { so_tien: any; }) => total + parseInt(item.so_tien), 0);
 
     const soTienConLai = parseInt(tong_so_tien) - tongSoTienDaThanhToan;
 
