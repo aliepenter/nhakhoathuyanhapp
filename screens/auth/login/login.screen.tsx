@@ -47,25 +47,21 @@ const LoginScreen = () => {
     setIsSubmitting(true);
     try {
       const phoneNumberStatus = await trackPhoneNumber!(phoneNumber);
-      setTimeout(() => {
-        if (phoneNumberStatus) {
-          router.push({
-            pathname: "/(routes)/verify-password",
-            params: { username: phoneNumber },
-          });
-        } else {
-          router.push({
-            pathname: "/(routes)/verify-sign-up",
-            params: { username: phoneNumber },
-          });
-        }
-      }, 2000);
+      if (phoneNumberStatus) {
+        router.push({
+          pathname: "/(routes)/verify-password",
+          params: { username: phoneNumber },
+        });
+      } else {
+        router.push({
+          pathname: "/(routes)/verify-sign-up",
+          params: { username: phoneNumber },
+        });
+      }
     } catch (error) {
       Alert.alert('Đăng nhập thất bại', 'Xin vui lòng kiểm tra kết nối của bạn');
     } finally {
-      setTimeout(() => {
-        setIsSubmitting(false);
-      }, 2000);
+      setIsSubmitting(false);
     }
   };
 

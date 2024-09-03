@@ -6,11 +6,12 @@ export default function TabsIndex() {
   const { loading, user } = useUser();
   return (
     <>
-      {loading ? (
+      {/* {loading ? (
         <Loader />
       ) : (
         <Redirect href={!user ? "/(routes)/login" : "/(tabs)"} />
-      )}
+      )} */}
+        <Redirect href={!user ? "/(routes)/login" : "/(tabs)"} />
     </>
   );
 }
