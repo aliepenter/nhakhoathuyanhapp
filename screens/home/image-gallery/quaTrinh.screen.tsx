@@ -48,7 +48,7 @@ export default function QuaTrinhScreen({ user }: any) {
     const title = `Ngày ${formatDate(item.ngay_chup, "minimize")}`;
     setFlag(true);
     router.push({
-      pathname: "(routes)/image-gallery",
+      pathname: "/(routes)/image-gallery",
       params: {
         headerTitle: title,
         title: item.ten_anh,
@@ -91,7 +91,7 @@ export default function QuaTrinhScreen({ user }: any) {
           </View>
         :
         <View className="h-96 justify-center">
-          <ActivityIndicator />
+          <ActivityIndicator color={'#00E5E5'} />
         </View>
       }
     </ScrollView>

@@ -86,7 +86,7 @@ export default function LoiDan({ chinh_nha_id, flag, setFlag }: LoiDanProps) {
                                         </ScrollView>
                                         :
                                         <View className={`${videoCategory.length === 1 ? "h-[234px]" : 'h-[202px]'} justify-center`}>
-                                            <ActivityIndicator />
+                                            <ActivityIndicator color={'#00E5E5'} />
                                         </View>
                                 }
                             </View>
@@ -110,7 +110,7 @@ export default function LoiDan({ chinh_nha_id, flag, setFlag }: LoiDanProps) {
                                         </ScrollView>
                                         :
                                         <View className={`${baiVietCategory.length === 1 ? "h-[234px]" : 'h-[160px]'} justify-center`}>
-                                            <ActivityIndicator />
+                                            <ActivityIndicator color={'#00E5E5'} />
                                         </View>
                                 }
                             </View>

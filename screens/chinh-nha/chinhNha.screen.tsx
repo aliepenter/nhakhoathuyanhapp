@@ -50,7 +50,7 @@ export default function ChinhNhaScreen() {
     const title = `Chỉnh nha ngày ${formatDate(item.ngay_chinh_nha, "minimize")}`;
     setFlag(true);
     router.push({
-      pathname: "(routes)/chinh-nha/chinhNhaDetail",
+      pathname: "/(routes)/chinh-nha/chinhNhaDetail",
       params: {
         headerTitle: title,
         thu_thuat_dieu_tri: item.thu_thuat_dieu_tri ? item.thu_thuat_dieu_tri : null,
@@ -106,7 +106,7 @@ export default function ChinhNhaScreen() {
           </View>
         :
         <View className="h-64 justify-center">
-          <ActivityIndicator />
+          <ActivityIndicator color={'#00E5E5'} />
         </View>
       }
     </ScrollView>

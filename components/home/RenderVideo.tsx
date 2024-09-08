@@ -59,7 +59,7 @@ export default function RenderVideo({ videos, flag, setFlag }: RenderVideoProps)
                     />
                     :
                     <View className="h-48 justify-center">
-                        <ActivityIndicator />
+                        <ActivityIndicator color={'#00E5E5'} />
                     </View>
                 }
             </View>

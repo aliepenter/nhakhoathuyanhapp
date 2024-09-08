@@ -95,7 +95,7 @@ export default function QuaTrinhDetailScreen() {
                     />
                 </TouchableOpacity>
                 <View className={`${!loading ? 'hidden' : ''} absolute left-[50%] h-96 justify-center`}>
-                    <ActivityIndicator />
+                    <ActivityIndicator color={'#00E5E5'} />
                 </View>
 
                 <Modal

@@ -445,8 +445,6 @@ export const createCustomerLibrary = async (data: any) => {
         data: response.data,
       };
     } catch (error: any) {
-  console.log(error)
-
       throw error;
     }
   } else {

@@ -117,7 +117,7 @@ export default function HoSoTraGopCnScreen() {
                 </View>
               :
               <View className={`${Platform.OS === 'ios' ? 'h-[156px]' : 'h-[187px]'} justify-center`}>
-                <ActivityIndicator />
+                <ActivityIndicator color={'#00E5E5'} />
               </View>
           }
         </View>
@@ -132,7 +132,7 @@ export default function HoSoTraGopCnScreen() {
                 <></>
               :
               <View className="w-24 h-[18px] items-center justify-center">
-                <ActivityIndicator />
+                <ActivityIndicator color={'#00E5E5'} />
               </View>
             }
           </View>
@@ -177,7 +177,7 @@ export default function HoSoTraGopCnScreen() {
                 </View>
               :
               <View className="h-56 justify-center">
-                <ActivityIndicator />
+                <ActivityIndicator color={'#00E5E5'} />
               </View>
             }
           </ScrollView>

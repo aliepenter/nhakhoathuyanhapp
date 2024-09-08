@@ -53,7 +53,7 @@ export default function BannerSlide({ banners, type }: any) {
                     </Swiper>
                     :
                     <View className="h-[170px] md:h-[400px] justify-center">
-                        <ActivityIndicator />
+                        <ActivityIndicator color={'#00E5E5'} />
                     </View>
             }
         </View>

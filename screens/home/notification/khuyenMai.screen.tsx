@@ -64,7 +64,7 @@ export default function KhuyenMaiScreen() {
     if (item) {
       setFlag(true);
       router.push({
-        pathname: "(routes)/tin-tuc/tinTucDetail",
+        pathname: "/(routes)/tin-tuc/tinTucDetail",
         params: { postThumb: item.banner_id.banner_path, postTime: item.date, postTitle: item.title, postContent: item.content, postUrl: item.website_url },
       });
       setTimeout(() => {
@@ -125,7 +125,7 @@ export default function KhuyenMaiScreen() {
                       </View>
                     :
                     <View className="h-64 justify-center">
-                      <ActivityIndicator />
+                      <ActivityIndicator color={'#00E5E5'} />
                     </View>
                   }
 

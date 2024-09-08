@@ -40,7 +40,7 @@ export default function BranchList({ branches }: any) {
                 ))
                 :
                 <View className="bg-[#FAFAFA] h-[500px] justify-center">
-                    <ActivityIndicator />
+                    <ActivityIndicator color={'#00E5E5'} />
                 </View>
             }
 

@@ -38,7 +38,7 @@ const TabsLayout = () => {
             console.error("Error fetching data:", error);
         } finally {
             setLoading(false);
-            setTimeout(() => setDisable(false), 5000);
+            setTimeout(() => setDisable(false), 3000);
         }
     };
 

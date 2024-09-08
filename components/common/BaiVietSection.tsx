@@ -15,7 +15,7 @@ export default function BaiVietSection({ item, isLast, customImageStyle, flag, s
     const onPress = () => {
         setFlag(true);
         router.push({
-            pathname: "(routes)/tin-tuc/tinTucDetail",
+            pathname: "/(routes)/tin-tuc/tinTucDetail",
             params: { postThumb: item.banner_id.banner_path, postTime: item.date, postTitle: item.title, postContent: item.content, postUrl: item.website_url },
         });
         setTimeout(() => {

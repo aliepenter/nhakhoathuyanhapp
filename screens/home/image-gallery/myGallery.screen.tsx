@@ -70,14 +70,14 @@ export default function MyGalleryScreen({ user }: any) {
   const handleCamera = async () => {
     if (permission && permission.granted) {
       router.push({
-        pathname: "(routes)/camera",
+        pathname: "/(routes)/camera",
         params: { statusImage: String(hasImage), id: id, statusUpload: 'customLibrary' }
       });
     } else {
       await requestPermission().then(res => {
         if (res.granted) {
           router.push({
-            pathname: "(routes)/camera",
+            pathname: "/(routes)/camera",
             params: { statusImage: String(hasImage), id: id, statusUpload: 'customLibrary' }
           });
         }
@@ -155,7 +155,7 @@ export default function MyGalleryScreen({ user }: any) {
               </View>
             :
             <View className="h-[400px] md:h-[720px] justify-center">
-              <ActivityIndicator />
+              <ActivityIndicator color={'#00E5E5'} />
             </View>
         }
       </View>

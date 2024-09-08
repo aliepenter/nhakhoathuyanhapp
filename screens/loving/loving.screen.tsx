@@ -68,7 +68,7 @@ export default function LovingScreen() {
                                 </View>
                             :
                             <View className="h-[130px] w-[130px] bg-white rounded-full justify-center items-center">
-                                <ActivityIndicator />
+                                <ActivityIndicator color={'#00E5E5'} />
                             </View>
                     }
                     <Text className='text-white text-[16px] font-mbold'>{user?.ho_va_ten}</Text>

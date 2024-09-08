@@ -10,7 +10,7 @@ export default function HomThuScreen() {
   }
   const onChatPress = () => {
     router.push({
-      pathname: "(routes)/chat",
+      pathname: "/(routes)/chat",
       params: { headerTitle: 'Nha khoa Thùy Anh gửi bạn hợp đồng' },
     });
   }

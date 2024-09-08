@@ -51,7 +51,7 @@ const ButtonText = ({ textStyles, title, isLoading, icon, iconStyle, iconRight }
     return <>
         {
             isLoading ?
-                <ActivityIndicator />
+                <ActivityIndicator color={'#00E5E5'} />
                 :
                 icon
                     ?

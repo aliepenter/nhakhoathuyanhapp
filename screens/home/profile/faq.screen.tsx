@@ -40,7 +40,7 @@ export default function FaqScreen() {
           </ScrollView>
           :
           <View className="bg-[#FAFAFA] h-full justify-center">
-            <ActivityIndicator />
+            <ActivityIndicator color={'#00E5E5'} />
           </View>
       }
     </>

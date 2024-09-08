@@ -7,10 +7,10 @@ import * as MediaLibrary from 'expo-media-library';
 import { icons } from '@/constants';
 import Toast from 'react-native-toast-message'
 import axios from 'axios';
-import { ADMIN_URI } from '@/utils/uri';
 import { formatInformation, getToday } from '@/lib/commonFunctions';
 import useUser from '@/hooks/auth/useUser';
 import { createCustomerLibrary, updateCustomerLibrary } from '@/lib/apiCall';
+import { SERVER_URI } from '@/utils/uri';
 interface PictureViewProps {
     picture: string;
     status: string;
@@ -45,11 +45,9 @@ export default function PreviewScreen({ picture, setPicture, status, id }: Pictu
             });
         }
     };
-    const path = formatInformation(user?.id, user?.ngay_sinh, user?.so_dien_thoai);
     const handleUpload = async () => {
         setLoading(true);
         const fileName = `${getToday('path')}.jpg`;
-        const filePath = `khach-hang/${path}/library/ca-nhan`;
         try {
             const formData = new FormData();
             formData.append('file', {
@@ -57,8 +55,7 @@ export default function PreviewScreen({ picture, setPicture, status, id }: Pictu
                 type: 'image/jpeg',
                 name: fileName
             } as any);
-            formData.append('path', filePath);
-            await axios.post(`${ADMIN_URI}/api/customer`, formData, {
+            await axios.post(`${SERVER_URI}/file/upload-selfie`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -67,7 +64,7 @@ export default function PreviewScreen({ picture, setPicture, status, id }: Pictu
             console.error('Error uploading file:', error);
         }
         const anh: any = {
-            image_path: `img/${filePath}/${fileName}`,
+            image_path: `img/uploads/selfie/${fileName}`,
             user_id: user?.id,
             system: Platform.OS === 'ios' ? 1 : 0
         };
@@ -85,7 +82,7 @@ export default function PreviewScreen({ picture, setPicture, status, id }: Pictu
             setPicture("");
             router.dismissAll();
             router.replace({
-                pathname: "(tabs)/image-gallery",
+                pathname: "/(tabs)/image-gallery",
                 params: { refresh: Date.now() }
             });
         } catch (error) {
@@ -126,7 +123,7 @@ export default function PreviewScreen({ picture, setPicture, status, id }: Pictu
                         </View>
                         :
                         <View className={`justify-center`}>
-                            <ActivityIndicator />
+                            <ActivityIndicator color={'#00E5E5'} />
                         </View>
                 }
 

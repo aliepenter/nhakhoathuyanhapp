@@ -1,28 +1,25 @@
-import React from "react";
-import YoutubePlayer from "react-native-youtube-iframe";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useWindowDimensions } from "react-native";
-import { View } from "react-native-animatable";
-import CustomHeader from "@/components/common/CustomHeader";
+import React from 'react';
+import { SafeAreaView, Dimensions } from 'react-native';
+import { WebView } from 'react-native-webview';
+import CustomHeader from '@/components/common/CustomHeader';
 
+// Đây là code dành cho android, khi làm đến ios nếu có lỗi ở play video sau khi build thì check ở đây, check version của webview,....
 const PlayVideoScreen = ({ headerTitle, videoItem }: any) => {
-
-  const windowWidth = useWindowDimensions().width;
+  const windowWidth = Dimensions.get('window').width;
   const playerHeight = (windowWidth * 9) / 16;
 
   return (
     <>
-      <CustomHeader title={headerTitle} customStyle="bg-primary"/>
-      <SafeAreaView className="bg-primary flex-1 relative">
-        <View className="absolute top-[30%]">
-          <YoutubePlayer
-            play={true}
-            height={playerHeight}
-            width={windowWidth}
-            videoId={videoItem}
-          />
-        </View>
-      </SafeAreaView></>
+      <CustomHeader title={headerTitle} customStyle="bg-primary" />
+      <SafeAreaView className='flex-1 bg-primary'>
+        <WebView
+          style={{ height: playerHeight, width: windowWidth }}
+          source={{ uri: `https://www.youtube.com/embed/${videoItem}?autoplay=1` }}
+          javaScriptEnabled={true}
+          mediaPlaybackRequiresUserAction={false}
+        />
+      </SafeAreaView>
+    </>
   );
 };
 

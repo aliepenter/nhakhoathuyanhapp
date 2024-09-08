@@ -10,9 +10,9 @@ import React from "react";
 import { icons, images } from "@/constants";
 import * as ImagePicker from "expo-image-picker";
 
-import { ADMIN_URI, SERVER_URI, SERVER_URL } from "@/utils/uri";
+import { SERVER_URI, SERVER_URL } from "@/utils/uri";
 import { updateAvatar } from "@/lib/apiCall";
-import { formatInformation, getToday } from "@/lib/commonFunctions";
+import { getToday } from "@/lib/commonFunctions";
 import axios from "axios";
 import Toast from "react-native-toast-message";
 type HeaderSectionProps = {
@@ -72,6 +72,7 @@ export default function HeaderSection({
           await updateAvatar(avatar.id, anh);
           setRefetch(Date.now());
           Toast.show({
+            position: 'bottom',
             type: "success",
             text1: "Thành công",
             text2: "Thay đổi ảnh đại diện thành công",
@@ -114,7 +115,7 @@ export default function HeaderSection({
               )
             ) : (
               <View className="h-[100px] w-[100px] bg-gray-500 rounded-full justify-center items-center">
-                <ActivityIndicator />
+                <ActivityIndicator color={'#00E5E5'} />
               </View>
             )}
             {editAvatar ? (

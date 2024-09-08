@@ -55,7 +55,7 @@ export default function DichVuKhacScreen() {
                         <></>
                     :
                     <View className="w-24 h-[18px] items-center justify-center">
-                        <ActivityIndicator />
+                        <ActivityIndicator color={'#00E5E5'} />
                     </View>
                 }
             </View>
@@ -98,7 +98,7 @@ export default function DichVuKhacScreen() {
                         </View>
                     :
                     <View className="h-56 justify-center">
-                        <ActivityIndicator />
+                        <ActivityIndicator color={'#00E5E5'} />
                     </View>
                 }
             </ScrollView>

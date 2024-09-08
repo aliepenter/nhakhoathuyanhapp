@@ -15,7 +15,7 @@ export default function VideoItem({ loading, post, flag, setFlag }: VideoItemPro
         if (item) {
             setFlag(true);
             router.push({
-                pathname: "(routes)/play-video",
+                pathname: "/(routes)/play-video",
                 params: { videoItem: item.video_url, headerTitle: item.video_title },
             });
             setTimeout(() => {
@@ -57,7 +57,7 @@ export default function VideoItem({ loading, post, flag, setFlag }: VideoItemPro
                 </View>
             :
             <View className="h-96 justify-center items-center">
-                <ActivityIndicator />
+                <ActivityIndicator color={'#00E5E5'} />
             </View>
     )
 }

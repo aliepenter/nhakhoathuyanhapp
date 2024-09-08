@@ -18,7 +18,7 @@ export default function VideoSection({ item, isLast, customImageStyle, flag, set
     const onPress = () => {
         setFlag(true);
         router.push({
-            pathname: "(routes)/play-video",
+            pathname: "/(routes)/play-video",
             params: { videoItem: item.video_url, headerTitle: item.video_title },
         });
         setTimeout(() => {

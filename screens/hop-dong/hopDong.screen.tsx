@@ -40,7 +40,7 @@ export default function HopDongScreen() {
     const handlePress = (hop_dong_chi_tiet_id: any, ten_hop_dong: any) => {
         setFlag(true);
         router.push({
-            pathname: "(routes)/hop-dong/hopDongDetail",
+            pathname: "/(routes)/hop-dong/hopDongDetail",
             params: {
                 headerTitle: ten_hop_dong,
             },
@@ -74,7 +74,7 @@ export default function HopDongScreen() {
                         </View>
                     :
                     <View className={`h-[202px] justify-center`}>
-                        <ActivityIndicator />
+                        <ActivityIndicator color={'#00E5E5'} />
                     </View>
             }
 

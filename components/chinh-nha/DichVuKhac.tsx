@@ -65,7 +65,7 @@ const DichVuKhacListItem = ({ dichVuKhac }: any) => {
                 </ScrollView>
                 :
                 <View className={`justify-center`}>
-                    <ActivityIndicator />
+                    <ActivityIndicator color={'#00E5E5'} />
                 </View>
         }
     </>

@@ -50,7 +50,7 @@ export default function TroChuyenScreen() {
     };
     const onChatPress = (title: any, cuoc_tro_chuyen_id: number) => {
         router.push({
-            pathname: "(routes)/chat",
+            pathname: "/(routes)/chat",
             params: { headerTitle: title, cuoc_tro_chuyen_id },
         });
     }
@@ -92,7 +92,7 @@ export default function TroChuyenScreen() {
                             </View>
                         :
                         <View className="h-64 justify-center">
-                            <ActivityIndicator />
+                            <ActivityIndicator color={'#00E5E5'} />
                         </View>
                 }
             </View>

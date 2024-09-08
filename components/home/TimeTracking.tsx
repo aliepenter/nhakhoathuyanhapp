@@ -16,7 +16,7 @@ export default function TimeTracking({ schedule, totalTime, flag, setFlag }: Tim
         setFlag(true);
         Haptics.selectionAsync();
         router.push({
-            pathname: "(routes)/loving",
+            pathname: "/(routes)/loving",
         });
         setTimeout(() => {
             setFlag(false)
@@ -26,7 +26,7 @@ export default function TimeTracking({ schedule, totalTime, flag, setFlag }: Tim
         setFlag(true);
         Haptics.selectionAsync();
         router.push({
-            pathname: "(routes)/lich-hen",
+            pathname: "/(routes)/lich-hen",
         });
         setTimeout(() => {
             setFlag(false)
@@ -54,7 +54,7 @@ export default function TimeTracking({ schedule, totalTime, flag, setFlag }: Tim
                         <Text className='font-pextrabold text-[12px] text-[#FBFF49] md:text-[16px]'>{schedule}</Text>
                         :
                         <View className="h-[23px] justify-center">
-                            <ActivityIndicator />
+                            <ActivityIndicator color={'#00E5E5'} />
                         </View>
                     }
                 </LinearGradient>
@@ -79,7 +79,7 @@ export default function TimeTracking({ schedule, totalTime, flag, setFlag }: Tim
                         <Text className='font-pextrabold text-[12px] text-[#FBFF49] md:text-[16px]'>{totalTime} ngày</Text>
                         :
                         <View className="h-[23px] justify-center">
-                            <ActivityIndicator />
+                            <ActivityIndicator color={'#00E5E5'} />
                         </View>
                     }
                 </LinearGradient>

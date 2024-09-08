@@ -70,7 +70,7 @@ export default function LichHenScreen() {
         const title = `Chỉnh nha ngày ${formatDate(item.ngay_chinh_nha, "minimize")}`;
         setFlag(true);
         router.push({
-            pathname: "(routes)/chinh-nha/chinhNhaDetail",
+            pathname: "/(routes)/chinh-nha/chinhNhaDetail",
             params: {
                 headerTitle: title,
                 thu_thuat_dieu_tri: item.thu_thuat_dieu_tri ? item.thu_thuat_dieu_tri : null,
@@ -112,7 +112,7 @@ export default function LichHenScreen() {
                             <CalendarComponent selectedDate={null} setSelectedDate={() => { }} disableArrowLeft={false} enableDayClick={false} hideExtraDays={true} minDate={false} showSixWeeks={true} markedDates={markedDates} onMonthChange={handleMonthChange} />
                             :
                             <View className="h-96 justify-center">
-                                <ActivityIndicator />
+                                <ActivityIndicator color={'#00E5E5'} />
                             </View>
                     }
                 </View>
@@ -185,7 +185,7 @@ export default function LichHenScreen() {
                         </View>
                     :
                     <View className="h-64 justify-center">
-                        <ActivityIndicator />
+                        <ActivityIndicator color={'#00E5E5'} />
                     </View>
                 }
             </ScrollView>

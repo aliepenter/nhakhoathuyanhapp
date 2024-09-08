@@ -131,7 +131,7 @@ export default function ChatScreen({ headerTitle, cuoc_tro_chuyen_id }: any) {
                     </>
                     :
                     <View className="h-96 justify-center">
-                        <ActivityIndicator />
+                        <ActivityIndicator color={'#00E5E5'} />
                     </View>
             }
         </View>
