@@ -1,6 +1,7 @@
 import {
     ImageBackground,
     Pressable,
+    View,
 } from "react-native";
 import React from "react";
 import { icons, images } from "@/constants";
@@ -27,13 +28,13 @@ export default function VideoSection({ item, isLast, customImageStyle, flag, set
     }
     return (
         <Pressable
-            className={`${customImageStyle ? customImageStyle : "w-80 h-48"} relative justify-center items-center ${isLast ? "" : "mr-2"}`}
+            className={`${customImageStyle ? customImageStyle : "w-80 h-48"} justify-center items-center ${isLast ? "" : "mr-2"}`}
             onPress={onPress}
             disabled={flag}
         >
             <ImageBackground
                 source={item && item.video_thumbnail ? { uri: `${SERVER_URL}${item.video_thumbnail}` } : images.bannerDefault}
-                className={`w-full h-full overflow-hidden rounded-[20px]`}
+                className={`w-full h-full bg-gray-300 overflow-hidden rounded-[20px]`}
                 resizeMode="stretch"
             />
             <Image

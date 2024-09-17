@@ -48,12 +48,13 @@ export default function TroChuyenScreen() {
             }, 1000);
         }
     };
-    const onChatPress = (title: any, cuoc_tro_chuyen_id: number) => {
+    const onChatPress = (title: any, cuoc_tro_chuyen_id: number, status: number) => {
         router.push({
             pathname: "/(routes)/chat",
-            params: { headerTitle: title, cuoc_tro_chuyen_id },
+            params: { headerTitle: title, cuoc_tro_chuyen_id, status },
         });
     }
+    
     return (
         <ScrollView className='bg-white flex-1' refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
             <View className='px-[17px]'>
@@ -65,7 +66,7 @@ export default function TroChuyenScreen() {
                             cuocTroChuyen.map((item: CuocTroChuyen, index: number) => {
                                 const isLastItem = index === cuocTroChuyen.length - 1;
                                 return (
-                                    <TouchableOpacity key={index} onPress={() => onChatPress(item.title, item.id)} className={`my-[7px] mt-[14px] rounded-[7px] bg-[#F5F5F5] p-[10px] ${isLastItem ? 'mb-28' : ''}`} style={styles.boxShadow}>
+                                    <TouchableOpacity key={index} onPress={() => onChatPress(item.title, item.id, item.status)} className={`my-[7px] mt-[14px] rounded-[7px] bg-[#F5F5F5] p-[10px] ${isLastItem ? 'mb-28' : ''}`} style={styles.boxShadow}>
                                         <View className={`flex-row items-center justify-center flex-wrap ${item.seen === 1 ? 'opacity-50' : ''}`}>
                                             <View className='w-[80%] items-start'>
                                                 <Text className={`text-[#51B81A] font-pbold text-[14px] ${item.status === 0 ? 'line-through' : ''}`}>{item.title}</Text>

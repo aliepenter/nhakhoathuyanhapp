@@ -3,6 +3,8 @@ import React from 'react'
 import { icons } from '@/constants'
 import { router } from 'expo-router';
 
+
+// Chưa build
 export default function HomThuScreen() {
   const handleTruncate = (title: string) => {
     const truncatedTitle = title && title.length > 80 ? `${title.slice(0, 80)}...` : title;

@@ -18,7 +18,9 @@ type RenderVideoProps = {
 export default function RenderVideo({ videos, flag, setFlag }: RenderVideoProps) {
     const handleViewAllNews = () => {
         setFlag(true);
-        router.push("/(routes)/video/");
+        router.push({
+            pathname: "/(routes)/video"
+        });
         setTimeout(() => {
             setFlag(false)
         }, 1000);

@@ -4,8 +4,9 @@ import { useRoute } from '@react-navigation/native';
 
 export default function index() {
     const route = useRoute();
-    const { headerTitle, cuoc_tro_chuyen_id }: any = route.params;
+    const { headerTitle, cuoc_tro_chuyen_id, status }: any = route.params;
+    const disable: boolean = status == 0 ? true : false;
     return (
-        <ChatScreen headerTitle={headerTitle} cuoc_tro_chuyen_id={cuoc_tro_chuyen_id} />
+        <ChatScreen disable={disable} headerTitle={headerTitle} cuoc_tro_chuyen_id={cuoc_tro_chuyen_id} />
     )
 }

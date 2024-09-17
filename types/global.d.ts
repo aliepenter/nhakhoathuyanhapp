@@ -137,12 +137,12 @@ type LoiDan = {
   seen: number;
 };
 
-type Message = {
-  id: number;
+type Messages = {
   noi_dung: string;
   createdAt: string;
-  nguoi_gui_id: number;
+  nguoi_gui_id: number | null;
   cuoc_tro_chuyen_id: any;
+  image_path: string | null;
 };
 
 type Settings = {
