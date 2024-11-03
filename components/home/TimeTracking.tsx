@@ -49,13 +49,11 @@ export default function TimeTracking({ schedule, totalTime, flag, setFlag }: Tim
                         <Image source={icons.calenderMonth} className='w-[16px] h-[16px] mr-[3px]' resizeMode='contain' />
                         <Text className='font-pbold text-[12px] text-white md:text-[16px]'>Lịch hẹn sắp tới</Text>
                     </View>
-                    {schedule
+                    {schedule && schedule !== 0
                         ?
                         <Text className='font-pextrabold text-[12px] text-[#FBFF49] md:text-[16px]'>{schedule}</Text>
                         :
-                        <View className="h-[23px] justify-center">
-                            <ActivityIndicator color={'#00E5E5'} />
-                        </View>
+                        <Text className='font-pextrabold text-[12px] text-[#FBFF49] md:text-[16px]'>Không có lịch hẹn</Text>
                     }
                 </LinearGradient>
             </Pressable>

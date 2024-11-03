@@ -42,7 +42,7 @@ export default function TinTucAllScreen() {
 
     return (
         <View className='bg-white h-full px-[11px]'>
-            <SearchInput placeholder="Tìm kiếm tin tức" />
+            {/* <SearchInput placeholder="Tìm kiếm tin tức" /> */}
             <FlatList
                 data={[{ key: 'postList' }]}
                 renderItem={({ item }) => {

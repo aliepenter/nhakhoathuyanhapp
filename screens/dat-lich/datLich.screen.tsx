@@ -7,11 +7,15 @@ import NgayKhamScreen from './ngayKham.screen';
 import Toast from 'react-native-toast-message';
 import { runOnJS } from 'react-native-reanimated';
 import ThanhCongScreen from './thanhCong.screen';
+import { createDatLich } from '@/lib/apiCall';
+import useUser from '@/hooks/auth/useUser';
+
 export enum StatusTab {
     Tab1,
     Tab2,
     Tab3
 }
+
 interface Service {
     id: string;
     name: string;
@@ -34,6 +38,7 @@ const services: Service[] = [
     { id: '12', name: 'Dịch vụ khác', icon: icons.dichVuKhac, activeIcon: icons.dichVuKhacActive },
 ];
 export default function DatLichScreen() {
+    const { user } = useUser();
     const [selected, setSelected] = useState<StatusTab>(StatusTab.Tab1);
     const [selectedDate, setSelectedDate] = useState<string>('');
     const [loading, setLoading] = useState(false);
@@ -46,6 +51,7 @@ export default function DatLichScreen() {
             setSelectedServiceName(selectedService.name);
         }
     };
+
     const buttons: StatusButtonType[] = [
         {
             title: 'Chọn dịch vụ'
@@ -57,23 +63,39 @@ export default function DatLichScreen() {
             title: 'Đặt lịch khám'
         }
     ]
+
     const onDatLichPress = (index: number) => {
         runOnJS(handleDatLich)(index);
     }
 
-    const handleDatLich = (index: number) => {
+    const handleDatLich = async (index: number) => {
         if (selectedDate != '') {
             setLoading(true);
-            setTimeout(() => {
+            const lichHen: any = {
+                user_id: user?.id,
+                dich_vu: selectedServiceName,
+                ngay_kham: selectedDate,
+                status: 0
+            };
+            try {
+                await createDatLich(lichHen);
                 setLoading(false)
                 setSelected(index);
-            }, 2000);
-            // Xử lý gửi thông tin đặt lịch đi ở đây
+            } catch (error) {
+                Toast.show({
+                    type: 'error',
+                    text1: 'Đã có lỗi xảy ra, xin thử lại sau',
+                });
+                setLoading(false)
+            } finally {
+                setLoading(false)
+            }
         } else {
             showToast();
 
         }
     };
+    
     const onBackPress = () => {
         runOnJS(handleBack)();
     }

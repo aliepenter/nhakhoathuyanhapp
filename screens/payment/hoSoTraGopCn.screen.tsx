@@ -8,6 +8,7 @@ interface PaymentState {
   so_tien_con_lai: number;
   so_tien_can_tra_ki_toi: number;
   ngay_den_han_thanh_toan: string;
+  status: boolean;
 }
 export default function HoSoTraGopCnScreen() {
   const { user } = useUser();
@@ -107,7 +108,7 @@ export default function HoSoTraGopCnScreen() {
                     </View>
                     <View className='w-[50%]'>
                       <Text className='font-pregular text-[12px]'>Ngày đến hạn thanh toán</Text>
-                      <Text className='mt-1 font-pregular text-[14px] text-[#666666]'>{thongTinThanhToan ? formatDate(thongTinThanhToan.ngay_den_han_thanh_toan, 'minimize') : 0}</Text>
+                      <Text className={`mt-1 font-pregular text-[14px] ${thongTinThanhToan && thongTinThanhToan.status ? 'text-[#FF0000] font-pbold' : 'text-[#666666]'}`} >{thongTinThanhToan ? formatDate(thongTinThanhToan.ngay_den_han_thanh_toan, 'minimize') : 0}</Text>
                     </View>
                   </View>
                 </View>

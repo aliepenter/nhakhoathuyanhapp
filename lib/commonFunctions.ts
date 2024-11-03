@@ -133,18 +133,40 @@ export const formatInformation = (id: number | undefined, date: string | undefin
 export const calculatePaymentDetails = (tong_so_tien: string, so_tien_can_tra_ki_toi: string, data: any) => {
     const tongSoTienDaThanhToan = data.reduce((total: any, item: { so_tien: any; }) => total + parseInt(item.so_tien), 0);
 
+    const nearestPaymentDate = data
+        .map((item: { ngay_thanh_toan: string | number | Date; }) => new Date(item.ngay_thanh_toan))
+        .reduce((latest: number, current: number) => (current > latest ? current : latest), new Date(0));
+
     const soTienConLai = parseInt(tong_so_tien) - tongSoTienDaThanhToan;
 
     const soTienCanTraKiToi = soTienConLai >= parseInt(so_tien_can_tra_ki_toi) ? parseInt(so_tien_can_tra_ki_toi) : soTienConLai;
 
     const currentDate = new Date();
-    const nextPaymentDate = new Date(currentDate.setMonth(currentDate.getMonth() + 1));
+    const nextPaymentDate = new Date(nearestPaymentDate.setMonth(nearestPaymentDate.getMonth() + 1));
     const ngayDenHanThanhToan = nextPaymentDate.toISOString().split('T')[0];
+
+    const status = nextPaymentDate <= currentDate;
 
     return {
         so_tien_da_thanh_toan: tongSoTienDaThanhToan,
         so_tien_con_lai: soTienConLai,
         so_tien_can_tra_ki_toi: soTienCanTraKiToi,
-        ngay_den_han_thanh_toan: ngayDenHanThanhToan
+        ngay_den_han_thanh_toan: ngayDenHanThanhToan,
+        status: status
     };
 };
+
+
+export const checkDay = (schedule: string | number | Date | null) => {
+    if (!schedule) return false;
+    const targetDate = new Date(schedule);
+    const today = new Date();
+
+    today.setHours(0, 0, 0, 0);
+
+    const threeDaysLater = new Date(today);
+    threeDaysLater.setDate(today.getDate() + 3);
+
+    const isGreaterThanTodayAndWithinThreeDays = targetDate > today && targetDate <= threeDaysLater;
+    return isGreaterThanTodayAndWithinThreeDays;
+}

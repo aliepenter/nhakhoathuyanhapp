@@ -393,6 +393,25 @@ export const getDichVuKhacByUserId = async (userId: any) => {
   }
 }
 
+export const getLichHenByUserId = async (userId: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const res = await axios.get(`${SERVER_URI}/lich-hen/by-user/${userId}`);
+      if (!res) return null;
+      return {
+        code: 200,
+        data: res.data,
+      };
+    } catch (error) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+}
+
 export const getMessages = async (cuoc_tro_chuyen_id: number) => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);
   if (token) {
@@ -471,6 +490,24 @@ export const updateCustomerLibrary = async (id: number | null, data: any) => {
   }
 };
 
+export const createDatLich = async (data: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const response = await axios.post(`${SERVER_URI}/dat-lich`, data);
+
+      return {
+        code: 200,
+        data: response.data,
+      };
+    } catch (error: any) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+}
 // PUT UPDATE AVATAR
 export const updateAvatar = async (id: number | null, data: any) => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);
@@ -591,6 +628,25 @@ export const getLichSuTroChuyen = async (userId: any) => {
     return null;
   }
 }
+
+export const seenCuocTroChuyen = async (id: number | null, data: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const response = await axios.put(`${SERVER_URI}/cuoc-tro-chuyen/${id}`, data);
+      return {
+        code: 200,
+        data: response.data,
+      };
+    } catch (error: any) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+};
 
 
 export const getLoiDan = async (userId: any) => {

@@ -26,16 +26,18 @@ LocaleConfig.locales['vn'] = {
 LocaleConfig.defaultLocale = 'vn';
 interface CalendarComponentProps {
     markedDates: any;
+    lichHenSapToi: any;
     minDate: boolean;
     showSixWeeks: boolean;
     hideExtraDays: boolean;
     enableDayClick: boolean;
     disableArrowLeft: boolean;
     onMonthChange: (month: string, year: string) => void;
-    setSelectedDate: (date: string) => void;
+    handleDayPress: (date: string) => void;
     selectedDate: any;
+    flag: boolean
 }
-export default function CalendarComponent({ disableArrowLeft, enableDayClick, hideExtraDays, markedDates, onMonthChange, minDate, showSixWeeks, selectedDate, setSelectedDate }: CalendarComponentProps) {
+export default function CalendarComponent({ flag, disableArrowLeft, enableDayClick, hideExtraDays, markedDates, lichHenSapToi, onMonthChange, minDate, showSixWeeks, selectedDate, handleDayPress }: CalendarComponentProps) {
     const [today, setToday] = useState(new Date().toISOString().split('T')[0]);
 
     const [currentMarkedDates, setCurrentMarkedDates] = useState<any>(markedDates);
@@ -43,16 +45,12 @@ export default function CalendarComponent({ disableArrowLeft, enableDayClick, hi
     useEffect(() => {
         setCurrentMarkedDates({
             ...markedDates,
+            ...lichHenSapToi,
             [today]: { marked: true, dotColor: 'blue' },
             [selectedDate]: { selected: true, selectedColor: '#FB3F4A' }
         });
     }, [selectedDate, markedDates, today]);
 
-    const handleDayPress = (day: any) => {
-        if (enableDayClick) {
-            setSelectedDate(day.dateString);
-        }
-    };
     return (
         <View>
             <Calendar
@@ -68,7 +66,9 @@ export default function CalendarComponent({ disableArrowLeft, enableDayClick, hi
 
                 }}
                 onDayPress={(day: any) => {
-                    handleDayPress(day);
+                    if (!flag) {
+                        handleDayPress(day);
+                    }
                 }}
                 onMonthChange={(month: {
                     year: string; month: string;

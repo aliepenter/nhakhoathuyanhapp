@@ -12,7 +12,7 @@ import * as ImagePicker from "expo-image-picker";
 
 import { SERVER_URI, SERVER_URL } from "@/utils/uri";
 import { updateAvatar } from "@/lib/apiCall";
-import { getToday } from "@/lib/commonFunctions";
+import { formatDate, getToday } from "@/lib/commonFunctions";
 import axios from "axios";
 import Toast from "react-native-toast-message";
 type HeaderSectionProps = {
@@ -49,7 +49,7 @@ export default function HeaderSection({
     });
     if (!result.canceled) {
       if (result.assets[0].uri && avatar?.id) {
-        const fileName = `${getToday("path")}.jpg`;
+        const fileName = `${user.id}_${user.so_dien_thoai}_${formatDate(user.ngay_sinh, "path")}.jpg`;
         try {
           const formData = new FormData();
           formData.append("file", {
@@ -62,27 +62,33 @@ export default function HeaderSection({
               "Content-Type": "multipart/form-data",
             },
           });
-        } catch (error) {
-          console.error("Error uploading file:", error);
-        }
-        const anh: any = {
-          value: `img/uploads/${fileName}`,
-        };
-        try {
-          await updateAvatar(avatar.id, anh);
-          setRefetch(Date.now());
-          Toast.show({
-            position: 'bottom',
-            type: "success",
-            text1: "Thành công",
-            text2: "Thay đổi ảnh đại diện thành công",
-          });
+          const anh: any = {
+            value: `img/uploads/avatar/${fileName}?timestamp=${Date.now()}`,
+          };
+          try {
+            await updateAvatar(avatar.id, anh);
+            setRefetch(Date.now());
+            Toast.show({
+              position: 'bottom',
+              type: "success",
+              text1: "Thành công",
+              text2: "Thay đổi ảnh đại diện thành công",
+            });
+          } catch (error) {
+            Toast.show({
+              type: "error",
+              text1: "Đã có lỗi xảy ra, xin thử lại sau",
+            });
+          }
         } catch (error) {
           Toast.show({
             type: "error",
             text1: "Đã có lỗi xảy ra, xin thử lại sau",
           });
+          console.error("Error uploading file:", error);
         }
+
+
       }
     }
     setTimeout(() => {
@@ -101,17 +107,25 @@ export default function HeaderSection({
           <View>
             {!loading ? (
               avatar ? (
-                <View className="h-[100px] w-[100px] bg-gray-500 rounded-full">
-                  <Image
-                    source={{ uri: `${SERVER_URL}${avatar.value}` }}
-                    resizeMode="contain"
-                    alt="avatar"
-                    fadeDuration={0.5}
-                    className="rounded-full w-full h-full"
-                  />
+                <View className="h-[100px] w-[100px] bg-gray-500 rounded-full justify-center items-center">
+                  {
+                    !disable ? (
+                      <Image
+                        source={{ uri: `${SERVER_URL}${avatar.value}` }}
+                        resizeMode="contain"
+                        alt="avatar"
+                        fadeDuration={0.5}
+                        className="rounded-full w-full h-full"
+                      />
+                    ) : (
+                      <ActivityIndicator color={'#00E5E5'} />
+                    )
+                  }
                 </View>
               ) : (
-                <View className="h-[100px] w-[100px] bg-gray-500 rounded-full justify-center items-center"></View>
+                <View className="h-[100px] w-[100px] bg-gray-500 rounded-full justify-center items-center">
+                  <ActivityIndicator color={'#00E5E5'} />
+                </View>
               )
             ) : (
               <View className="h-[100px] w-[100px] bg-gray-500 rounded-full justify-center items-center">
@@ -130,13 +144,7 @@ export default function HeaderSection({
                   </View>
                 </TouchableOpacity>
               ) : (
-                <View className="absolute opacity-40 bg-black bottom-[5px] right-[5px] rounded-[50px] w-[20px] h-[20px] justify-center items-center">
-                  <Image
-                    source={icons.edit}
-                    resizeMode="contain"
-                    className="w-[60%] h-[60%]"
-                  />
-                </View>
+                null
               )
             ) : null}
           </View>

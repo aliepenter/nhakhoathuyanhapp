@@ -24,9 +24,6 @@ const PasswordScreen = () => {
     const route = useRoute();
     const { username }: any = route.params;
     const isIOS = Platform.OS === 'ios';
-    const [allowBackNavigation, setAllowBackNavigation] = useState(false);
-
-
     const submit = async () => {
         if (!password) {
             Alert.alert('Đăng nhập thất bại', 'Xin vui lòng điền đầy đủ thông tin');
@@ -50,12 +47,6 @@ const PasswordScreen = () => {
         }
     };
 
-    const handleOtpLogin = () => {
-        router.push({
-            pathname: "/(routes)/verify-password/otpLogin",
-            params: { username: username },
-        });
-    }
     return (
         <ImageBackground source={images.bgPhoneInput} resizeMode='cover' className='flex-1'>
             <KeyboardAvoidingView
@@ -98,16 +89,6 @@ const PasswordScreen = () => {
                             colorFrom="#2594B8"
                             colorTo="#226E9E"
                             textStyles="text-white font-psemibold text-lg" flag={false} iconStyle={undefined} icon={undefined} iconRight={undefined} />
-                        <View className={`items-end w-[95%] ${isIOS ? 'mt-[15px]' : 'mt-[10px]'}`}>
-                            <TouchableOpacity
-                                onPress={handleOtpLogin}
-                                activeOpacity={0.7}
-                            >
-                                <Text className="text-[14px] text-white font-pregular">
-                                    Đăng nhập bằng mã OTP
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
                     </View>
                 </View>
             </KeyboardAvoidingView>

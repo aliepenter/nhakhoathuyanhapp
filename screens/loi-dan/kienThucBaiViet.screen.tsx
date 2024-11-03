@@ -40,9 +40,9 @@ export default function KienThucBaiVietScreen() {
     };
     return (
         <>
-            <View className='px-[11px] bg-white'>
+            {/* <View className='px-[11px] bg-white'>
                 <SearchInput placeholder="Tìm kiếm bài viết" />
-            </View>
+            </View> */}
             <FlatList
                 data={[{ key: 'postList' }, { key: 'empty' }]}
                 renderItem={({ item }) => {

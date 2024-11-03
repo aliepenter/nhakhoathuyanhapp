@@ -8,6 +8,14 @@ const PageLayout = () => {
         <>
             <Stack>
                 <Stack.Screen
+                    name="chinh-sach/index"
+                    options={{
+                        header: (props) => (
+                            <CustomHeader {...props} customStyle="bg-white" title="Chính sách bảo mật" />
+                        ),
+                    }}
+                />
+                <Stack.Screen
                     name="chinh-nha/index"
                     options={{
                         header: (props) => (
@@ -87,6 +95,7 @@ const PageLayout = () => {
                         ),
                     }}
                 />
+
                 <Stack.Screen
                     name="profile/faq"
                     options={{

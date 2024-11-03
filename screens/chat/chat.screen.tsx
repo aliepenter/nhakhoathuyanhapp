@@ -14,7 +14,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import CustomHeader from '@/components/common/CustomHeader';
 import { Image } from 'expo-image';
 import useUser from '@/hooks/auth/useUser';
-import { getMessages } from '@/lib/apiCall';
+import { getMessages, seenCuocTroChuyen } from '@/lib/apiCall';
 import { icons, images } from '@/constants';
 import io, { Socket } from 'socket.io-client';
 import { formatISODateToAMPM, getToday } from '@/lib/commonFunctions';
@@ -29,7 +29,6 @@ interface ChatScreenProps {
     disable: boolean;
 }
 
-const SOCKET_URL = 'http://192.168.1.123:3000';
 
 export default function ChatScreen({ headerTitle, cuoc_tro_chuyen_id, disable }: ChatScreenProps) {
     const { user } = useUser();
@@ -55,12 +54,9 @@ export default function ChatScreen({ headerTitle, cuoc_tro_chuyen_id, disable }:
 
     useEffect(() => {
         fetchMessages();
-        // Kết nối WebSocket
-        const socketIo = io(SOCKET_URL, { transports: ['websocket'], autoConnect: false });
+        const socketIo = io(SERVER_URI, { transports: ['websocket'], autoConnect: false });
         socketIo.connect();
         setSocket(socketIo);
-        // Lắng nghe tin nhắn mới
-
         socketIo.on('message', (payload: Messages) => {
             if (payload.cuoc_tro_chuyen_id === cuoc_tro_chuyen_id) {
                 setMessages((prevMessages) => [...prevMessages, payload]);
@@ -89,6 +85,8 @@ export default function ChatScreen({ headerTitle, cuoc_tro_chuyen_id, disable }:
             scrollToBottom()
 
     }, [messages]);
+
+
 
     const fetchMessages = async () => {
         try {

@@ -38,7 +38,7 @@ const TabsLayout = () => {
             console.error("Error fetching data:", error);
         } finally {
             setLoading(false);
-            setTimeout(() => setDisable(false), 3000);
+            setTimeout(() => setDisable(false), 5000);
         }
     };
 
@@ -72,7 +72,7 @@ const TabsLayout = () => {
                 <Tabs tabBar={props => <TabBar {...props} />}>
                     <Tabs.Screen options={{
                         header: (props) => (
-                            <HeaderSection user={user} setRefetch={setRefetch} showNotification={true} editAvatar={false} setFlag={setFlag} flag={flag} avatar={{
+                            <HeaderSection user={user} setRefetch={setRefetch} showNotification={false} editAvatar={false} setFlag={setFlag} flag={flag} avatar={{
                                 id: avatar?.id,
                                 value: avatar?.value,
                             }} loading={loading} disable={disable} customBgColor="bg-white" />

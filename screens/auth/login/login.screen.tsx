@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, Alert, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, ImageBackground, BackHandler } from 'react-native'
+import { StyleSheet, Text, View, Image, Alert, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, ImageBackground, BackHandler, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import { images } from '@/constants'
 import { Link, router } from 'expo-router'
@@ -53,12 +53,10 @@ const LoginScreen = () => {
           params: { username: phoneNumber },
         });
       } else {
-        router.push({
-          pathname: "/(routes)/verify-sign-up",
-          params: { username: phoneNumber },
-        });
+        Alert.alert('Đăng nhập thất bại', 'Số điện thoại chưa có trên hệ thống');
       }
     } catch (error) {
+      console.log(error)
       Alert.alert('Đăng nhập thất bại', 'Xin vui lòng kiểm tra kết nối của bạn');
     } finally {
       setIsSubmitting(false);
@@ -68,6 +66,9 @@ const LoginScreen = () => {
   const checkPhoneNumber = (phoneNumber: string) => {
     var vietnamesePhoneRegex = /^(?:\+84|0)(?:\d{9,10})$/;
     return vietnamesePhoneRegex.test(phoneNumber);
+  }
+  const handleChinhSach = () => {
+    router.push("/(routes)/chinh-sach");
   }
   return (
     <ImageBackground source={images.bgPhoneInput} resizeMode='cover' className='flex-1'>
@@ -111,12 +112,16 @@ const LoginScreen = () => {
               colorFrom="#2594B8"
               colorTo="#226E9E"
               textStyles="text-white font-psemibold text-lg" flag={false} iconStyle={undefined} icon={undefined} iconRight={undefined} />
-            <View className={`items-end w-[95%] ${isIOS ? 'mt-[15px]' : 'mt-[10px]'}`}>
-              <Link href="/sign-up" className="text-[14px] text-white font-pregular">Đăng nhập sau</Link>
-            </View>
           </View>
-          <View className={`items-center w-[95%] ${isIOS ? 'mt-[25px]' : ''}`}>
-            <Link href="/sign-up" className="text-[12px] text-white font-pregular">Chính sách bảo mật</Link>
+          <View className={`items-center ${isIOS ? 'mt-[25px]' : 'mt-[10px]'}`}>
+            <TouchableOpacity
+              onPress={handleChinhSach}
+              activeOpacity={0.7}
+            >
+              <Text className="text-[12px] text-white font-pregular">
+                Chính sách bảo mật
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </KeyboardAvoidingView>

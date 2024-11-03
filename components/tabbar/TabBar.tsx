@@ -4,8 +4,10 @@ import icons from '@/constants/icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import images from '@/constants/images';
 import * as Haptics from 'expo-haptics';
+import useUnseenMessages from '@/hooks/useUnseenMessages';
 
 export default function TabBars({ state, descriptors, navigation }: any) {
+    const { unseenCount } = useUnseenMessages();
     const handlePress = useCallback(async () => {
         Haptics.selectionAsync();
         await Linking.openURL('tel:0869800318');
@@ -70,7 +72,13 @@ export default function TabBars({ state, descriptors, navigation }: any) {
                                             ?
                                             <View className="">
                                                 <Image source={iconName} resizeMode='contain' tintColor={isFocused ? '#5EBA1B' : '#8A8A8A'} className='w-[24px] h-[24px]' />
-                                                <Image source={icons.notificationHighlight} resizeMode='contain' className='w-[14px] h-[14px] absolute left-3 bottom-3' />
+                                                {
+                                                    unseenCount > 0
+                                                        ?
+                                                        <Image source={icons.notificationHighlight} resizeMode='contain' className='w-[14px] h-[14px] absolute left-3 bottom-3' />
+                                                        :
+                                                        null
+                                                }
                                             </View>
                                             :
                                             <Image source={iconName} resizeMode='contain' tintColor={isFocused ? '#5EBA1B' : '#8A8A8A'} className='w-[24px] h-[24px]' />

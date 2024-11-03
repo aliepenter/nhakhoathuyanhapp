@@ -71,7 +71,7 @@ export default function ChinhNhaDetailScreen() {
                             <TinhTrang tinhtrang={tinh_trang_rang_mieng ? JSON.parse(tinh_trang_rang_mieng as string).noi_dung : null} />
                             <LoiDan chinh_nha_id={chinh_nha_id} flag={flag} setFlag={setFlag} />
                             <DichVuKhac chinh_nha_id={chinh_nha_id} />
-                            <DanhGiaDichVu />
+                            {/* <DanhGiaDichVu /> */}
                         </ScrollView>
                         :
                         <View className="bg-[#FAFAFA] h-full justify-center">

@@ -3,13 +3,16 @@ import React, { useEffect, useState } from 'react'
 import { icons } from '@/constants'
 import { router } from 'expo-router';
 import useUser from '@/hooks/auth/useUser';
-import { getLichSuTroChuyen } from '@/lib/apiCall';
+import { getLichSuTroChuyen, seenCuocTroChuyen } from '@/lib/apiCall';
+import useUnseenMessages from '@/hooks/useUnseenMessages';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function TroChuyenScreen() {
     const { user } = useUser();
     const [cuocTroChuyen, setCuocTroChuyen] = useState([]);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
+    const { setRefetch } = useUnseenMessages();
     const onRefresh = async () => {
         setRefreshing(true);
         setLoading(true);
@@ -23,12 +26,29 @@ export default function TroChuyenScreen() {
         const truncatedTitle = title && title.length > 80 ? `${title.slice(0, 80)}...` : title;
         return truncatedTitle;
     }
-    useEffect(() => {
-        if (user) {
-            const userId = user.id;
-            fetchCuocTroChuyen(userId);
+    useFocusEffect(
+        React.useCallback(() => {
+            if (user) {
+                const userId = user.id;
+                fetchCuocTroChuyen(userId);
+            }
+        }, [user])
+    );
+    const seen = async (cuoc_tro_chuyen_id: number) => {
+        try {
+            const cuocTroChuyen: any = {
+                seen: 1,
+            };
+            await seenCuocTroChuyen(cuoc_tro_chuyen_id, cuocTroChuyen);
+            if (user) {
+                const userId = user.id;
+                await fetchCuocTroChuyen(userId);
+            }
+            setRefetch(Date.now());
+        } catch (error) {
+            console.error('Error fetching data:', error);
         }
-    }, [user]);
+    };
     const fetchCuocTroChuyen = async (userId: number) => {
         try {
             const cuocTroChuyenData = await getLichSuTroChuyen(userId);
@@ -49,12 +69,13 @@ export default function TroChuyenScreen() {
         }
     };
     const onChatPress = (title: any, cuoc_tro_chuyen_id: number, status: number) => {
+        seen(cuoc_tro_chuyen_id);
         router.push({
             pathname: "/(routes)/chat",
             params: { headerTitle: title, cuoc_tro_chuyen_id, status },
         });
     }
-    
+
     return (
         <ScrollView className='bg-white flex-1' refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
             <View className='px-[17px]'>

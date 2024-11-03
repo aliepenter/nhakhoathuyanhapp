@@ -122,7 +122,9 @@ import send from "../assets/icons/send.png";
 import edit from "../assets/icons/edit.png";
 import switchIcon from "../assets/icons/switch.png";
 import tick from "../assets/icons/tick.png";
+import close from "../assets/icons/close.png";
 export default {
+  close,
   tick,
   switchIcon,
   edit,

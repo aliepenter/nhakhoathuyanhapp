@@ -156,3 +156,10 @@ type Avatar = {
   id: number;
   value: string;
 };
+
+type LichHen = {
+  id: number;
+  ngay_kham: string;
+  user_id: number;
+  dich_vu: string;
+};

@@ -4,9 +4,11 @@ import icons from '@/constants/icons';
 import { router } from 'expo-router';
 import { Image } from 'expo-image';
 import * as Haptics from 'expo-haptics';
+import { checkDay } from '@/lib/commonFunctions';
 
-type FlagProps = {
+type Props = {
     flag: boolean;
+    schedule: any;
     setFlag: (index: boolean) => void
 }
 const FunctionItem = ({ icon, title, path, flag, setFlag, notification }: any) => {
@@ -42,13 +44,13 @@ const FunctionItem = ({ icon, title, path, flag, setFlag, notification }: any) =
     )
 }
 
-export default function FunctionItemsList({ flag, setFlag }: FlagProps) {
+export default function FunctionItemsList({ flag, setFlag, schedule }: Props) {
     return (
         <View className="flex-row flex-wrap">
-            <FunctionItem setFlag={setFlag} flag={flag} notification={true} icon={icons.iconChinhNha} path="/(routes)/chinh-nha" title="Chỉnh nha" />
+            <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconChinhNha} path="/(routes)/chinh-nha" title="Chỉnh nha" />
             <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconThanhToan} path="/(routes)/payment" title="Thanh toán" />
-            <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconLichHen} path="/(routes)/lich-hen" title="Lịch hẹn" />
-            <FunctionItem setFlag={setFlag} flag={flag} notification={true} icon={icons.iconLoiDan} path="/(routes)/loi-dan" title="Lời dặn" />
+            <FunctionItem setFlag={setFlag} flag={flag} notification={checkDay(schedule)} icon={icons.iconLichHen} path="/(routes)/lich-hen" title="Lịch hẹn" />
+            <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconLoiDan} path="/(routes)/loi-dan" title="Lời dặn" />
             <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconChiNhanh} path="/(routes)/branches" title="Chi nhánh" />
             <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconHopDong} path="/(routes)/hop-dong" title="Hợp đồng" />
             <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconDatLich} path="/(routes)/dat-lich" title="Đặt lịch" />

@@ -3,6 +3,7 @@ import { useFonts } from "expo-font";
 import { useEffect } from "react";
 import { LogBox, StatusBar, View, Text } from "react-native";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
+import React from "react";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -80,9 +81,10 @@ function RootLayoutNav() {
         }}
       />
     ),
-    tomatoToast: ({ text1, props }: any) => (
-      <View style={{ height: 60, width: '100%', backgroundColor: 'tomato' }}>
-        <Text>{text1}</Text>
+    tomatoToast: ({ text1, text2, props }: any) => (
+      <View className="w-[90%] bg-white rounded-xl border-l-[#3EC8E7] border-l-4 pt-3 pl-5">
+        <Text className="text-[15px] font-bold">{text1}</Text>
+        <Text className="text-[13px] text-gray-500">{text2}</Text>
         <Text>{props.uuid}</Text>
       </View>
     )

@@ -275,7 +275,6 @@ export default function ProfileScreen() {
                                 <Text className='font-psemibold ml-3'>{item.ho_va_ten}</Text>
                             </View>
                         );
-
                         return isSelected ? (
                             <View key={index} className='flex-row justify-between items-center mb-2 bg-[#E1E1E1] mx-5 p-2 rounded-[15px]'>
                                 {itemContent}
@@ -288,7 +287,6 @@ export default function ProfileScreen() {
                         );
                     })}
                 </BottomSheetScrollView>
-
             </BottomSheetModal>
         </View>
     )

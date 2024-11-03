@@ -17,7 +17,9 @@ type NewsSectionProps = {
 export default function NewsSection({ post, flag, setFlag }: NewsSectionProps) {
     const handleViewAllNews = () => {
         setFlag(true);
-        router.push("/(routes)/tin-tuc/");
+        router.push({
+            pathname: "/(routes)/tin-tuc"
+        });
         setTimeout(() => {
             setFlag(false)
         }, 1000);

@@ -12,12 +12,14 @@ type ServiceProps = {
 }
 
 export default function NgayKhamScreen({ setSelectedDate, selectedDate, onDatLichPress, onBackPress, loading }: ServiceProps) {
-
+    const handleDayPress = (day: any) => {
+        setSelectedDate(day.dateString);
+    };
     return (
         <View className='mt-[17px]'>
             <Text className='text-center font-semibold text-[20px] mb-[8px]'>Quý khách vui lòng chọn ngày khám</Text>
             <View className='h-[90%]'>
-                <CalendarComponent selectedDate={selectedDate} setSelectedDate={setSelectedDate} disableArrowLeft={true} enableDayClick={true} hideExtraDays={true} showSixWeeks={true} minDate={true} markedDates={{}} onMonthChange={() => { }} />
+                <CalendarComponent selectedDate={selectedDate} disableArrowLeft={true} enableDayClick={true} hideExtraDays={true} showSixWeeks={true} minDate={true} markedDates={{}} onMonthChange={() => { } } lichHenSapToi={{}} handleDayPress={handleDayPress} flag={false} />
                 <View className='my-[90px] flex-row justify-evenly'>
                     <CustomButton
                         title="Quay lại"

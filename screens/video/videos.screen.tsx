@@ -42,7 +42,7 @@ export default function VideosScreen() {
 
     return (
         <View className='bg-white h-full px-[11px]'>
-            <SearchInput placeholder="Tìm kiếm video" />
+            {/* <SearchInput placeholder="Tìm kiếm video" /> */}
             <FlatList
                 data={[{ key: 'videosList' }]}
                 renderItem={({ item }) => {
