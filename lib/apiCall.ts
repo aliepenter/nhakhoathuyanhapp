@@ -411,7 +411,8 @@ export const getLichHenByUserId = async (userId: any) => {
     return null;
   }
 }
-
+// Messages
+// GET
 export const getMessages = async (cuoc_tro_chuyen_id: number) => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);
   if (token) {
@@ -430,6 +431,7 @@ export const getMessages = async (cuoc_tro_chuyen_id: number) => {
     return null;
   }
 }
+
 // Customer library
 // GET
 export const getCustomerLibrary = async (userId: any) => {
@@ -628,7 +630,25 @@ export const getLichSuTroChuyen = async (userId: any) => {
     return null;
   }
 }
+// POST CREATE
+export const createCuocTroChuyen = async (data: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const response = await axios.post(`${SERVER_URI}/cuoc-tro-chuyen`, data);
 
+      return {
+        code: 200,
+        data: response.data,
+      };
+    } catch (error: any) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+}
 export const seenCuocTroChuyen = async (id: number | null, data: any) => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);
 

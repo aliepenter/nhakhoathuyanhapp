@@ -1,4 +1,4 @@
-import { View, Text, Alert, Image, ScrollView, TouchableOpacity } from 'react-native'
+import { View, Text, Alert, Image, ScrollView, TouchableOpacity, Pressable, Linking } from 'react-native'
 import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react'
 import { getAllAccount, getAvatar, logout, updateMainStatus } from '@/lib/apiCall';
 import { icons } from '@/constants';
@@ -91,6 +91,15 @@ export default function ProfileScreen() {
         }
 
     }
+
+    const handlePress = useCallback(async (url: any) => {
+        const supported = await Linking.canOpenURL(url);
+        if (supported) {
+            await Linking.openURL(url);
+        } else {
+            Alert.alert(`Không thể mở đường dẫn: ${url}`);
+        }
+    }, []);
     return (
         <View className='bg-[#F2F1F6] h-full'>
             <ScrollView className='px-[20px] py-[13px]'>
@@ -205,42 +214,67 @@ export default function ProfileScreen() {
                 <View>
                     <Text className='text-[16px] font-psemibold'>Liên hệ với chúng tôi</Text>
                     <View className='bg-white rounded-[10px] py-3 mt-[10px] mb-[16px] flex-row flex-wrap'>
-                        <View className='items-center flex-grow w-[33.33333%]'>
+                        <Pressable
+                            onPress={() => handlePress('https://www.facebook.com/NKTA.official')}
+                            disabled={flag}
+                            className='items-center flex-grow w-[33.33333%]'
+                        >
                             <Image source={icons.facebook} resizeMode='cover' className='w-[59px] h-[59px] mb-1' />
                             <Text className='text-[10px]'>
                                 Facebook
                             </Text>
-                        </View>
-                        <View className='items-center flex-grow w-[33.33333%]'>
-                            <Image source={icons.zalo} resizeMode='cover' className='w-[59px] h-[59px] mb-1' />
+                        </Pressable>
+                        <Pressable
+                            onPress={() => handlePress('https://www.youtube.com/@nhakhoa.thuyanh')}
+                            disabled={flag}
+                            className='items-center flex-grow w-[33.33333%]'
+                        >
+                            <Image source={icons.short} resizeMode='cover' className='w-[59px] h-[59px] mb-1' />
                             <Text className='text-[10px]'>
-                                Zalo
+                                Short
                             </Text>
-                        </View>
-                        <View className='items-center flex-grow w-[33.33333%]'>
+                        </Pressable>
+                        <Pressable
+                            onPress={() => handlePress('https://www.youtube.com/@nhakhoathuyanh')}
+                            disabled={flag}
+                            className='items-center flex-grow w-[33.33333%]'
+                        >
                             <Image source={icons.youtube} resizeMode='cover' className='w-[59px] h-[59px] mb-1' />
                             <Text className='text-[10px]'>
                                 Youtube
                             </Text>
-                        </View>
-                        <View className='items-center flex-grow w-[33.33333%] mt-[21px]'>
+                        </Pressable>
+                        <Pressable
+                            onPress={() => handlePress('https://www.tiktok.com/@nhakhoathuyanh662')}
+                            disabled={flag}
+                            className='items-center flex-grow w-[33.33333%] mt-[21px]'
+                        >
                             <Image source={icons.tiktok} resizeMode='cover' className='w-[59px] h-[59px] mb-1' />
                             <Text className='text-[10px]'>
                                 Tiktok
                             </Text>
-                        </View>
-                        <View className='items-center flex-grow w-[33.33333%] mt-[21px]'>
-                            <Image source={icons.mail} resizeMode='cover' className='w-[59px] h-[59px] mb-1' />
+                        </Pressable>
+                        <Pressable
+                            onPress={() => handlePress('https://zalo.me/2568030874056794574')}
+                            disabled={flag}
+                            className='items-center flex-grow w-[33.33333%] mt-[21px]'
+                        >
+                            <Image source={icons.zalo} resizeMode='cover' className='w-[59px] h-[59px] mb-1' />
                             <Text className='text-[10px]'>
-                                E-mail
+                                Zalo
                             </Text>
-                        </View>
-                        <View className='items-center flex-grow w-[33.33333%] mt-[21px]'>
+                        </Pressable>
+                        <Pressable
+                            onPress={() => handlePress('https://nhakhoathuyanh.com/')}
+                            disabled={flag}
+                            className='items-center flex-grow w-[33.33333%] mt-[21px]'
+                        >
                             <Image source={icons.website} resizeMode='cover' className='w-[59px] h-[59px] mb-1' />
                             <Text className='text-[10px]'>
                                 Website
                             </Text>
-                        </View>
+                        </Pressable>
+
                     </View>
                 </View>
                 <CustomButton

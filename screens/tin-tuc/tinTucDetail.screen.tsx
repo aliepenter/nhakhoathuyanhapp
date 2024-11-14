@@ -35,7 +35,7 @@ export default function TinTucDetailScreen({ postThumb, postTime, postTitle, pos
                     title="Tìm hiểu thêm"
                     handlePress={() => handlePress(postUrl)}
                     containerStyles="w-[162px]"
-                    buttonStyle="rounded-[6px]  min-h-[50px]"
+                    buttonStyle="rounded-[6px] min-h-[50px]"
                     colorFrom="#1560A1"
                     colorTo="#4FAA57"
                     textStyles="text-white font-psemibold text-[16px]" flag={false} iconStyle={undefined} icon={undefined} isLoading={undefined} iconRight={undefined} />
