@@ -170,3 +170,45 @@ export const checkDay = (schedule: string | number | Date | null) => {
     const isGreaterThanTodayAndWithinThreeDays = targetDate > today && targetDate <= threeDaysLater;
     return isGreaterThanTodayAndWithinThreeDays;
 }
+
+export const timeAgo = (isoDate: string) => {
+    const now = new Date();
+    const targetDate = new Date(isoDate);
+    const diffInSeconds = Math.floor((now.getTime() - targetDate.getTime()) / 1000);
+
+    // Nếu nhỏ hơn 60 giây
+    if (diffInSeconds < 60) {
+        return `${diffInSeconds} giây trước`;
+    }
+
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+
+    // Nếu nhỏ hơn 60 phút
+    if (diffInMinutes < 60) {
+        return `${diffInMinutes} phút trước`;
+    }
+
+    const diffInHours = Math.floor(diffInMinutes / 60);
+
+    // Nếu nhỏ hơn 24 giờ
+    if (diffInHours < 24) {
+        return `${diffInHours} giờ trước`;
+    }
+
+    const diffInDays = Math.floor(diffInHours / 24);
+
+    // Nếu nhỏ hơn 30 ngày (khoảng 1 tháng)
+    if (diffInDays < 30) {
+        return `${diffInDays} ngày trước`;
+    }
+
+    const diffInMonths = Math.floor(diffInDays / 30);
+
+    // Nếu nhỏ hơn 12 tháng (khoảng 1 năm)
+    if (diffInMonths < 12) {
+        return `${diffInMonths} tháng trước`;
+    }
+
+    const diffInYears = Math.floor(diffInMonths / 12);
+    return `${diffInYears} năm trước`;
+}

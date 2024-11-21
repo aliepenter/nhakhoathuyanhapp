@@ -106,7 +106,7 @@ export default function KhuyenMaiScreen() {
                                   <Text className={`text-[#51B81A] font-pbold text-[14px]`}>{item.title}</Text>
                                 </View>
                                 <View className='w-[20%] items-end'>
-                                  <Text className='text-[#6C6C6C] font-pmedium text-[10px]'>1ph trước</Text>
+                                  {/* <Text className='text-[#6C6C6C] font-pmedium text-[10px]'>1ph trước</Text> */}
                                 </View>
                               </View>
                               <View className={`flex-row items-center justify-start flex-wrap`}>
@@ -121,7 +121,7 @@ export default function KhuyenMaiScreen() {
                       )
                       :
                       <View className='justify-center items-center h-96'>
-                        <Text>Không có dữ liệu trò chuyện</Text>
+                        <Text>Không có dữ liệu.</Text>
                       </View>
                     :
                     <View className="h-64 justify-center">

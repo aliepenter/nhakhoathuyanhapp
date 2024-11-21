@@ -257,7 +257,6 @@ export const getAllAccount = async (username: any) => {
 
 export const getChinhNha = async (userId: any) => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);
-
   if (token) {
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -480,6 +479,25 @@ export const updateCustomerLibrary = async (id: number | null, data: any) => {
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       const response = await axios.put(`${SERVER_URI}/customer-library/${id}`, data);
+      return {
+        code: 200,
+        data: response.data,
+      };
+    } catch (error: any) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+};
+
+// PUT UPDATE PASSWORD
+export const changePassword = async (id: any, data: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const response = await axios.put(`${SERVER_URI}/users/change-password/${id}`, data);
       return {
         code: 200,
         data: response.data,

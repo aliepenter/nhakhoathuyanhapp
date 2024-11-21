@@ -1,5 +1,5 @@
-import { View, Image, Text, ActivityIndicator, TouchableOpacity, Pressable } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { View, Image, Text, ActivityIndicator, TouchableOpacity, Pressable, Linking, Alert } from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
 import { icons } from '@/constants'
 import { getHopDong } from '@/lib/apiCall';
 import useUser from '@/hooks/auth/useUser';
@@ -37,19 +37,15 @@ export default function HopDongScreen() {
             }, 1000);
         }
     };
-    const handlePress = (hop_dong_chi_tiet_id: any, ten_hop_dong: any) => {
-        setFlag(true);
-        router.push({
-            pathname: "/(routes)/hop-dong/hopDongDetail",
-            params: {
-                headerTitle: ten_hop_dong,
-            },
-        });
-        setTimeout(() => {
-            setFlag(false)
-        }, 1000);
 
-    }
+    const handlePress = useCallback(async (url: any) => {
+        const supported = await Linking.canOpenURL(url);
+        if (supported) {
+            await Linking.openURL(url);
+        } else {
+            Alert.alert(`Không thể mở đường dẫn: ${url}`);
+        }
+    }, []);
     return (
         <View className='flex-row justify-center gap-10 mt-[34px]'>
             {
@@ -58,11 +54,14 @@ export default function HopDongScreen() {
                     hopDong && hopDong.length != 0
                         ?
                         hopDong.map((item: HopDong, index: number) => (
+
                             <Pressable
+                                onPress={() => handlePress(item.hop_dong_chi_tiet_id)}
                                 disabled={flag}
-                                onPress={() => handlePress(item.hop_dong_chi_tiet_id, item.ten_hop_dong)}
                                 key={index}
+
                                 className='justify-center items-center'
+
                             >
                                 <Image className='w-[115px] h-[115px]' resizeMode='cover' source={icons.hopDong} />
                                 <Text>{item.ten_hop_dong}</Text>

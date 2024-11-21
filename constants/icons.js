@@ -14,7 +14,6 @@ import eye from "../assets/icons/eye.png";
 import play from "../assets/icons/play.png";
 import booking from "../assets/icons/booking.png";
 import notification from "../assets/icons/notification.png";
-import notificationGif from "../assets/icons/notification-gif.gif";
 import notificationHeader from "../assets/icons/notification-header.png";
 import notificationHighlight from "../assets/icons/notification-highlight.png";
 import gallery from "../assets/icons/gallery.png";
@@ -115,10 +114,8 @@ import dichVuKhacActive from "../assets/icons/dich-vu-khac-active.png";
 import nextArrow from "../assets/icons/next-arrow.png";
 import thanhCong from "../assets/icons/thanh-cong.png";
 import heart from "../assets/icons/heart.png";
-import heartGif from "../assets/icons/heart-gif.gif";
 import heartBg from "../assets/icons/heart-bg.png";
 import macCaiDamon from "../assets/icons/mac-cai-damon.png";
-import wave from "../assets/icons/wave.gif";
 import send from "../assets/icons/send.png";
 import edit from "../assets/icons/edit.png";
 import switchIcon from "../assets/icons/switch.png";
@@ -132,11 +129,8 @@ export default {
   switchIcon,
   edit,
   send,
-  notificationGif,
-  wave,
   macCaiDamon,
   heart,
-  heartGif,
   heartBg,
   thanhCong,
   nextArrow,

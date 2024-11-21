@@ -45,16 +45,21 @@ export default function HopDongDetailScreen() {
   // };
 
   const downloadFile = async () => {
-    try {
-      // Tải file từ URL về bộ nhớ của thiết bị
-      const { uri } = await FileSystem.downloadAsync("https://nhakhoathuyanh.xyz/public/img/khach-hang/119990123456789/library/hop-dong/H%C4%90CN%20-%20D%C6%B0%C6%A1ng%20Th%E1%BB%8B%20Huy%E1%BB%81n%20Trang.docx", fileUri);
-      Alert.alert('Tải file thành công!', `File đã được tải về: ${uri}`);
+    const uri = "https://nhakhoathuyanh.xyz/public/img/khach-hang/119990123456789/library/hop-dong/test.pdf"; // Replace with the URL of the file you want to download
+    const fileUri = FileSystem.documentDirectory + 'test.pdf'; // Define the local path
 
+    try {
+      // Download the file and save it to the local directory
+      const { uri: downloadedUri } = await FileSystem.downloadAsync(uri, fileUri);
+
+      Alert.alert('Download Successful', `File saved to: ${downloadedUri}`);
     } catch (error) {
-      Alert.alert('Lỗi tải file', 'Có lỗi xảy ra khi tải file. Vui lòng thử lại.');
       console.error(error);
+      Alert.alert('Download Failed', 'There was an error downloading the file.');
     }
   };
+
+
   const route = useRoute();
   const { headerTitle }: any = route.params;
   return (

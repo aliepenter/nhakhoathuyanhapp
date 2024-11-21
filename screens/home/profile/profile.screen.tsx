@@ -105,8 +105,8 @@ export default function ProfileScreen() {
             <ScrollView className='px-[20px] py-[13px]'>
                 <View>
                     <Text className='text-[16px] font-psemibold'>Cài đặt</Text>
-                    <View className='bg-white rounded-[10px] py-3  mt-[10px] mb-[16px]'>
-                        <TouchableOpacity disabled={flag} onPress={() => handleRouter("(routes)/profile/notificationSettings")} className='flex-row flex-nowrap'>
+                    <View className='bg-white rounded-[10px] py-3 mt-[10px] mb-[16px]'>
+                        {/* <TouchableOpacity disabled={flag} onPress={() => handleRouter("(routes)/profile/notificationSettings")} className='flex-row flex-nowrap'>
                             <View className='w-[15%] justify-center items-center'>
                                 <Image source={icons.caiDatThongBao} resizeMode='cover' className='w-[18px] h-[18px]' />
                             </View>
@@ -118,8 +118,9 @@ export default function ProfileScreen() {
                             <View className='w-[10%] justify-center items-center'>
                                 <Image source={icons.next} resizeMode='cover' className='w-[18px] h-[18px]' />
                             </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity disabled={flag} onPress={() => handleRouter("(routes)/profile/changePassword")} className='flex-row flex-nowrap mt-3'>
+                        </TouchableOpacity> */}
+                        <TouchableOpacity disabled={flag} onPress={() => handleRouter("(routes)/profile/changePassword")} className='flex-row flex-nowrap'>
+                            {/* mt-3 */}
                             <View className='w-[15%] justify-center items-center'>
                                 <Image source={icons.doiMatKhau} resizeMode='cover' className='w-[15px] h-[15px]' />
                             </View>

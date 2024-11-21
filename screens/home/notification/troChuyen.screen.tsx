@@ -8,6 +8,7 @@ import useUnseenMessages from '@/hooks/useUnseenMessages';
 import { useFocusEffect } from '@react-navigation/native';
 import Dialog from "react-native-dialog";
 import Toast from 'react-native-toast-message';
+import { timeAgo } from '@/lib/commonFunctions';
 
 export default function TroChuyenScreen() {
     const { user } = useUser();
@@ -145,16 +146,16 @@ export default function TroChuyenScreen() {
                                     return (
                                         <TouchableOpacity disabled={flag} key={index} onPress={() => onChatPress(item.title, item.id, item.status)} className={`my-[7px] mt-[14px] rounded-[7px] bg-[#F5F5F5] p-[10px] ${isLastItem ? 'mb-28' : ''}`} style={styles.boxShadow}>
                                             <View className={`flex-row items-center justify-center flex-wrap ${item.seen === 1 ? 'opacity-50' : ''}`}>
-                                                <View className='w-[80%] items-start'>
+                                                <View className='w-[75%] items-start'>
                                                     <Text className={`text-[#51B81A] font-pbold text-[14px] ${item.status === 0 ? 'line-through' : ''}`}>{item.title}</Text>
                                                 </View>
-                                                <View className='w-[20%] items-end'>
-                                                    <Text className='text-[#6C6C6C] font-pmedium text-[10px]'>1ph trước</Text>
+                                                <View className='w-[25%] items-end'>
+                                                    <Text className='text-[#6C6C6C] font-pmedium text-[10px]'>{timeAgo(item.createdAt)}</Text>
                                                 </View>
                                             </View>
                                             <View className={`flex-row items-center justify-center flex-wrap ${item.seen === 1 ? 'opacity-50' : ''}`}>
                                                 <View className='w-[85%]'>
-                                                    <Text className='font-pregular text-[12px]'>{handleTruncate('Lorem ipsum dolor sit amet, consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit. ')}</Text>
+                                                    <Text className='font-pregular text-[12px]'>{handleTruncate('Cảm ơn bạn đã sử dụng ứng dụng Nha khoa Thùy Anh. Chúng tôi sẽ giải đáp thắc mắc của bạn trong thời gian sớm nhất.')}</Text>
                                                 </View>
                                                 <View className='w-[15%] items-center'>
                                                     <Image source={item.seen === 1 ? icons.circle : icons.circleActive} resizeMode='cover' className={` w-[13px] h-[13px] right-[-6.5px]`} />
