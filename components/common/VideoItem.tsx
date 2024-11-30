@@ -12,7 +12,7 @@ type VideoItemProps = {
 }
 export default function VideoItem({ loading, post, flag, setFlag }: VideoItemProps) {
     const onPress = (item: any) => {
-        if (item) {
+        if (item && item.video_url) {
             setFlag(true);
             router.push({
                 pathname: "/(routes)/play-video",

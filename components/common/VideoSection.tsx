@@ -17,14 +17,16 @@ type VideoSectionProps = {
 }
 export default function VideoSection({ item, isLast, customImageStyle, flag, setFlag }: VideoSectionProps) {
     const onPress = () => {
-        setFlag(true);
-        router.push({
-            pathname: "/(routes)/play-video",
-            params: { videoItem: item.video_url, headerTitle: item.video_title },
-        });
-        setTimeout(() => {
-            setFlag(false)
-        }, 1000);
+        if (item && item.video_url) {
+            setFlag(true);
+            router.push({
+                pathname: "/(routes)/play-video",
+                params: { videoItem: item.video_url, headerTitle: item.video_title },
+            });
+            setTimeout(() => {
+                setFlag(false)
+            }, 1000);
+        }
     }
     return (
         <Pressable

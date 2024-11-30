@@ -2,7 +2,7 @@
   "expo": {
     "name": "Nha khoa Thuy Anh",
     "slug": "nha-khoa-thuy-anh",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
     "scheme": "nha-khoa-thuy-anh",
@@ -20,8 +20,6 @@
         "android.permission.CAMERA",
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.WRITE_EXTERNAL_STORAGE",
-        "android.permission.ACCESS_MEDIA_LOCATION",
-        "android.permission.RECORD_AUDIO",
         "android.permission.INTERNET"
       ]
     },

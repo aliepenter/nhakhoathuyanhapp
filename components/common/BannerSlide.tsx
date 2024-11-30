@@ -16,7 +16,7 @@ export default function BannerSlide({ banners, type }: any) {
                     ?
                     <Swiper
                         showsPagination={true}
-                        loop={true}
+                        loop={false}
                         autoplay={true}
                         paginationStyle={{ bottom: -16 }}
                         className="h-[170px] md:h-[400px]"
