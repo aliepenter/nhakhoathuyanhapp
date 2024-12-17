@@ -90,7 +90,8 @@ type AnhQuaTrinh = {
 type HopDong = {
   id: number;
   ten_hop_dong: string;
-  hop_dong_chi_tiet_id: any;
+  url: any;
+  user_id: number;
 };
 
 

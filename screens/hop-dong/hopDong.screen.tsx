@@ -56,7 +56,7 @@ export default function HopDongScreen() {
                         hopDong.map((item: HopDong, index: number) => (
 
                             <Pressable
-                                onPress={() => handlePress(item.hop_dong_chi_tiet_id)}
+                                onPress={() => handlePress(item.url)}
                                 disabled={flag}
                                 key={index}
 

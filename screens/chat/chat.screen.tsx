@@ -10,11 +10,11 @@ import {
     Keyboard,
     RefreshControl,
 } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import CustomHeader from '@/components/common/CustomHeader';
 import { Image } from 'expo-image';
 import useUser from '@/hooks/auth/useUser';
-import { getMessages, seenCuocTroChuyen } from '@/lib/apiCall';
+import { getMessages } from '@/lib/apiCall';
 import { icons, images } from '@/constants';
 import io, { Socket } from 'socket.io-client';
 import { formatISODateToAMPM, getToday } from '@/lib/commonFunctions';
@@ -35,34 +35,28 @@ export default function ChatScreen({ headerTitle, cuoc_tro_chuyen_id, disable }:
     const [messages, setMessages] = useState<Messages[]>([]);
     const [refreshing, setRefreshing] = useState(false);
     const [loading, setLoading] = useState<boolean>(true);
-    const [socket, setSocket] = useState<Socket | null>(null);
     const scrollViewRef = useRef<ScrollView>(null);
-    const [newMessage, setNewMessage] = useState<string>('');
-
-    const onRefresh = async () => {
-        setRefreshing(true);
-        setLoading(true);
-        await fetchMessages();
-        setRefreshing(false);
-    };
 
     const scrollToBottom = () => {
         if (scrollViewRef.current) {
             scrollViewRef.current.scrollToEnd({ animated: true });
         }
     };
+    const [socket, setSocket] = useState<Socket | null>(null);
+    const [newMessage, setNewMessage] = useState<string>('');
 
     useEffect(() => {
         fetchMessages();
         const socketIo = io(SERVER_URI, { transports: ['websocket'], autoConnect: false });
         socketIo.connect();
         setSocket(socketIo);
+
         socketIo.on('message', (payload: Messages) => {
-            if (payload.cuoc_tro_chuyen_id === cuoc_tro_chuyen_id) {
+            if (payload.cuoc_tro_chuyen_id == cuoc_tro_chuyen_id) {
                 setMessages((prevMessages) => [...prevMessages, payload]);
             }
         });
-
+        // Handle keyboard showing
         const keyboardDidShowListener = Keyboard.addListener(
             Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
             () => {
@@ -76,17 +70,13 @@ export default function ChatScreen({ headerTitle, cuoc_tro_chuyen_id, disable }:
         };
     }, [cuoc_tro_chuyen_id]);
 
-    useEffect(() => {
-        Platform.OS === 'ios' ?
-            setTimeout(() => {
-                scrollToBottom()
-            }, 100)
-            :
-            scrollToBottom()
 
-    }, [messages]);
-
-
+    const onRefresh = async () => {
+        setRefreshing(true);
+        setLoading(true);
+        await fetchMessages();
+        setRefreshing(false);
+    };
 
     const fetchMessages = async () => {
         try {
@@ -103,6 +93,8 @@ export default function ChatScreen({ headerTitle, cuoc_tro_chuyen_id, disable }:
         }
     };
 
+
+
     const handleSendMessage = () => {
         if (newMessage.trim() && socket) {
             const payload: Messages = {
@@ -116,12 +108,23 @@ export default function ChatScreen({ headerTitle, cuoc_tro_chuyen_id, disable }:
             setNewMessage('');
         }
     };
+
+
+    useEffect(() => {
+        Platform.OS === 'ios' ?
+            setTimeout(() => {
+                scrollToBottom()
+            }, 100)
+            :
+            scrollToBottom()
+
+    }, [messages]);
+
     const handleCamera = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
+            allowsEditing: false,
             quality: 1,
-            aspect: [3, 4],
         });
         if (!result.canceled) {
             if (result.assets[0].uri) {
@@ -158,6 +161,7 @@ export default function ChatScreen({ headerTitle, cuoc_tro_chuyen_id, disable }:
             }
         }
     };
+
     return (
         <View className='bg-white flex-1'>
             <CustomHeader title={headerTitle} customStyle='bg-white' />

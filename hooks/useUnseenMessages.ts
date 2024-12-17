@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import useUser from '@/hooks/auth/useUser';
+import useSocket from '@/hooks/useSocket';
 import { getLichSuTroChuyen } from '@/lib/apiCall';
 import { useFocusEffect } from '@react-navigation/native';
 import React from 'react';
+import { SERVER_URI } from '@/utils/uri';
 
 const useUnseenMessages = () => {
     const { user } = useUser();
+    const { messages } = useSocket(SERVER_URI);
+
     const [unseenCount, setUnseenCount] = useState(0);
     const [refetch, setRefetch] = useState(Date.now()); // Initialize with current timestamp
 
@@ -24,7 +28,7 @@ const useUnseenMessages = () => {
                 }
             };
             fetchMessages();
-        }, [user, refetch])
+        }, [user, refetch, messages])
     );
 
     return { unseenCount, setRefetch };

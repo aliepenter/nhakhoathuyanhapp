@@ -9,9 +9,12 @@ import { useFocusEffect } from '@react-navigation/native';
 import Dialog from "react-native-dialog";
 import Toast from 'react-native-toast-message';
 import { timeAgo } from '@/lib/commonFunctions';
+import useSocket from '@/hooks/useSocket';
+import { SERVER_URI } from '@/utils/uri';
 
 export default function TroChuyenScreen() {
     const { user } = useUser();
+    const { messages } = useSocket(SERVER_URI);
     const [flag, setFlag] = useState<boolean>(false);
     const [cuocTroChuyen, setCuocTroChuyen] = useState([]);
     const [newTitle, setNewTitle] = useState('');
@@ -65,6 +68,7 @@ export default function TroChuyenScreen() {
             setFlag(false);
         }, 1000);
     }
+
     const handleTruncate = (title: string) => {
         const truncatedTitle = title && title.length > 80 ? `${title.slice(0, 80)}...` : title;
         return truncatedTitle;
@@ -76,8 +80,9 @@ export default function TroChuyenScreen() {
                 const userId = user.id;
                 fetchCuocTroChuyen(userId);
             }
-        }, [user])
+        }, [user, messages])
     );
+
     const seen = async (cuoc_tro_chuyen_id: number) => {
         try {
             const cuocTroChuyen: any = {
@@ -103,7 +108,7 @@ export default function TroChuyenScreen() {
                 } else {
                     setLoading(false)
                 }
-            }, 1000);
+            }, 0);
 
         } catch (error) {
             console.error("Error fetching data:", error);
