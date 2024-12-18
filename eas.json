@@ -3,6 +3,13 @@
     "appVersionSource": "remote"
   },
   "build": {
+    "development-simulator": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "simulator": true
+      }
+    },
     "preview": {
       "android": {
         "buildType": "apk"
@@ -21,6 +28,15 @@
     },
     "production": {
       "autoIncrement": true
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "appleId": "taundat.business@gmail.com",
+        "ascAppId": "6739554950",
+        "appleTeamId": "3569GA8ZVS"
+      }
     }
   }
 }
