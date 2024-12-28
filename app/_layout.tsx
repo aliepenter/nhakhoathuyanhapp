@@ -1,13 +1,29 @@
 import { SplashScreen, Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
-import { LogBox, StatusBar, View, Text } from "react-native";
+import { LogBox, StatusBar, View, Text, Platform, PermissionsAndroid } from "react-native";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 import React from "react";
-
+import messaging from "@react-native-firebase/messaging";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+
+  const checkApplicationPermissions = async () => {
+    if (Platform.OS === "android") {
+      try {
+        await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+        )
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
+  const requestPermissions = async () => {
+    const authStatus = await messaging().requestPermission();
+  };
   const [fontsLoaded, error] = useFonts({
     "Inter-Black": require("../assets/fonts/Inter-Black.ttf"),
     "Inter-Bold": require("../assets/fonts/Inter-Bold.ttf"),

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "121003074709",
+    "project_id": "my-braces-notifications",
+    "storage_bucket": "my-braces-notifications.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121003074709:android:620d8db823302fcc1f279c",
+        "android_client_info": {
+          "package_name": "com.anonymous.nhakhoathuyanh"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3g9TrpsO8LEy0fQ9ygihoghQ3xiG5NXI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
