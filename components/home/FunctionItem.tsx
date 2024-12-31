@@ -45,6 +45,7 @@ const FunctionItem = ({ icon, title, path, flag, setFlag, notification }: any) =
 }
 
 export default function FunctionItemsList({ flag, setFlag, schedule }: Props) {
+
     return (
         <View className="flex-row flex-wrap">
             <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconChinhNha} path="/(routes)/chinh-nha" title="Chỉnh nha" />

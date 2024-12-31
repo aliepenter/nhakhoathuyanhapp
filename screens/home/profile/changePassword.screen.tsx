@@ -94,7 +94,7 @@ export default function ChangePasswordScreen() {
         buttonStyle="rounded-xl min-h-[62px]"
         colorFrom="#2594B8"
         colorTo="#226E9E"
-        textStyles="text-white font-psemibold text-lg" flag={false} iconStyle={undefined} icon={undefined} iconRight={undefined} />
+        textStyles="text-white font-psemibold text-lg" flag={false} iconStyle={undefined} icon={undefined} iconRight={undefined} notification={false} />
     </View>
   )
 }

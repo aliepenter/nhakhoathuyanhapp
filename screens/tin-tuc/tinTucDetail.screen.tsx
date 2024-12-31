@@ -38,7 +38,7 @@ export default function TinTucDetailScreen({ postThumb, postTime, postTitle, pos
                     buttonStyle="rounded-[6px] min-h-[50px]"
                     colorFrom="#1560A1"
                     colorTo="#4FAA57"
-                    textStyles="text-white font-psemibold text-[16px]" flag={false} iconStyle={undefined} icon={undefined} isLoading={undefined} iconRight={undefined} />
+                    textStyles="text-white font-psemibold text-[16px]" flag={false} iconStyle={undefined} icon={undefined} isLoading={undefined} iconRight={undefined} notification={false} />
             </View>
         </>
     )

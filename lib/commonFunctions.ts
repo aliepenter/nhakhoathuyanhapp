@@ -165,10 +165,15 @@ export const checkDay = (schedule: string | number | Date | null) => {
     today.setHours(0, 0, 0, 0);
 
     const threeDaysLater = new Date(today);
+    // số kia là số ngày trước khi đến lịch hẹn thì sẽ thông báo, hiện tại sẽ để là 1 ngày 
     threeDaysLater.setDate(today.getDate() + 3);
 
     const isGreaterThanTodayAndWithinThreeDays = targetDate > today && targetDate <= threeDaysLater;
     return isGreaterThanTodayAndWithinThreeDays;
+}
+
+export const checkTodayIsShoot = (data: any[] | undefined) => {
+    return data?.find(image => formatDate(image.ngay_chup, 'path') === getToday('path_minimize'));
 }
 
 export const timeAgo = (isoDate: string) => {

@@ -103,7 +103,7 @@ export default function LovingScreen() {
                         </View>
                         <View className='w-[45%] items-center'>
                             <View className='w-[130px] h-[130px] bg-white rounded-full items-center justify-center'>
-                                <Image source={icons.macCaiDamon} contentFit='contain' transition={.5} className='rounded-full w-[126px] h-[126px]' />
+                                <Image source={images.logojpg} contentFit='contain' transition={.5} className='rounded-full w-[126px] h-[126px]' />
                             </View>
                             <Text className='text-white text-[16px] font-mbold'>Nha khoa Thùy Anh</Text>
                         </View>
@@ -117,7 +117,7 @@ export default function LovingScreen() {
                     containerStyles="w-[140px]"
                     buttonStyle="rounded-full min-h-[50px] bg-[#EDEDED] border-[#D7D7D7] border-[1px]"
                     textStyles=" font-pextrabold text-[16px] text-[#747474]"
-                    iconStyle="w-[25px] h-[16px] mr-[12px]" flag={false} icon={undefined} isLoading={undefined} colorFrom={undefined} colorTo={undefined} iconRight={undefined} />
+                    iconStyle="w-[25px] h-[16px] mr-[12px]" flag={false} icon={undefined} isLoading={undefined} colorFrom={undefined} colorTo={undefined} iconRight={undefined} notification={false} />
                 <View className='w-[10px]'></View>
                 <CustomButton
                     title="Chia sẻ ngay"
@@ -125,7 +125,7 @@ export default function LovingScreen() {
                     containerStyles="w-[140px]"
                     buttonStyle="rounded-full min-h-[50px] bg-[#FFFFFF] border-[#1762A0] border-[1px]"
                     textStyles="text-[#17639F] font-pextrabold text-[16px]"
-                    iconStyle="w-[25px] h-[16px] ml-[12px]" flag={false} icon={undefined} isLoading={undefined} colorFrom={undefined} colorTo={undefined} iconRight={undefined} />
+                    iconStyle="w-[25px] h-[16px] ml-[12px]" flag={false} icon={undefined} isLoading={undefined} colorFrom={undefined} colorTo={undefined} iconRight={undefined} notification={false} />
             </View>
         </View>
     )

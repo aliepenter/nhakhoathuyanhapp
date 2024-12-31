@@ -152,7 +152,6 @@ export default function ProfileScreen() {
                                 :
                                 null
                         }
-
                     </View>
                 </View>
                 <View>
@@ -285,7 +284,7 @@ export default function ProfileScreen() {
                     icon={icons.dangXuat}
                     buttonStyle="rounded-full py-[10px] px-[50px] bg-[#E73E3F] border-[#D7D7D7] border-[1px]"
                     textStyles="font-psemibold text-[16px] md:text-[20px] text-white"
-                    iconStyle="w-[18px] h-[18px] mr-[15px]" flag={false} isLoading={undefined} colorFrom={undefined} colorTo={undefined} iconRight={undefined} />
+                    iconStyle="w-[18px] h-[18px] mr-[15px]" flag={false} isLoading={undefined} colorFrom={undefined} colorTo={undefined} iconRight={undefined} notification={false} />
                 <View className='h-[150px]'></View>
             </ScrollView>
             <BottomSheetModal

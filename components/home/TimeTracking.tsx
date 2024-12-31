@@ -1,17 +1,19 @@
-import { View, Text, Image, ActivityIndicator, Pressable } from 'react-native';
+import { View, Text, Image, ActivityIndicator, Pressable, StyleSheet } from 'react-native';
 import React from 'react';
 import { icons } from '@/constants';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import * as Haptics from 'expo-haptics';
+import { checkDay } from '@/lib/commonFunctions';
 
 type TimeTrackingProps = {
     flag: boolean;
     setFlag: (index: boolean) => void;
     schedule: any;
     totalTime: number;
+    lichHen: any;
 }
-export default function TimeTracking({ schedule, totalTime, flag, setFlag }: TimeTrackingProps) {
+export default function TimeTracking({ lichHen, schedule, totalTime, flag, setFlag }: TimeTrackingProps) {
     const onPress = () => {
         setFlag(true);
         Haptics.selectionAsync();
@@ -55,7 +57,17 @@ export default function TimeTracking({ schedule, totalTime, flag, setFlag }: Tim
                         :
                         <Text className='font-pextrabold text-[12px] text-[#FBFF49] md:text-[16px]'>Không có lịch hẹn</Text>
                     }
+                    {
+                        checkDay(lichHen)
+                            ?
+                            <View className='absolute left-[-5px] top-[-5px] w-[15px] h-[15px] rounded-full' style={styles.boxShadow}>
+                                <Image source={icons.notificationHighlight} resizeMode='cover' className='w-full h-full' />
+                            </View>
+                            :
+                            null
+                    }
                 </LinearGradient>
+
             </Pressable>
             <Pressable
                 className={`w-[48%] h-[59px] `}
@@ -85,3 +97,17 @@ export default function TimeTracking({ schedule, totalTime, flag, setFlag }: Tim
         </View>
     )
 }
+
+
+const styles = StyleSheet.create({
+    boxShadow: {
+        shadowColor: "#000000",
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 11.7,
+        elevation: 10
+    }
+});

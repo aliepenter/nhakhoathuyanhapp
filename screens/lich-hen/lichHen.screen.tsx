@@ -150,14 +150,12 @@ export default function LichHenScreen() {
 
     const handleDayPress = (day: any) => {
         setFlag(true);
-
         const selectedDate = day.dateString;
         
         const matchedServices = lichHenData?.filter(item => {
             const ngayKhamDate = formatDate(item.ngay_kham, 'isoDate');
             return ngayKhamDate === selectedDate;
         });
-
         const sv = matchedServices?.map(item => item.dich_vu);
         if (sv && sv.length > 0) {
             setServices(sv)
@@ -168,12 +166,10 @@ export default function LichHenScreen() {
             setFlag(false)
         }, 1000);
     };
-
     const renderServicesText = (services: any[]) => {
         if (services.length === 0) return '';
         if (services.length === 1) return `Bạn có lịch ${services[0]} ngày ${selectedDay}`;
-        const lastService = services.pop();
-        return `Bạn có lịch ${services.join(' và ')} và ${lastService} ngày ${selectedDay}`;
+        return `Bạn có lịch ${services.join(', ')} vào ngày ${selectedDay}`;
     };
 
     const handleChangeDayAccept = async () => {

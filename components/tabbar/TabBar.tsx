@@ -1,17 +1,20 @@
 import { Image, Linking, Platform, Text, TouchableOpacity, View, StyleSheet, ImageBackground } from 'react-native';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import icons from '@/constants/icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import images from '@/constants/images';
 import * as Haptics from 'expo-haptics';
 import useUnseenMessages from '@/hooks/useUnseenMessages';
+import useLibrary from '@/hooks/useTodayLibrary';
 
 export default function TabBars({ state, descriptors, navigation }: any) {
     const { unseenCount } = useUnseenMessages();
+
     const handlePress = useCallback(async () => {
         Haptics.selectionAsync();
         await Linking.openURL('tel:0869800318');
     }, []);
+
     return (
         <ImageBackground className={`${Platform.OS === 'ios' ? "h-[100px]" : "h-[95px]"} absolute bottom-0 opacity-[0.987]`} source={images.bgTabbar} resizeMode='stretch'>
             <View className={`flex-row justify-between items-center w-full`}>
@@ -84,6 +87,7 @@ export default function TabBars({ state, descriptors, navigation }: any) {
                                             <Image source={iconName} resizeMode='contain' tintColor={isFocused ? '#5EBA1B' : '#8A8A8A'} className='w-[24px] h-[24px]' />
 
                                     }
+
                                     <Text className={`${isFocused ? 'text-[#5EBA1B] font-pbold' : 'text-[#8A8A8A] font-pregular'} mt-2 text-[10px] md:text-[14px]`}>{tabName}</Text>
                                 </View>
                             </TouchableOpacity>

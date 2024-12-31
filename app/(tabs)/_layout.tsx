@@ -41,7 +41,6 @@ const TabsLayout = () => {
             setTimeout(() => setDisable(false), 5000);
         }
     };
-
     const handleBackAction = React.useCallback(() => {
         Alert.alert("Thoát khỏi ứng dụng", "Bạn muốn rời khỏi ứng dụng?", [
             {

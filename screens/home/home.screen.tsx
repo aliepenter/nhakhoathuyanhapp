@@ -5,16 +5,16 @@ import {
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { getBanners, getLichHenByUserId, getPosts, getTrending } from "@/lib/apiCall";
+import { getBanners, getCustomerLibrary, getLichHenByUserId, getPosts, getTrending, updateExpoToken } from "@/lib/apiCall";
 import useUser from "@/hooks/auth/useUser";
 import FunctionItemsList from "@/components/home/FunctionItem";
 import RenderVideo from "@/components/home/RenderVideo";
 import BannerSlide from "@/components/common/BannerSlide";
 import NewsSection from "@/components/home/NewsSection";
 import TimeTracking from "@/components/home/TimeTracking";
-import { calculateDaysDifference, checkDay, formatDate } from "@/lib/commonFunctions";
+import { calculateDaysDifference, checkDay, checkTodayIsShoot, formatDate } from "@/lib/commonFunctions";
 import Toast from "react-native-toast-message";
-import useUnseenMessages from "@/hooks/useUnseenMessages";
+import { usePushNotifications } from "@/hooks/usePushNotifications";
 
 const HomeScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
@@ -23,17 +23,28 @@ const HomeScreen = () => {
   const [post, setPost] = useState([]);
   const [lichHen, setLichHen] = useState(null);
   const { user } = useUser();
+  const { expoPushToken } = usePushNotifications();
   const [flag, setFlag] = useState<boolean>(false);
+  const handleUpdateExpoToken = async (id: any, data: any) => {
+    try {
+      await updateExpoToken(id, data);
+    } catch (error) {
+      console.log(error)
+    }
+  };
 
   useEffect(() => {
     fetchVideoData();
     fetchBannerData();
     fetchNews();
+    if (user && expoPushToken) {
+      handleUpdateExpoToken(user.id, expoPushToken.data);
+    }
     if (user) {
       fetchLichHen(user.id);
     }
     showToast();
-  }, [user]);
+  }, [user, expoPushToken]);
   const onRefresh = async () => {
     setRefreshing(true);
     setVideos([]);
@@ -47,7 +58,6 @@ const HomeScreen = () => {
     }
     setRefreshing(false);
   };
-
   const fetchLichHen = async (id: number) => {
     try {
       const [lichHenRes] = await Promise.all([
@@ -78,7 +88,6 @@ const HomeScreen = () => {
       setLichHen(null);
     }
   };
-
   const fetchNews = async () => {
     try {
       const postData = await getPosts();
@@ -130,7 +139,7 @@ const HomeScreen = () => {
       });
     }
   }
-  
+
   return (
     <View className="bg-white">
       <ScrollView
@@ -138,7 +147,7 @@ const HomeScreen = () => {
       >
         <BannerSlide banners={banners} type={1} />
         <FunctionItemsList schedule={lichHen ? lichHen : null} flag={flag} setFlag={setFlag} />
-        <TimeTracking schedule={lichHen ? formatDate(lichHen, 'minimize') : 0} totalTime={user && user.ngay_gan_mc != null ? calculateDaysDifference(user.ngay_gan_mc) : 0} flag={flag} setFlag={setFlag} />
+        <TimeTracking lichHen={lichHen ? lichHen : null} schedule={lichHen ? formatDate(lichHen, 'minimize') : 0} totalTime={user && user.ngay_gan_mc != null ? calculateDaysDifference(user.ngay_gan_mc) : 0} flag={flag} setFlag={setFlag} />
         <RenderVideo videos={videos} flag={flag} setFlag={setFlag} />
         <NewsSection post={post} flag={flag} setFlag={setFlag} />
       </ScrollView>

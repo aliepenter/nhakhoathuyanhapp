@@ -64,7 +64,7 @@ export default function DichVuScreen({ services, selectedServiceId, handleServic
                             colorFrom="#1560A1"
                             colorTo="#4FAA57"
                             textStyles="text-white font-pextrabold text-[16px]"
-                            iconStyle="w-[25px] h-[16px] ml-[12px]" flag={false} isLoading={undefined} />
+                            iconStyle="w-[25px] h-[16px] ml-[12px]" flag={false} isLoading={undefined} notification={false} />
                     </View>
                 </ScrollView>
             </View>

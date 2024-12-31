@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Swiper from 'react-native-swiper'
 import { SERVER_URL } from '@/utils/uri'
 import { LinearGradient } from 'expo-linear-gradient'
-import { formatDate, getToday } from '@/lib/commonFunctions'
+import { checkTodayIsShoot, formatDate, getToday } from '@/lib/commonFunctions'
 import CustomButton from '@/components/common/CustomButton'
 import { icons } from '@/constants'
 import { getCustomerLibrary } from '@/lib/apiCall'
@@ -11,6 +11,7 @@ import { Image } from 'expo-image';
 import { router } from 'expo-router'
 import { useCameraPermissions } from 'expo-camera';
 import { useRoute } from '@react-navigation/native'
+import useLibrary from '@/hooks/useTodayLibrary'
 
 export default function MyGalleryScreen({ user }: any) {
   const [customerLibraryData, setCustomerLibraryData] = useState<Array<CustomerLibrary>>();
@@ -38,12 +39,19 @@ export default function MyGalleryScreen({ user }: any) {
 
   const fetchCustomerLibrary = async (userId: number) => {
     try {
-      const chinhNhaData = await getCustomerLibrary(userId);
+      const customerLibrary = await getCustomerLibrary(userId);
       setTimeout(() => {
-        if (chinhNhaData) {
-          setCustomerLibraryData(chinhNhaData.data);
-          setLoading(false)
-          handleCheckTodayIsShoot(chinhNhaData.data);
+        if (customerLibrary) {
+          setCustomerLibraryData(customerLibrary.data);
+          setLoading(false);
+          const todayImageData = checkTodayIsShoot(customerLibrary.data);
+          if (todayImageData) {
+            setHasImage(true);
+            setId(todayImageData.id)
+          } else {
+            setHasImage(false);
+            setId(null)
+          }
         } else {
           setLoading(false)
         }
@@ -57,16 +65,6 @@ export default function MyGalleryScreen({ user }: any) {
     }
   };
   const [permission, requestPermission] = useCameraPermissions();
-  const handleCheckTodayIsShoot = (data: any[] | undefined) => {
-    const todayImageData = data?.find(image => formatDate(image.ngay_chup, 'path') === getToday('path_minimize'));
-    if (todayImageData) {
-      setHasImage(true);
-      setId(todayImageData.id)
-    } else {
-      setHasImage(false);
-      setId(null)
-    }
-  }
   const handleCamera = async () => {
     if (permission && permission.granted) {
       router.push({
@@ -167,7 +165,8 @@ export default function MyGalleryScreen({ user }: any) {
           icon={icons.cameraGreen}
           buttonStyle="rounded-full py-[5px] px-[19px] bg-[#EDEDED] border-[#D7D7D7] border-[1px]"
           textStyles="font-pregular text-[12px] md:text-[16px]"
-          iconStyle="w-[20px] h-[20px] mr-[6px]" flag={false} isLoading={undefined} colorFrom={undefined} colorTo={undefined} iconRight={undefined} />
+          iconStyle="w-[20px] h-[20px] mr-[6px]" flag={false} isLoading={undefined} colorFrom={undefined} colorTo={undefined} iconRight={undefined} notification={!hasImage} />
+        
       </View>
       <View className="h-[170px]"></View>
     </ScrollView>

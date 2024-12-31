@@ -510,6 +510,32 @@ export const changePassword = async (id: any, data: any) => {
   }
 };
 
+// PUT UPDATE TOKEN EXPO
+export const updateExpoToken = async (id: any, data: string) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+      const requestData = {
+        expo_notification_token: data,
+      };
+
+      const response = await axios.put(`${SERVER_URI}/users/expo-token/${id}`, requestData);
+
+      return {
+        code: 200,
+        data: response.data,
+      };
+    } catch (error) {
+      console.error('Error updating expo token:', error);
+      throw error;
+    }
+  } else {
+    return null;
+  }
+};
+
 export const createDatLich = async (data: any) => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);
   if (token) {

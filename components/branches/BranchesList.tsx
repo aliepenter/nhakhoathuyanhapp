@@ -73,7 +73,7 @@ const BranchItemDetail = ({ index, item, handlePress, branches, flag }: BranchIt
                         icon={icons.phoneBlack}
                         buttonStyle="rounded-full py-[5px] px-[19px] bg-[#EDEDED] border-[#D7D7D7] border-[1px]"
                         textStyles="font-pregular text-[12px] md:text-[16px]"
-                        iconStyle="w-[19px] h-[19px] mr-[6px]" flag={flag} isLoading={false} colorFrom={null} colorTo={null} iconRight={null} />
+                        iconStyle="w-[19px] h-[19px] mr-[6px]" flag={flag} isLoading={false} colorFrom={null} colorTo={null} iconRight={null} notification={false} />
                     <CustomButton
                         title="Chỉ đường"
                         handlePress={() => handlePress(item.map_url)}
@@ -82,7 +82,7 @@ const BranchItemDetail = ({ index, item, handlePress, branches, flag }: BranchIt
                         colorFrom="#1361AA"
                         colorTo="#5EBA1B"
                         textStyles="text-white font-pregular text-[12px] md:text-[16px]"
-                        iconStyle="w-[19px] h-[15px] mr-[6px]" flag={flag} containerStyles={null} isLoading={false} iconRight={null} />
+                        iconStyle="w-[19px] h-[15px] mr-[6px]" flag={flag} containerStyles={null} isLoading={false} iconRight={null} notification={false} />
                 </View>
             </View>
         </View>

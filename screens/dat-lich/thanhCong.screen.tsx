@@ -34,7 +34,7 @@ export default function ThanhCongScreen({ selectDate, serviceName }: ServiceProp
                 colorFrom="#1560A1"
                 colorTo="#4FAA57"
                 textStyles="text-white font-pextrabold text-[16px]"
-                iconStyle="w-[25px] h-[16px] ml-[12px]" flag={false} icon={undefined} isLoading={undefined} iconRight={undefined} />
+                iconStyle="w-[25px] h-[16px] ml-[12px]" flag={false} icon={undefined} isLoading={undefined} iconRight={undefined} notification={false} />
         </View>
     )
 }

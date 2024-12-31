@@ -1,6 +1,7 @@
-import { Text, View, ActivityIndicator, Image, Pressable } from 'react-native'
+import { StyleSheet, Text, View, ActivityIndicator, Image, Pressable } from 'react-native'
 import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
+import icons from '@/constants/icons';
 
 type CustomButtonProps = {
     flag: boolean;
@@ -15,8 +16,9 @@ type CustomButtonProps = {
     colorTo: any;
     iconRight: any;
     buttonStyle: any;
+    notification: boolean
 }
-const CustomButton = ({ iconStyle, icon, title, handlePress, containerStyles, textStyles, isLoading, colorFrom, colorTo, buttonStyle, iconRight, flag }: CustomButtonProps) => {
+const CustomButton = ({ notification, iconStyle, icon, title, handlePress, containerStyles, textStyles, isLoading, colorFrom, colorTo, buttonStyle, iconRight, flag }: CustomButtonProps) => {
     return (
         <View className={`justify-center flex items-center`}>
             <Pressable
@@ -39,6 +41,15 @@ const CustomButton = ({ iconStyle, icon, title, handlePress, containerStyles, te
                         <View className={`${buttonStyle} justify-center items-center`}>
                             <ButtonText iconStyle={iconStyle} textStyles={textStyles} title={title} isLoading={isLoading} icon={icon} iconRight={iconRight} />
                         </View>
+                }
+                {
+                    notification
+                        ?
+                        <View className='absolute right-[-4px] top-[-3px] w-[15px] h-[15px] rounded-full' style={styles.boxShadow}>
+                            <Image source={icons.notificationHighlight} resizeMode='cover' className='w-full h-full' />
+                        </View>
+                        :
+                        null
                 }
             </Pressable>
         </View >
@@ -87,3 +98,16 @@ const ButtonText = ({ textStyles, title, isLoading, icon, iconStyle, iconRight }
         }
     </>
 }
+
+const styles = StyleSheet.create({
+    boxShadow: {
+        shadowColor: "#000000",
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 11.7,
+        elevation: 10
+    }
+});

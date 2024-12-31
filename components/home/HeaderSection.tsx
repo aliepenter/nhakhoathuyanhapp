@@ -87,15 +87,12 @@ export default function HeaderSection({
           });
           console.error("Error uploading file:", error);
         }
-
-
       }
     }
     setTimeout(() => {
       setFlag(false);
     }, 1000);
   };
-
   return (
     <View className={`${customBgColor} h-[150px]`}>
       <ImageBackground

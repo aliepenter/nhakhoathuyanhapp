@@ -28,7 +28,7 @@ export default function NgayKhamScreen({ setSelectedDate, selectedDate, onDatLic
                         icon={icons.backArrow}
                         buttonStyle="rounded-full min-h-[50px] bg-[#EDEDED] border-[#D7D7D7] border-[1px]"
                         textStyles=" font-pextrabold text-[16px] text-[#747474]"
-                        iconStyle="w-[25px] h-[16px] mr-[12px]" flag={false} isLoading={undefined} colorFrom={undefined} colorTo={undefined} iconRight={undefined} />
+                        iconStyle="w-[25px] h-[16px] mr-[12px]" flag={false} isLoading={undefined} colorFrom={undefined} colorTo={undefined} iconRight={undefined} notification={false} />
                     <CustomButton
                         title="Đặt lịch"
                         handlePress={() => onDatLichPress(2)}
@@ -40,7 +40,7 @@ export default function NgayKhamScreen({ setSelectedDate, selectedDate, onDatLic
                         colorTo="#4FAA57"
                         textStyles="text-white font-pextrabold text-[16px]"
                         iconStyle="w-[25px] h-[16px] ml-[12px]"
-                        isLoading={loading} flag={false} />
+                        isLoading={loading} flag={false} notification={false} />
                 </View>
             </View>
         </View>

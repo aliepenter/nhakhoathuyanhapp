@@ -2,7 +2,7 @@
   "expo": {
     "name": "My Braces",
     "slug": "nha-khoa-thuy-anh",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/logo.jpg",
     "scheme": "nha-khoa-thuy-anh",
@@ -31,8 +31,7 @@
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.INTERNET"
-      ],
-      "googleServicesFile": "./google-services.json"
+      ]
     },
     "web": {
       "bundler": "metro",
