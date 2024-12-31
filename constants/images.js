@@ -6,7 +6,6 @@ import bannerDefault from "../assets/images/banner-default.jpg";
 import bgTabbar from "../assets/images/bg-tabbar.png";
 import bgLovingPage from "../assets/images/bg-loving-page.png";
 import heartFly from "../assets/images/heart-fly.gif";
-import body from "../assets/images/body.png";
 export default {
     bgLovingPage,
     heartFly,
@@ -15,6 +14,5 @@ export default {
     bannerDefault,
     logo,
     logojpg,
-    body,
     bgPhoneInput
 };
