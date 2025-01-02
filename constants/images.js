@@ -1,5 +1,6 @@
 import logo from "../assets/images/logo.png";
-import logojpg from "../assets/images/logo.jpg";
+import logojpg from "../assets/images/logojpg.jpg";
+import logoicon from "../assets/images/logoicon.png";
 import bgPhoneInput from "../assets/images/background-phone-input.png";
 import bgHeaderPage from "../assets/images/header-page.png";
 import bannerDefault from "../assets/images/banner-default.jpg";
@@ -14,5 +15,6 @@ export default {
     bannerDefault,
     logo,
     logojpg,
+    logoicon,
     bgPhoneInput
 };

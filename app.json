@@ -4,9 +4,14 @@
     "slug": "nha-khoa-thuy-anh",
     "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/images/logo.jpg",
+    "icon": "./assets/images/logoicon.png",
     "scheme": "nha-khoa-thuy-anh",
     "userInterfaceStyle": "automatic",
+    "notification": {
+      "icon": "./assets/images/logoicon.png",
+      "color": "#000000",
+      "iosDisplayInForeground": true
+    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.nhakhoathuyanh",
@@ -22,7 +27,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/logo.jpg",
+        "foregroundImage": "./assets/images/logoicon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.anonymous.nhakhoathuyanh",
@@ -44,7 +49,7 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/images/logo.jpg",
+          "icon": "./assets/images/logoicon.png",
           "color": "#ffffff",
           "defaultChannel": "default"
         }

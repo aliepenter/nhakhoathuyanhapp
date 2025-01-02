@@ -10,11 +10,11 @@ import Dialog from "react-native-dialog";
 import Toast from 'react-native-toast-message';
 import { timeAgo } from '@/lib/commonFunctions';
 import useSocket from '@/hooks/useSocket';
-import { SERVER_URI } from '@/utils/uri';
+import { SOCKET_URI } from '@/utils/uri';
 
 export default function TroChuyenScreen() {
     const { user } = useUser();
-    const { messages } = useSocket(SERVER_URI);
+    const { messages } = useSocket(SOCKET_URI);
     const [flag, setFlag] = useState<boolean>(false);
     const [cuocTroChuyen, setCuocTroChuyen] = useState([]);
     const [newTitle, setNewTitle] = useState('');

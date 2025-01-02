@@ -19,7 +19,7 @@ import { icons, images } from '@/constants';
 import io, { Socket } from 'socket.io-client';
 import { formatISODateToAMPM, getToday } from '@/lib/commonFunctions';
 import * as ImagePicker from "expo-image-picker";
-import { SERVER_URI, SERVER_URL } from '@/utils/uri';
+import { SERVER_URI, SERVER_URL, SOCKET_URI } from '@/utils/uri';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
 
@@ -47,7 +47,7 @@ export default function ChatScreen({ headerTitle, cuoc_tro_chuyen_id, disable }:
 
     useEffect(() => {
         fetchMessages();
-        const socketIo = io(SERVER_URI, { transports: ['websocket'], autoConnect: false });
+        const socketIo = io(SOCKET_URI, { transports: ['websocket'], autoConnect: false });
         socketIo.connect();
         setSocket(socketIo);
 
