@@ -4,7 +4,7 @@ import useUser from '@/hooks/auth/useUser';
 import { icons } from '@/constants';
 import { router } from 'expo-router';
 import { getChinhNhaByLoiDan, getLichSuTroChuyen, getLoiDan } from '@/lib/apiCall';
-import { formatDate } from '@/lib/commonFunctions';
+import { formatDate, timeAgo } from '@/lib/commonFunctions';
 export default function LoiDanScreen() {
   const { user } = useUser();
   const [loiDan, setLoiDan] = useState([]);
@@ -82,11 +82,11 @@ export default function LoiDanScreen() {
                 <TouchableOpacity disabled={flag} key={index} onPress={() => handlePress(item)}
                   className={`my-[7px] mt-[14px] rounded-[7px] bg-[#F5F5F5] p-[10px] ${isLastItem ? 'mb-5' : ''}`} style={styles.boxShadow}>
                   <View className={`flex-row items-center justify-center flex-wrap ${item.seen === 1 ? 'opacity-50' : ''}`}>
-                    <View className='w-[80%] items-start'>
+                    <View className='w-[70%] items-start'>
                       <Text className={`text-red-500 font-pbold text-[14px]`}>{item.tieu_de}</Text>
                     </View>
-                    <View className='w-[20%] items-end'>
-                      <Text className='text-[#6C6C6C] font-pmedium text-[10px]'>1ph trước</Text>
+                    <View className='w-[30%] items-end'>
+                      <Text className='text-[#6C6C6C] font-pmedium text-[10px]'>{timeAgo(item.ngay_tao)}</Text>
                     </View>
                   </View>
                   <View className={`flex-row items-center justify-center flex-wrap ${item.seen === 1 ? 'opacity-50' : ''}`}>

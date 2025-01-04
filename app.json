@@ -2,16 +2,11 @@
   "expo": {
     "name": "My Braces",
     "slug": "nha-khoa-thuy-anh",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/images/logoicon.png",
     "scheme": "nha-khoa-thuy-anh",
     "userInterfaceStyle": "automatic",
-    "notification": {
-      "icon": "./assets/images/logoicon.png",
-      "color": "#000000",
-      "iosDisplayInForeground": true
-    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.nhakhoathuyanh",

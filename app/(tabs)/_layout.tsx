@@ -18,6 +18,7 @@ const TabsLayout = () => {
     const [flag, setFlag] = useState<boolean>(false);
     const [loading, setLoading] = useState(true);
     const [disable, setDisable] = useState(false);
+    const [disableChange, setDisableChange] = useState(false);
     const [refetch, setRefetch] = useState<number>();
     const [avatar, setAvatar] = useState<Avatar>();
     useEffect(() => {
@@ -29,6 +30,7 @@ const TabsLayout = () => {
 
     const fetchAvatar = async (userId: number) => {
         setDisable(true);
+        setDisableChange(true);
         try {
             const res = await getAvatar(userId);
             if (res) {
@@ -38,8 +40,9 @@ const TabsLayout = () => {
             console.error("Error fetching data:", error);
         } finally {
             setLoading(false);
-            setTimeout(() => setDisable(false), 5000);
+            setDisable(false);
         }
+        setTimeout(() => setDisableChange(false), 10000);
     };
     const handleBackAction = React.useCallback(() => {
         Alert.alert("Thoát khỏi ứng dụng", "Bạn muốn rời khỏi ứng dụng?", [
@@ -74,7 +77,7 @@ const TabsLayout = () => {
                             <HeaderSection user={user} setRefetch={setRefetch} showNotification={false} editAvatar={false} setFlag={setFlag} flag={flag} avatar={{
                                 id: avatar?.id,
                                 value: avatar?.value,
-                            }} loading={loading} disable={disable} customBgColor="bg-white" />
+                            }} loading={loading} disable={disable} customBgColor="bg-white" disableChange={false} />
                         ),
                     }} name="index" />
                     <Tabs.Screen
@@ -98,7 +101,7 @@ const TabsLayout = () => {
                             <HeaderSection user={user} setRefetch={setRefetch} showNotification={false} editAvatar={true} setFlag={setFlag} flag={flag} avatar={{
                                 id: avatar?.id,
                                 value: avatar?.value,
-                            }} loading={loading} disable={disable} customBgColor="bg-[#F2F1F6]" />
+                            }} loading={loading} disable={disable} customBgColor="bg-[#F2F1F6]" disableChange={disableChange} />
                         ),
                     }} name="profile/index" />
                 </Tabs>

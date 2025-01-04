@@ -215,7 +215,7 @@ export default function ProfileScreen() {
                     <Text className='text-[16px] font-psemibold'>Liên hệ với chúng tôi</Text>
                     <View className='bg-white rounded-[10px] py-3 mt-[10px] mb-[16px] flex-row flex-wrap'>
                         <Pressable
-                            onPress={() => handlePress('https://www.facebook.com/NKTA.official')}
+                            onPress={() => handlePress('https://www.facebook.com/@NKTA.official')}
                             disabled={flag}
                             className='items-center flex-grow w-[33.33333%]'
                         >

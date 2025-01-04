@@ -99,9 +99,9 @@ export default function CameraScreen(props: CameraScreenProps) {
                     </TouchableOpacity>
                 </View>
                 <View className='w-[15%]'>
-                    <TouchableOpacity className='w-[40px] h-[40px] bg-gray-200 rounded-full flex items-center justify-center' onPress={toggleCameraFacing}>
+                    {/* <TouchableOpacity className='w-[40px] h-[40px] bg-gray-200 rounded-full flex items-center justify-center' onPress={toggleCameraFacing}>
                         <Image source={icons.flip} className='w-[50%] h-[50%]' contentFit='cover' />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
             </View>
         </View>

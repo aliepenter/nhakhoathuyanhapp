@@ -1,5 +1,7 @@
 import {
   FlatList,
+  Linking,
+  Platform,
   RefreshControl,
   ScrollView,
   View,
@@ -15,10 +17,15 @@ import TimeTracking from "@/components/home/TimeTracking";
 import { calculateDaysDifference, checkDay, checkTodayIsShoot, formatDate } from "@/lib/commonFunctions";
 import Toast from "react-native-toast-message";
 import { usePushNotifications } from "@/hooks/usePushNotifications";
+import * as Application from 'expo-application';
+import { getVersion } from "@/lib/apiCall";
+import CardNotification from "@/components/home/CardNotification";
+// Lấy thông tin thiết bị từ expo-device
 
 const HomeScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [videos, setVideos] = useState([]);
+  const [version, setVersion] = useState<string | null>('');
   const [banners, setBanners] = useState([]);
   const [post, setPost] = useState([]);
   const [lichHen, setLichHen] = useState(null);
@@ -32,18 +39,37 @@ const HomeScreen = () => {
       console.log(error)
     }
   };
+  const checkVersion = async () => {
+    try {
+      const versionData = await getVersion();
+      const version = Application.nativeApplicationVersion;  // Phiên bản ứng dụng (ví dụ: "1.2.3")
+      const build = Application.nativeBuildVersion;
+      if (versionData && versionData.data) {
+        console.log(versionData.data.number);
+        console.log("version:", version);  // Mã build (ví dụ: "123")
+        console.log("build:", build);  //
+        if (version != versionData.data.number) {
+          if (Platform.OS === "android") {
+            setVersion(versionData.data.number);
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
     fetchVideoData();
     fetchBannerData();
     fetchNews();
+    checkVersion();
     if (user && expoPushToken) {
       handleUpdateExpoToken(user.id, expoPushToken.data);
     }
     if (user) {
       fetchLichHen(user.id);
     }
-    showToast();
   }, [user, expoPushToken]);
   const onRefresh = async () => {
     setRefreshing(true);
@@ -76,6 +102,7 @@ const HomeScreen = () => {
 
           if (closestAppointment) {
             setLichHen(closestAppointment.ngay_kham);
+            showToast(closestAppointment.ngay_kham);
           }
         } else {
           setLichHen(null);
@@ -127,7 +154,7 @@ const HomeScreen = () => {
       console.error("Error fetching data:", error);
     }
   };
-  const showToast = () => {
+  const showToast = (lichHen: string | number | Date | null) => {
     if (checkDay(lichHen)) {
       Toast.show({
         type: 'tomatoToast',
@@ -145,6 +172,13 @@ const HomeScreen = () => {
       <ScrollView
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
+        {
+          version != ''
+            ?
+            <CardNotification flag={false} setFlag={setFlag} version={version?version:""} />
+            :
+            null
+        }
         <BannerSlide banners={banners} type={1} />
         <FunctionItemsList schedule={lichHen ? lichHen : null} flag={flag} setFlag={setFlag} />
         <TimeTracking lichHen={lichHen ? lichHen : null} schedule={lichHen ? formatDate(lichHen, 'minimize') : 0} totalTime={user && user.ngay_gan_mc != null ? calculateDaysDifference(user.ngay_gan_mc) : 0} flag={flag} setFlag={setFlag} />

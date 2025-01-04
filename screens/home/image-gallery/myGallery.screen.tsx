@@ -1,4 +1,4 @@
-import { View, Text, ActivityIndicator, ScrollView, RefreshControl, Button } from 'react-native'
+import { View, Text, ActivityIndicator, ScrollView, RefreshControl, Button, TouchableOpacity, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Swiper from 'react-native-swiper'
 import { SERVER_URL } from '@/utils/uri'
@@ -6,7 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { checkTodayIsShoot, formatDate, getToday } from '@/lib/commonFunctions'
 import CustomButton from '@/components/common/CustomButton'
 import { icons } from '@/constants'
-import { getCustomerLibrary } from '@/lib/apiCall'
+import { deleteCustomerLibrary, getCustomerLibrary } from '@/lib/apiCall'
 import { Image } from 'expo-image';
 import { router } from 'expo-router'
 import { useCameraPermissions } from 'expo-camera';
@@ -82,15 +82,40 @@ export default function MyGalleryScreen({ user }: any) {
       })
     }
   };
+
+  const handleDelete = (item: CustomerLibrary) => {
+    Alert.alert(
+      "Xóa ảnh", // Tiêu đề của cảnh báo
+      `Bạn có chắc chắn muốn xóa ảnh chụp ngày ${formatDate(item.ngay_chup, "minimize")} không?`, // Nội dung thông báo
+      [
+        {
+          text: "Không", // Nút không xóa
+          style: "cancel", // Nút không làm gì khi nhấn
+        },
+        {
+          text: "Có", // Nút xác nhận xóa
+          onPress: async () => {
+            try {
+              await deleteCustomerLibrary(item.id);
+              onRefresh();
+            } catch (error) {
+              console.log(error);
+            }
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
   return (
     <ScrollView
       className='mt-[15px]'
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
     >
-      <View>
+      {/* <View>
         <Text className='text-center text-[13px] font-pregular text-[#757575]'>Đây là thư viện ảnh của bạn và không phải là hình ảnh dùng để chia sẻ với phòng khám. Bạn có thể chụp ảnh, lưu trữ tại đây và chia sẻ hành trình thay đổi nụ cười với bạn bè và người thân.</Text>
-      </View>
-      <View className="mt-[30px]">
+      </View> */}
+      <View className="">
         {
           customerLibraryData && customerLibraryData.length != 0
             ?
@@ -131,20 +156,34 @@ export default function MyGalleryScreen({ user }: any) {
                 {customerLibraryData.map((item: CustomerLibrary, index: number) => (
 
                   <View key={index} className="flex-1 mx-[3px]">
+                    <TouchableOpacity
+                      className='absolute z-[1] bg-[#1560A1] p-3 rounded-tl-[10px] rounded-br-[10px]'
+                      onPress={() => handleDelete(item)} // Hàm xử lý khi bấm nút
+                    >
+                      <Text className="text-white font-bold">X</Text>
+                    </TouchableOpacity>
+
+                    {/* Ảnh */}
                     <Image
                       source={{ uri: `${SERVER_URL}${item.image_path}` }}
                       className="w-full h-full rounded-[10px]"
-                      contentFit='cover'
+                      contentFit="cover"
+                      style={[{ transform: [{ scaleX: -1 }] }]}
                     />
+
+                    {/* Gradient */}
                     <LinearGradient
                       colors={["#1560A1", "#4FAA57"]}
                       start={{ x: 0, y: 0 }}
                       end={{ x: 1, y: 0 }}
                       className={`absolute bottom-0 w-full rounded-b-[10px]`}
                     >
-                      <Text className='py-[12px] text-center font-psemibold text-[14px] text-white'>Ảnh #{customerLibraryData.length - index} | {formatDate(item.ngay_chup, "full")}</Text>
+                      <Text className='py-[12px] text-center font-psemibold text-[14px] text-white'>
+                        Ảnh #{customerLibraryData.length - index} | {formatDate(item.ngay_chup, "full")}
+                      </Text>
                     </LinearGradient>
                   </View>
+
                 ))}
               </Swiper>
               :
@@ -161,12 +200,12 @@ export default function MyGalleryScreen({ user }: any) {
         <CustomButton
           title={hasImage ? 'Thay đổi ảnh nụ cười hôm nay' : 'Chụp ảnh nụ cười hôm nay'}
           handlePress={handleCamera}
-          containerStyles="mt-[45px]"
+          containerStyles="mt-[20px]"
           icon={icons.cameraGreen}
           buttonStyle="rounded-full py-[5px] px-[19px] bg-[#EDEDED] border-[#D7D7D7] border-[1px]"
           textStyles="font-pregular text-[12px] md:text-[16px]"
           iconStyle="w-[20px] h-[20px] mr-[6px]" flag={false} isLoading={undefined} colorFrom={undefined} colorTo={undefined} iconRight={undefined} notification={!hasImage} />
-        
+
       </View>
       <View className="h-[170px]"></View>
     </ScrollView>

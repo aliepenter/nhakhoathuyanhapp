@@ -78,7 +78,8 @@
     "react-native-youtube": "^2.0.2",
     "react-native-youtube-iframe": "^2.3.0",
     "socket.io-client": "^4.7.5",
-    "util": "^0.12.5"
+    "util": "^0.12.5",
+    "expo-application": "~5.9.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

@@ -102,7 +102,7 @@ export default function PreviewScreen({ picture, setPicture, status, id }: Pictu
                     <Ionicons name="arrow-back" size={24} color="white" />
                 </TouchableOpacity>
             </View>
-            <Image source={picture} className='w-full flex-1' />
+            <Image source={picture} className='w-full flex-1' style={[{ transform: [{ scaleX: -1 }] }]} />
             <View className='bg-black h-40 w-full flex flex-row justify-center items-center'>
                 {
                     !loading

@@ -169,6 +169,7 @@ export const checkDay = (schedule: string | number | Date | null) => {
     threeDaysLater.setDate(today.getDate() + 3);
 
     const isGreaterThanTodayAndWithinThreeDays = targetDate > today && targetDate <= threeDaysLater;
+
     return isGreaterThanTodayAndWithinThreeDays;
 }
 

@@ -491,6 +491,26 @@ export const updateCustomerLibrary = async (id: number | null, data: any) => {
   }
 };
 
+// DELETE CUSTOMER LIBRARY
+export const deleteCustomerLibrary = async (id: number | null) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const response = await axios.delete(`${SERVER_URI}/customer-library/${id}`);
+      return {
+        code: 200,
+        data: response.data,
+      };
+    } catch (error: any) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+};
+
 // PUT UPDATE PASSWORD
 export const changePassword = async (id: any, data: any) => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);
@@ -513,10 +533,10 @@ export const changePassword = async (id: any, data: any) => {
 // PUT UPDATE TOKEN EXPO
 export const updateExpoToken = async (id: any, data: string) => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);
+  console.log("token:", data)
   if (token) {
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
       const requestData = {
         expo_notification_token: data,
       };
@@ -529,6 +549,26 @@ export const updateExpoToken = async (id: any, data: string) => {
       };
     } catch (error) {
       console.error('Error updating expo token:', error);
+      throw error;
+    }
+  } else {
+    return null;
+  }
+};
+
+// GET VERSION
+export const getVersion = async () => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const res = await axios.get(`${SERVER_URI}/versions/latest-version`);
+      if (!res) return null;
+      return {
+        code: 200,
+        data: res.data,
+      };
+    } catch (error) {
       throw error;
     }
   } else {
@@ -557,7 +597,6 @@ export const createDatLich = async (data: any) => {
 // PUT UPDATE AVATAR
 export const updateAvatar = async (id: number | null, data: any) => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);
-
   if (token) {
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;

@@ -21,6 +21,7 @@ type HeaderSectionProps = {
   avatar: any;
   loading: boolean;
   disable: boolean;
+  disableChange: boolean;
   flag: boolean;
   user: any;
   setRefetch: (index: number) => void;
@@ -29,6 +30,7 @@ type HeaderSectionProps = {
 };
 export default function HeaderSection({
   disable,
+  disableChange,
   user,
   loading,
   avatar,
@@ -65,6 +67,7 @@ export default function HeaderSection({
           const anh: any = {
             value: `img/uploads/avatar/${fileName}?timestamp=${Date.now()}`,
           };
+
           try {
             await updateAvatar(avatar.id, anh);
             setRefetch(Date.now());
@@ -82,8 +85,9 @@ export default function HeaderSection({
           }
         } catch (error) {
           Toast.show({
-            type: "error",
-            text1: "Đã có lỗi xảy ra, xin thử lại sau",
+            type: "info",
+            text1: "Ứng dụng chưa sẵn sàng",
+            text2: "Vui lòng thay thế ảnh sau vài giây",
           });
           console.error("Error uploading file:", error);
         }
@@ -130,19 +134,15 @@ export default function HeaderSection({
               </View>
             )}
             {editAvatar ? (
-              !disable ? (
-                <TouchableOpacity disabled={flag} onPress={handleCamera}>
-                  <View className="absolute bg-black bottom-[5px] right-[5px] rounded-[50px] w-[20px] h-[20px] justify-center items-center">
-                    <Image
-                      source={icons.edit}
-                      resizeMode="contain"
-                      className="w-[60%] h-[60%]"
-                    />
-                  </View>
-                </TouchableOpacity>
-              ) : (
-                null
-              )
+              <TouchableOpacity disabled={flag == true ? true : disableChange == false ? false : true} onPress={handleCamera}>
+                <View className={`absolute bg-black bottom-[5px] right-[5px] rounded-[50px] w-[20px] h-[20px] justify-center items-center ${!disableChange ? "" : "opacity-30"}`}>
+                  <Image
+                    source={icons.edit}
+                    resizeMode="contain"
+                    className="w-[60%] h-[60%]"
+                  />
+                </View>
+              </TouchableOpacity>
             ) : null}
           </View>
           <View className="ml-4">
