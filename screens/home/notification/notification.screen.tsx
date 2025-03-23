@@ -26,7 +26,7 @@ export default function NotificationScreen() {
     const [routes] = useState([
         { key: 'first', title: 'Trò chuyện' },
         // { key: 'second', title: 'Hòm thư' },
-        { key: 'third', title: 'Khuyến mãi' }
+        { key: 'third', title: 'Tin tức' }
     ]);
 
     return (

@@ -1,6 +1,6 @@
 import { View, Text, Alert, Image, ScrollView, TouchableOpacity, Pressable, Linking } from 'react-native'
 import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react'
-import { getAllAccount, getAvatar, logout, updateMainStatus } from '@/lib/apiCall';
+import { createDeleteRequest, getAllAccount, getAvatar, logout, updateMainStatus } from '@/lib/apiCall';
 import { icons } from '@/constants';
 import CustomButton from '@/components/common/CustomButton';
 import { router } from 'expo-router';
@@ -31,11 +31,49 @@ export default function ProfileScreen() {
 
     const handleLogout = async () => {
         try {
-            await logout()
+            await logout();
         } catch (error) {
             Alert.alert("Đăng xuất thất bại", "Xin vui lòng thử lại sau");
         }
     };
+
+    const handleDelete = async () => {
+        Alert.alert(
+            "Vô hiệu hóa tài khoản",
+            "1. Sau khi chọn vô hiệu hóa, tài khoản sẽ được chuyển vào trạng thái lưu trữ trong vòng 15 ngày.\n" +
+            "2. Trong 15 ngày tiếp theo từ ngày thao tác, nếu tiếp tục đăng nhập, vô hiệu hóa sẽ bị hủy bỏ.\n" +
+            "3. Qua 15 ngày nếu không có thao tác đăng nhập, tài khoản của bạn sẽ bị vô hiệu hóa vĩnh viễn.",
+            [
+                {
+                    text: "Hủy bỏ",
+                    onPress: () => null,
+                },
+                {
+                    text: "Vô hiệu hóa",
+                    onPress: () => deleteAccount()
+                },
+            ]
+        );
+    };
+
+    const deleteAccount = async () => {
+        const account: any = {
+            user_id: user?.id,
+        };
+        try {
+            await createDeleteRequest(account).then(() => {
+                Alert.alert("Vô hiệu hóa thành công", "Bạn sẽ được chuyển đến trang đăng nhập tài khoản!", [
+                    {
+                        text: "Ok",
+                        onPress: () => handleLogout(),
+                    }
+                ]);
+            });
+        } catch (error) {
+            Alert.alert("Vô hiệu hóa thất bại", "Xin vui lòng thử lại sau");
+        }
+    };
+
     const handleRouter = (path: any) => {
         setFlag(true);
         router.push({ pathname: path });
@@ -133,6 +171,16 @@ export default function ProfileScreen() {
                                 <Image source={icons.next} resizeMode='cover' className='w-[18px] h-[18px]' />
                             </View>
                         </TouchableOpacity>
+                        <TouchableOpacity disabled={flag} onPress={() => handleDelete()} className='mt-3 flex-row flex-nowrap'>
+                            <View className='w-[15%] justify-center items-center'>
+                                <Image source={icons.del} resizeMode='cover' className='w-[18px] h-[18px]' />
+                            </View>
+                            <View className='w-[75%]'>
+                                <Text className='text-[14px] text-red-600 underline'>
+                                    Vô hiệu hóa tài khoản
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
                         {
                             account && account.length > 1
                                 ?
@@ -183,7 +231,7 @@ export default function ProfileScreen() {
                                 <Image source={icons.next} resizeMode='cover' className='w-[18px] h-[18px]' />
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity disabled={flag} onPress={() => handleRouter("(routes)/profile/aboutUs")} className='flex-row flex-nowrap mt-3'>
+                        {/* <TouchableOpacity disabled={flag} onPress={() => handleRouter("(routes)/profile/aboutUs")} className='flex-row flex-nowrap mt-3'>
                             <View className='w-[15%] justify-center items-center'>
                                 <Image source={icons.veChungToi} resizeMode='cover' className='w-[18px] h-[18px]' />
                             </View>
@@ -195,7 +243,7 @@ export default function ProfileScreen() {
                             <View className='w-[10%] justify-center items-center'>
                                 <Image source={icons.next} resizeMode='cover' className='w-[18px] h-[18px]' />
                             </View>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         <TouchableOpacity disabled={flag} onPress={() => handleRouter("(routes)/branches")} className='flex-row flex-nowrap mt-3'>
                             <View className='w-[15%] justify-center items-center'>
                                 <Image source={icons.lienHe} resizeMode='cover' className='w-[22px] h-[22px]' />
@@ -225,7 +273,7 @@ export default function ProfileScreen() {
                             </Text>
                         </Pressable>
                         <Pressable
-                            onPress={() => handlePress('https://www.youtube.com/@nhakhoa.thuyanh')}
+                            onPress={() => handlePress('https://www.youtube.com/@nhakhoa.thuyanh/shorts')}
                             disabled={flag}
                             className='items-center flex-grow w-[33.33333%]'
                         >

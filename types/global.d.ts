@@ -158,6 +158,14 @@ type Avatar = {
   value: string;
 };
 
+
+type Loving = {
+  id: number;
+  name: string;
+  image: string;
+};
+
+
 type LichHen = {
   id: number;
   ngay_kham: string;

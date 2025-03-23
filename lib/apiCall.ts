@@ -172,6 +172,24 @@ export const getBranches = async () => {
   }
 };
 
+export const getLoving = async (id: number) => {
+  try {
+    const response = await axios.get(`${SERVER_URI}/loving/${id}`);
+    return {
+      code: 200,
+      data: response.data,
+    };
+  } catch (error: any) {
+    if (error.response) {
+      return {
+        code: error.response.status,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
+
 
 export const getFaq = async () => {
   try {
@@ -471,6 +489,46 @@ export const createCustomerLibrary = async (data: any) => {
     return null;
   }
 }
+
+// POST CREATE
+export const createDeleteRequest = async (data: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const response = await axios.post(`${SERVER_URI}/delete-request`, data);
+      return {
+        code: 200,
+        data: response.data,
+      };
+    } catch (error: any) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+}
+
+// DELETE CUSTOMER LIBRARY
+export const deleteRequest = async (id: number | null) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const response = await axios.delete(`${SERVER_URI}/delete-request/${id}`);
+      return {
+        code: 200,
+        data: response.data,
+      };
+    } catch (error: any) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+};
+
 // PUT UPDATE
 export const updateCustomerLibrary = async (id: number | null, data: any) => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);

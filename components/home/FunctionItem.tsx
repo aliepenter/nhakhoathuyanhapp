@@ -49,11 +49,11 @@ export default function FunctionItemsList({ flag, setFlag, schedule }: Props) {
     return (
         <View className="flex-row flex-wrap">
             <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconChinhNha} path="/(routes)/chinh-nha" title="Chỉnh nha" />
-            <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconThanhToan} path="/(routes)/payment" title="Thanh toán" />
+            <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconThanhToan} path="/(routes)/payment" title="Dữ liệu trả góp" />
             <FunctionItem setFlag={setFlag} flag={flag} notification={checkDay(schedule)} icon={icons.iconLichHen} path="/(routes)/lich-hen" title="Lịch hẹn" />
             <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconLoiDan} path="/(routes)/loi-dan" title="Lời dặn" />
             <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconChiNhanh} path="/(routes)/branches" title="Chi nhánh" />
-            <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconHopDong} path="/(routes)/hop-dong" title="Hợp đồng" />
+            <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconHopDong} path="/(routes)/hop-dong" title="Hồ sơ" />
             <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconDatLich} path="/(routes)/dat-lich" title="Đặt lịch" />
             <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconTinTuc} path="/(routes)/kien-thuc" title="Kiến thức" />
         </View>

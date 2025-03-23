@@ -76,7 +76,6 @@ export default function HopDongScreen() {
                         <ActivityIndicator color={'#00E5E5'} />
                     </View>
             }
-
         </View>
     )
 }

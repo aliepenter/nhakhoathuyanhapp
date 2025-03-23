@@ -122,7 +122,10 @@ import switchIcon from "../assets/icons/switch.png";
 import tick from "../assets/icons/tick.png";
 import close from "../assets/icons/close.png";
 import short from "../assets/icons/short.png";
+import del from "../assets/icons/delete.png";
+
 export default {
+  del,
   short,
   close,
   tick,

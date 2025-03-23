@@ -7,13 +7,14 @@ import useUser from '@/hooks/auth/useUser'
 import CustomButton from '@/components/common/CustomButton'
 import { calculateDaysDifference, formatDate } from '@/lib/commonFunctions'
 import { router } from 'expo-router'
-import { getAvatar } from '@/lib/apiCall'
+import { getAvatar, getLoving } from '@/lib/apiCall'
 import ViewShot from 'react-native-view-shot';
 import * as Sharing from 'expo-sharing';
 
 export default function LovingScreen() {
     const { user } = useUser();
     const [avatar, setAvatar] = useState<Avatar>();
+    const [loving, setLoving] = useState<Loving>();
     const [loading, setLoading] = useState(true);
     const viewShotRef = useRef<ViewShot>(null);
 
@@ -41,6 +42,7 @@ export default function LovingScreen() {
             const id = user.avatar_id;
             fetchAvatar(id);
         }
+        fetchLoving(1);
     }, [user]);
 
 
@@ -49,6 +51,19 @@ export default function LovingScreen() {
             const res = await getAvatar(userId);
             if (res) {
                 setAvatar(res.data);
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchLoving = async (id: number) => {
+        try {
+            const res = await getLoving(id);
+            if (res) {
+                setLoving(res.data);
             }
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -103,9 +118,10 @@ export default function LovingScreen() {
                         </View>
                         <View className='w-[45%] items-center'>
                             <View className='w-[130px] h-[130px] bg-white rounded-full items-center justify-center'>
-                                <Image source={images.logojpg} contentFit='contain' transition={.5} className='rounded-full w-[126px] h-[126px]' />
+                                <Image source={{ uri: `${SERVER_URL}${loving?.image}` }}
+                                    contentFit='contain' transition={.5} className='rounded-full w-[126px] h-[126px]' />
                             </View>
-                            <Text className='text-white text-[16px] font-mbold'>Nha khoa Thùy Anh</Text>
+                            <Text className='text-white text-[16px] font-mbold'>{loving?.name}</Text>
                         </View>
                     </View>
                 </ImageBackground>

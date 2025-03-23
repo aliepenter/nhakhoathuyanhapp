@@ -54,13 +54,13 @@ const PasswordScreen = () => {
                 className={`flex flex-1 ${isIOS ? 'justify-center' : 'justify-center'}`}
             >
                 <View
-                    className={`${isIOS ? 'my-8 mb-[60px]' : 'mt-10 mb-[30px]'}`}
+                    className={`items-center ${isIOS ? 'my-8 mb-[60px]' : 'mt-10 mb-[30px]'}`}
                 >
-                    <Image source={images.logo} resizeMode='contain' className='w-full h-[104px]' />
+                    <Image source={images.logonotext} resizeMode='contain' className='rounded-full w-[104px] h-[104px]' />
                     <View
                         className={`items-center ${isIOS ? 'mt-[15px]' : 'mt-[10px]'}`}
                     >
-                        <Text className='text-[24px] text-white font-pbold' style={styles.stroke}>Nha khoa Thùy Anh</Text>
+                        <Text className='text-[24px] text-white font-pbold' style={styles.stroke}>My Braces</Text>
                     </View>
                 </View>
                 <View>

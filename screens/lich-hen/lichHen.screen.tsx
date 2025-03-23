@@ -199,7 +199,7 @@ export default function LichHenScreen() {
             <Dialog.Container visible={visible}>
                 <Dialog.Title>Thay đổi lịch hẹn sắp tới</Dialog.Title>
                 <Dialog.Description>
-                    Nha khoa Thùy Anh sẽ liên hệ lại với bạn để thực hiện thay đổi lịch hẹn.
+                    Chúng tôi sẽ liên hệ lại với bạn để thực hiện thay đổi lịch hẹn.
                 </Dialog.Description>
                 <Dialog.Button label="Hủy bỏ" onPress={handleCancel} />
                 <Dialog.Button label="Đồng ý" onPress={handleChangeDayAccept} />

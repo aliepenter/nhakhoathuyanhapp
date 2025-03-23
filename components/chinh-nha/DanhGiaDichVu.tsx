@@ -12,7 +12,7 @@ export default function DanhGiaDichVu() {
                 Gửi tin nhắn tới phòng khám
             </Text>
             <Text className='text-[13px] text-[#757575] text-center mb-[13px]'>
-                Nếu bạn có bất kì vấn đề gì liên quan đến ca chỉnh nha này cũng như nếu bạn có những đánh giá tới phòng khám, đừng ngần ngại gửi tin nhắn cho chúng tôi. Đó sẽ là động lực quý giá giúp  Nha khoa Thùy Anh cải thiện và phát triển hơn.
+                Nếu bạn có bất kì vấn đề gì liên quan đến ca chỉnh nha này cũng như nếu bạn có những đánh giá tới phòng khám, đừng ngần ngại gửi tin nhắn cho chúng tôi. Đó sẽ là động lực quý giá giúp chúng tôi cải thiện và phát triển hơn.
             </Text>
             <View className='bg-white rounded-2xl flex-row border-[1px] border-[#E2E2E2]' style={styles.boxShadow}>
                 <TextInput

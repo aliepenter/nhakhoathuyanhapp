@@ -160,7 +160,7 @@ export default function TroChuyenScreen() {
                                             </View>
                                             <View className={`flex-row items-center justify-center flex-wrap ${item.seen === 1 ? 'opacity-50' : ''}`}>
                                                 <View className='w-[85%]'>
-                                                    <Text className='font-pregular text-[12px]'>{handleTruncate('Cảm ơn bạn đã sử dụng ứng dụng Nha khoa Thùy Anh. Chúng tôi sẽ giải đáp thắc mắc của bạn trong thời gian sớm nhất.')}</Text>
+                                                    <Text className='font-pregular text-[12px]'>{handleTruncate('Cảm ơn bạn đã sử dụng ứng dụng My Braces. Chúng tôi sẽ giải đáp thắc mắc của bạn trong thời gian sớm nhất.')}</Text>
                                                 </View>
                                                 <View className='w-[15%] items-center'>
                                                     <Image source={item.seen === 1 ? icons.circle : icons.circleActive} resizeMode='cover' className={` w-[13px] h-[13px] right-[-6.5px]`} />

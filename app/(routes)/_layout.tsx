@@ -43,7 +43,7 @@ const PageLayout = () => {
                     name="payment/index"
                     options={{
                         header: (props) => (
-                            <CustomHeader {...props} customStyle="bg-white" title="Thanh toán" />
+                            <CustomHeader {...props} customStyle="bg-white" title="Dữ liệu trả góp" />
                         ),
                     }}
                 />
@@ -75,7 +75,7 @@ const PageLayout = () => {
                     name="hop-dong/index"
                     options={{
                         header: (props) => (
-                            <CustomHeader {...props} customStyle="bg-white" title="Hợp đồng" />
+                            <CustomHeader {...props} customStyle="bg-white" title="Hồ sơ" />
                         ),
                     }}
                 />

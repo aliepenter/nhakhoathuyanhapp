@@ -209,7 +209,7 @@ export default function ChatScreen({ headerTitle, cuoc_tro_chuyen_id, disable }:
                                 ) : (
                                     <View key={index} className={`flex-row ${isLastItem ? 'mb-8' : 'mb-4'}`}>
                                         <View className='w-[13%] justify-end'>
-                                            <Image source={images.logo} contentFit='contain' className='rounded-full w-[40px] h-[40px]' />
+                                            <Image source={images.logonotext} contentFit='contain' className='rounded-full w-[40px] h-[40px]' />
                                         </View>
                                         <View className='max-w-[80%]'>
                                             {
@@ -243,7 +243,7 @@ export default function ChatScreen({ headerTitle, cuoc_tro_chuyen_id, disable }:
                         ) : (
                             <View className='justify-center items-center h-96'>
                                 <Text className='text-center font-pregular'>
-                                    Cảm ơn bạn đã sử dụng ứng dụng Nha khoa Thùy Anh. Chúng tôi sẽ giải đáp thắc mắc của bạn trong thời gian sớm nhất.
+                                    Cảm ơn bạn đã sử dụng ứng dụng My Braces. Chúng tôi sẽ giải đáp thắc mắc của bạn trong thời gian sớm nhất.
                                 </Text>
                             </View>
                         )}

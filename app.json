@@ -2,27 +2,34 @@
   "expo": {
     "name": "My Braces",
     "slug": "nha-khoa-thuy-anh",
-    "version": "1.0.3",
+    "version": "1.0.5",
     "orientation": "portrait",
-    "icon": "./assets/images/logoicon.png",
+    "icon": "./assets/images/logonotext2.jpg",
     "scheme": "nha-khoa-thuy-anh",
     "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/images/splashscreen.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FFFFFF"
+    },
     "ios": {
+      "useNextNotificationsApi": true,
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.nhakhoathuyanh",
       "infoPlist": {
-        "NSCameraUsageDescription": "This app needs access to your camera to take photos.",
-        "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to choose photos.",
-        "NSPhotoLibraryAddUsageDescription": "This app needs access to your photo library to save photos.",
-        "NSLocationWhenInUseUsageDescription": "This app needs access to your location for better services.",
+        "NSCameraUsageDescription": "The app needs access to your camera to allow you to take pictures for your profile and upload them to your account. For example, you can take a profile picture that will be displayed on your personal page.",
+        "NSPhotoLibraryUsageDescription": "The app needs access to your photo library to allow you to select pictures and upload them to your account. For example, you can choose a photo from your library to update your profile picture.",
+        "NSPhotoLibraryAddUsageDescription": "The app needs access to your photo library to save photos you've created. For example, it will save photos you've taken using the camera to your library for later use.",
         "NSAppTransportSecurity": {
           "NSAllowsArbitraryLoads": true
-        }
-      }
+        },
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "bundleIdentifier": "com.nhakhoathuyanh.mybraces"
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/logoicon.png",
+        "foregroundImage": "./assets/images/logonotext.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.anonymous.nhakhoathuyanh",
@@ -30,7 +37,9 @@
         "android.permission.CAMERA",
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.WRITE_EXTERNAL_STORAGE",
-        "android.permission.INTERNET"
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_MEDIA_LOCATION",
+        "android.permission.RECORD_AUDIO"
       ]
     },
     "web": {
@@ -44,7 +53,7 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/images/logoicon.png",
+          "icon": "./assets/images/logonotext2.jpg",
           "color": "#ffffff",
           "defaultChannel": "default"
         }
@@ -52,15 +61,15 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+          "cameraPermission": "$(PRODUCT_NAME) needs access to your camera to allow you to take pictures for your profile and upload them to your account. For example, you can take a profile picture that will be displayed on your personal page.",
           "recordAudioAndroid": false
         }
       ],
       [
         "expo-media-library",
         {
-          "photosPermission": "Allow $(PRODUCT_NAME) to access your photos.",
-          "savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos.",
+          "photosPermission": "$(PRODUCT_NAME) needs access to your photo library to allow you to select pictures and upload them to your account. For example, you can choose a photo from your library to update your profile picture.",
+          "savePhotosPermission": "$(PRODUCT_NAME) needs access to your photo library to save photos you've created. For example, it will save photos you've taken using the camera to your library for later use.",
           "isAccessMediaLocationEnabled": true
         }
       ],

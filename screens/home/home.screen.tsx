@@ -1,4 +1,5 @@
 import {
+  Alert,
   FlatList,
   Linking,
   Platform,
@@ -7,7 +8,7 @@ import {
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { getBanners, getCustomerLibrary, getLichHenByUserId, getPosts, getTrending, updateExpoToken } from "@/lib/apiCall";
+import { deleteRequest, getBanners, getCustomerLibrary, getLichHenByUserId, getPosts, getTrending, updateExpoToken } from "@/lib/apiCall";
 import useUser from "@/hooks/auth/useUser";
 import FunctionItemsList from "@/components/home/FunctionItem";
 import RenderVideo from "@/components/home/RenderVideo";
@@ -64,6 +65,7 @@ const HomeScreen = () => {
     fetchBannerData();
     fetchNews();
     checkVersion();
+    handleDeleteRequest();
     if (user && expoPushToken) {
       handleUpdateExpoToken(user.id, expoPushToken.data);
     }
@@ -167,6 +169,16 @@ const HomeScreen = () => {
     }
   }
 
+  const handleDeleteRequest = async () => {
+    try {
+      if (user && user.id) {
+        await deleteRequest(user.id);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <View className="bg-white">
       <ScrollView
@@ -175,7 +187,7 @@ const HomeScreen = () => {
         {
           version != ''
             ?
-            <CardNotification flag={false} setFlag={setFlag} version={version?version:""} />
+            <CardNotification flag={false} setFlag={setFlag} version={version ? version : ""} />
             :
             null
         }
