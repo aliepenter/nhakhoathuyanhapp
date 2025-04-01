@@ -185,11 +185,14 @@ export default function TroChuyenScreen() {
                 <Image source={icons.plus2} className='h-7 w-7' />
             </TouchableOpacity>
             <Dialog.Container visible={visible}>
-                <Dialog.Title>Tạo mới cuộc trò chuyện</Dialog.Title>
+                <Dialog.Title>
+                    <Text className='text-black font-bold'>Tạo mới cuộc trò chuyện</Text>
+                </Dialog.Title>
                 <Dialog.Input
                     value={newTitle}
                     onChangeText={setNewTitle}
                     placeholder="Chủ đề"
+                    className='text-black font-pregular'
                 />
                 <Dialog.Button disabled={flag} label="Tạo mới" onPress={onCreate} />
                 <Dialog.Button disabled={flag} label="Hủy bỏ" onPress={handleCancel} />

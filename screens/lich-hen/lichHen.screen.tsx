@@ -151,7 +151,7 @@ export default function LichHenScreen() {
     const handleDayPress = (day: any) => {
         setFlag(true);
         const selectedDate = day.dateString;
-        
+
         const matchedServices = lichHenData?.filter(item => {
             const ngayKhamDate = formatDate(item.ngay_kham, 'isoDate');
             return ngayKhamDate === selectedDate;
@@ -168,7 +168,7 @@ export default function LichHenScreen() {
     };
     const renderServicesText = (services: any[]) => {
         if (services.length === 0) return '';
-        if (services.length === 1) return `Bạn có lịch ${services[0]} ngày ${selectedDay}`;
+        if (services.length === 1) return `Bạn có lịch ${services[0]} vào ngày ${selectedDay}`;
         return `Bạn có lịch ${services.join(', ')} vào ngày ${selectedDay}`;
     };
 
@@ -197,22 +197,30 @@ export default function LichHenScreen() {
     return (
         <View>
             <Dialog.Container visible={visible}>
-                <Dialog.Title>Thay đổi lịch hẹn sắp tới</Dialog.Title>
+                <Dialog.Title>
+                    <Text className='text-black font-bold'>Thay đổi lịch hẹn sắp tới</Text>
+                </Dialog.Title>
                 <Dialog.Description>
-                    Chúng tôi sẽ liên hệ lại với bạn để thực hiện thay đổi lịch hẹn.
+                    <Text className='text-gray-600'>
+                        Chúng tôi sẽ liên hệ lại với bạn để thực hiện thay đổi lịch hẹn.
+                    </Text>
                 </Dialog.Description>
                 <Dialog.Button label="Hủy bỏ" onPress={handleCancel} />
                 <Dialog.Button label="Đồng ý" onPress={handleChangeDayAccept} />
             </Dialog.Container>
             <Dialog.Container visible={visibleLichHen}>
-                <Dialog.Title>Lịch hẹn sắp tới</Dialog.Title>
+                <Dialog.Title>
+                    <Text className='text-black font-bold'>Thay đổi lịch hẹn sắp tới</Text>
+                </Dialog.Title>
                 <Dialog.Description>
-                    {renderServicesText(services)}
+                    <Text className='text-gray-600'>
+                        {renderServicesText(services)}
+                    </Text>
                 </Dialog.Description>
                 <Dialog.Button label="Thay đổi lịch hẹn" onPress={onChangeDay} />
                 <Dialog.Button label="Đồng ý" onPress={handleCancel} />
             </Dialog.Container>
-            <View className={`${Platform.OS === 'ios' ? 'h-[48%]' : 'h-[51%]'} bg-white`}>
+            <View className={`${Platform.OS === 'ios' ? 'h-[49%]' : 'h-[52%]'} bg-white`}>
                 <View className='h-[88%] bg-white'>
                     {
                         !loading
@@ -246,7 +254,7 @@ export default function LichHenScreen() {
                     }
                 </View> */}
             </View>
-            <ScrollView ref={scrollViewRef} className={`${Platform.OS === 'ios' ? 'h-[52%]' : 'h-[49%]'} px-[11px]`}>
+            <ScrollView ref={scrollViewRef} className={`${Platform.OS === 'ios' ? 'h-[51%]' : 'h-[48%]'} px-[11px]`}>
                 {!loading
                     ?
                     chinhNha && chinhNha.length != 0
