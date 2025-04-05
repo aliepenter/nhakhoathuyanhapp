@@ -63,6 +63,8 @@ export default function QuaTrinhScreen({ user }: any) {
         anh_9: item.anh_9,
         anh_10: item.anh_10,
         anh_11: item.anh_11,
+        anh_12: item.anh_12,
+        anh_13: item.anh_13,
       },
     });
     setTimeout(() => {

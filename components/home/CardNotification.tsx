@@ -1,4 +1,4 @@
-import { View, Text, Image, ActivityIndicator, Pressable, StyleSheet, Linking } from 'react-native';
+import { View, Text, Image, ActivityIndicator, Pressable, StyleSheet, Linking, Platform } from 'react-native';
 import React from 'react';
 import * as Haptics from 'expo-haptics';
 import CustomButton from '../common/CustomButton';
@@ -13,12 +13,19 @@ export default function CardNotification({ flag, setFlag, version }: CardProps) 
     const onPress = () => {
         setFlag(true);
         Haptics.selectionAsync();
-        Linking.openURL('market://details?id=com.anonymous.nhakhoathuyanh')
+
+        const url =
+            Platform.OS === 'android'
+                ? 'market://details?id=com.anonymous.nhakhoathuyanh' // Link cho Android
+                : 'https://apps.apple.com/us/app/my-braces-ni%E1%BB%81ng-r%C4%83ng-th%C3%B9y-anh/id6743517132'; // Link cho iOS
+
+        Linking.openURL(url)
             .catch(err => console.error('Failed to open app:', err));
+
         setTimeout(() => {
-            setFlag(false)
+            setFlag(false);
         }, 1000);
-    }
+    };
     return (
         <View className='flex-row justify-between mx-3 p-2 mt-[10px] bg-[#56bae1] rounded-[10px]'>
             <View className='w-[50%] justify-center'>

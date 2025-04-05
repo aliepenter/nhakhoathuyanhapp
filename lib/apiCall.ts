@@ -26,6 +26,42 @@ export const getVideos = async () => {
   }
 };
 
+export const getVideosByThuThuat = async (thu_thuat_id: any) => {
+  try {
+    const response = await axios.get(`${SERVER_URI}/videos/by-thu-thuat/${thu_thuat_id}`);
+    return {
+      code: 200,
+      data: response.data,
+    };
+  } catch (error: any) {
+    if (error.response) {
+      return {
+        code: error.response.status,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
+
+export const getBaiVietByThuThuat = async (thu_thuat_id: any) => {
+  try {
+    const response = await axios.get(`${SERVER_URI}/posts/by-thu-thuat/${thu_thuat_id}`);
+    return {
+      code: 200,
+      data: response.data,
+    };
+  } catch (error: any) {
+    if (error.response) {
+      return {
+        code: error.response.status,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
+
 export const getTrending = async () => {
   try {
     const response = await axios.get(`${SERVER_URI}/videos/only-trending`);
@@ -847,3 +883,15 @@ export const getAvatar = async (userId: any) => {
     return null;
   }
 }
+
+export const getChinhNhaThuThuatByChinhNhaId = async (chinh_nha_id: any) => {
+  try {
+    const response = await axios.get(`${SERVER_URI}/chinh-nha-thu-thuat/${chinh_nha_id}`);
+    return {
+      code: 200,
+      data: response.data,
+    };
+  } catch (error: any) {
+    throw error;
+  }
+};

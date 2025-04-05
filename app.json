@@ -2,7 +2,7 @@
   "expo": {
     "name": "My Braces",
     "slug": "nha-khoa-thuy-anh",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "orientation": "portrait",
     "icon": "./assets/images/logonotext2.jpg",
     "scheme": "nha-khoa-thuy-anh",
@@ -19,6 +19,7 @@
         "NSCameraUsageDescription": "The app needs access to your camera to allow you to take pictures for your profile and upload them to your account. For example, you can take a profile picture that will be displayed on your personal page.",
         "NSPhotoLibraryUsageDescription": "The app needs access to your photo library to allow you to select pictures and upload them to your account. For example, you can choose a photo from your library to update your profile picture.",
         "NSPhotoLibraryAddUsageDescription": "The app needs access to your photo library to save photos you've created. For example, it will save photos you've taken using the camera to your library for later use.",
+        "NSLocationWhenInUseUsageDescription": "This app may access location metadata from your photos or videos to organize content or improve your experience.",
         "NSAppTransportSecurity": {
           "NSAllowsArbitraryLoads": true
         },

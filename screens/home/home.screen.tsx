@@ -50,9 +50,7 @@ const HomeScreen = () => {
         console.log("version:", version);  // Mã build (ví dụ: "123")
         console.log("build:", build);  //
         if (version != versionData.data.number) {
-          if (Platform.OS === "android") {
-            setVersion(versionData.data.number);
-          }
+          setVersion(versionData.data.number);
         }
       }
     } catch (error) {

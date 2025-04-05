@@ -21,10 +21,12 @@ export default function QuaTrinhDetailScreen() {
         anh_9,
         anh_10,
         anh_11,
+        anh_12,
+        anh_13,
         headerTitle,
         title
     }: any = route.params;
-    const imageUrls = [anh_1, anh_9, anh_10, anh_2, anh_3, anh_4, anh_5, anh_7, anh_6, anh_11, anh_8];
+    const imageUrls = [anh_1, anh_9, anh_10, anh_2, anh_3, anh_4, anh_5, anh_7, anh_6, anh_11, anh_8, anh_12, anh_13];
 
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [modalVisible, setModalVisible] = useState(false);
@@ -33,7 +35,7 @@ export default function QuaTrinhDetailScreen() {
     const [imageWidth, setImageWidth] = useState(500);
     const [isIn, setIsIn] = useState(true);
     const [loading, setLoading] = useState(true);
-
+    const [imageError, setImageError] = useState(false); // State để theo dõi lỗi ảnh
     const onImageLoad = (event: any) => {
         const { height, width } = event.nativeEvent.source;
         const ratio = (screenWidth - 40) / width
@@ -60,21 +62,26 @@ export default function QuaTrinhDetailScreen() {
     };
 
     const changeImage = (index: number) => {
+        setImageError(false);
         setLoading(true);
         setCurrentImageIndex(index);
+        if (!imageUrls[index]) {
+            setImageError(true);
+            setLoading(false);
+        }
     };
     const iconList = [
         icons.truoc, icons.truocHa, icons.truocDuoiLen,
         icons.trai, icons.phai, icons.matTren,
         icons.matDuoi, icons.truocKhongCuoi, icons.truocCuoi,
-        icons.cheoCuoi, icons.nghieng
+        icons.cheoCuoi, icons.nghieng, icons.panorama, icons.cephalo
     ];
 
     const activeIconList = [
         icons.truocActive, icons.truocHaActive, icons.truocDuoiLenActive,
         icons.traiActive, icons.phaiActive, icons.matTrenActive,
         icons.matDuoiActive, icons.truocKhongCuoiActive, icons.truocCuoiActive,
-        icons.cheoCuoiActive, icons.nghiengActive
+        icons.cheoCuoiActive, icons.nghiengActive, icons.panoramaActive, icons.cephaloActive
     ];
     return (
         <View className='bg-white h-full'>
@@ -82,7 +89,7 @@ export default function QuaTrinhDetailScreen() {
             <View className='mt-[20px] px-[20px]'>
                 <Text className='font-pbold text-[16px] text-center text-[#525252]'>{title}</Text>
                 <TouchableOpacity
-                    className={`${Platform.OS === 'ios' ? !loading ? '' : 'opacity-0' : !loading ? '' : 'hidden'} md:items-center`}
+                    className={`${Platform.OS === 'ios' ? !loading && !imageError ? '' : 'opacity-0' : !loading && !imageError ? '' : 'hidden'} md:items-center`}
                     activeOpacity={0.9}
                     onPress={() => setModalVisible(true)}
                 >
@@ -92,8 +99,20 @@ export default function QuaTrinhDetailScreen() {
                         className={`rounded-[10px] bg-[#F1F1F1] ${isIn ? 'mt-36' : 'mt-10'}`}
                         resizeMode='contain'
                         onLoad={onImageLoad}
+                        onError={() => {
+                            setImageError(true);
+                            setLoading(false);
+                        }}
                     />
                 </TouchableOpacity>
+                {
+                    imageError && (
+                        <View className='absolute left-[40%] h-96 justify-center items-center'>
+                            <Text className='font-bold'>Không thể tải ảnh</Text>
+                        </View>
+                    )
+
+                }
                 <View className={`${!loading ? 'hidden' : ''} absolute left-[50%] h-96 justify-center`}>
                     <ActivityIndicator color={'#00E5E5'} />
                 </View>

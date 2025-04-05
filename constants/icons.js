@@ -123,8 +123,16 @@ import tick from "../assets/icons/tick.png";
 import close from "../assets/icons/close.png";
 import short from "../assets/icons/short.png";
 import del from "../assets/icons/delete.png";
+import panorama from "../assets/icons/panorama.png";
+import panoramaActive from "../assets/icons/panorama-active.png";
+import cephalo from "../assets/icons/cephalo.png";
+import cephaloActive from "../assets/icons/cephalo-active.png";
 
 export default {
+  panorama,
+  panoramaActive,
+  cephalo,
+  cephaloActive,
   del,
   short,
   close,

@@ -154,12 +154,14 @@ export default function HeaderSection({
                 {user?.ho_va_ten}
               </Text>
             </View>
-            <Text className="text-white text-[14px] md:text-[18px] font-pbold my-1">
-              {user?.so_dien_thoai}
-            </Text>
-            <Text className="text-white text-[14px] md:text-[18px] font-semibold">
-              {user?.dia_chi}
-            </Text>
+            <View className="flex-col w-[80%]">
+              <Text className="text-white text-[14px] md:text-[18px] font-pbold my-1">
+                {user?.so_dien_thoai}
+              </Text>
+              <Text className="text-white text-[14px] md:text-[18px] font-semibold">
+                {user?.dia_chi}
+              </Text>
+            </View>
           </View>
         </View>
         {showNotification ? (

@@ -103,7 +103,7 @@ export default function LoiDanScreen() {
             )
             :
             <View className='justify-center items-center h-96'>
-              <Text>Không có dữ liệu trò chuyện</Text>
+              <Text>Không có lời dặn từ bác sĩ</Text>
             </View>
           :
           <View className="h-64 justify-center">
