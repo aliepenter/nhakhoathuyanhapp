@@ -4,27 +4,25 @@ import { CameraView } from 'expo-camera';
 import { Image } from 'expo-image';
 import { icons, images } from '@/constants';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from 'expo-router';
 import PreviewScreen from './preview.screen';
 import * as ImagePicker from 'expo-image-picker';
-import { useRoute } from '@react-navigation/native';
-
+import { useLocalSearchParams } from 'expo-router';
+import { useRouter } from 'expo-router';
 type CameraScreenProps = {};
 
 export default function CameraScreen(props: CameraScreenProps) {
     const cameraRef = React.useRef<CameraView>(null);
     const [picture, setPicture] = React.useState<string>("");
     const [facing, setFacing] = useState<'front' | 'back'>('front');
-    const route = useRoute();
-    const { statusImage, id }: any = route.params;
+    const { statusImage, id }: any = useLocalSearchParams();
 
-    function toggleCameraFacing() {
-        setFacing(current => (current === 'back' ? 'front' : 'back'));
-    }
+    // function toggleCameraFacing() {
+    //     setFacing(current => (current === 'back' ? 'front' : 'back'));
+    // }
 
-    const navigation = useNavigation();
+    const router = useRouter();
     const handleBack = () => {
-        navigation.goBack();
+        router.back();
     };
 
     const handleGallery = async () => {
@@ -73,12 +71,6 @@ export default function CameraScreen(props: CameraScreenProps) {
                     className='flex-1'
                     facing={facing}
                 >
-                    {/* Khung người */}
-                    {/* <Image
-                        source={images.body} // Thay bằng đường dẫn ảnh khung người của bạn
-                        className='absolute top-0 left-16 right-0 bottom-28 w-[70%]'
-                        contentFit='contain' 
-                    /> */}
                 </CameraView>
             </View>
 

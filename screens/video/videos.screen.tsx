@@ -45,10 +45,16 @@ export default function VideosScreen() {
             {/* <SearchInput placeholder="Tìm kiếm video" /> */}
             <FlatList
                 data={[{ key: 'videosList' }]}
-                renderItem={({ item }) => {
+                renderItem={({ item, index }) => {
+                    const isLast = index === 0; // hoặc index === data.length - 1
+
                     switch (item.key) {
                         case 'videosList':
-                            return <VideoItem loading={loading} post={videos} flag={flag} setFlag={setFlag} />
+                            return (
+                                <View className={isLast ? 'mb-28' : ''}>
+                                    <VideoItem loading={loading} post={videos} flag={flag} setFlag={setFlag} />
+                                </View>
+                            );
                         default:
                             return null;
                     }
@@ -57,6 +63,7 @@ export default function VideosScreen() {
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 className="bg-white h-full"
             />
+
         </View>
 
     )

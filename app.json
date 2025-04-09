@@ -2,18 +2,12 @@
   "expo": {
     "name": "My Braces",
     "slug": "nha-khoa-thuy-anh",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "orientation": "portrait",
-    "icon": "./assets/images/logonotext2.jpg",
+    "icon": "./assets/images/logonotext2.png",
     "scheme": "nha-khoa-thuy-anh",
     "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./assets/images/splashscreen.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#FFFFFF"
-    },
     "ios": {
-      "useNextNotificationsApi": true,
       "supportsTablet": true,
       "infoPlist": {
         "NSCameraUsageDescription": "The app needs access to your camera to allow you to take pictures for your profile and upload them to your account. For example, you can take a profile picture that will be displayed on your personal page.",
@@ -52,9 +46,21 @@
       "expo-router",
       "expo-secure-store",
       [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#ffffff",
+          "image": "./assets/images/splashscreen.png",
+          "dark": {
+            "image": "./assets/images/splashscreen.png",
+            "backgroundColor": "#000000"
+          },
+          "imageWidth": 200
+        }
+      ],
+      [
         "expo-notifications",
         {
-          "icon": "./assets/images/logonotext2.jpg",
+          "icon": "./assets/images/logonotext2.png",
           "color": "#ffffff",
           "defaultChannel": "default"
         }

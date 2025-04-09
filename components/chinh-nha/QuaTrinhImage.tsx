@@ -9,7 +9,48 @@ import { Image } from 'expo-image';
 export default function QuaTrinhImage({ anh }: any) {
     const gallery = [
         {
+            url: `${SERVER_URL}${anh?.anh_7}`,
+            props: {
+            }
+        },
+        {
+            url: `${SERVER_URL}${anh?.anh_6}`,
+            props: {
+            }
+        },
+        {
+            url: `${SERVER_URL}${anh?.anh_11}`,
+            props: {
+            }
+        },
+        {
+            url: `${SERVER_URL}${anh?.anh_8}`,
+            props: {
+            }
+        },
+        {
+            url: `${SERVER_URL}${anh?.anh_13}`,
+            props: {
+            }
+        },
+        {
+            url: `${SERVER_URL}${anh?.anh_12}`,
+            props: {
+            }
+        },
+
+        {
             url: `${SERVER_URL}${anh?.anh_1}`,
+            props: {
+            }
+        },
+        {
+            url: `${SERVER_URL}${anh?.anh_9}`,
+            props: {
+            }
+        },
+        {
+            url: `${SERVER_URL}${anh?.anh_10}`,
             props: {
             }
         },
@@ -33,21 +74,7 @@ export default function QuaTrinhImage({ anh }: any) {
             props: {
             }
         },
-        {
-            url: `${SERVER_URL}${anh?.anh_6}`,
-            props: {
-            }
-        },
-        {
-            url: `${SERVER_URL}${anh?.anh_7}`,
-            props: {
-            }
-        },
-        {
-            url: `${SERVER_URL}${anh?.anh_8}`,
-            props: {
-            }
-        },
+
     ]
     return (
         <View className='mt-[13px] border-b-[2px] pb-[11px] border-b-[#E9E9E9] md:pb-[20px]'>
@@ -56,14 +83,19 @@ export default function QuaTrinhImage({ anh }: any) {
                 anh
                     ?
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                        <ImageItem video_thumbnail={anh.anh_1} gallery={gallery} index={0} />
-                        <ImageItem video_thumbnail={anh.anh_2} gallery={gallery} index={1} />
-                        <ImageItem video_thumbnail={anh.anh_3} gallery={gallery} index={2} />
-                        <ImageItem video_thumbnail={anh.anh_4} gallery={gallery} index={3} />
-                        <ImageItem video_thumbnail={anh.anh_5} gallery={gallery} index={4} />
-                        <ImageItem video_thumbnail={anh.anh_6} gallery={gallery} index={7} />
-                        <ImageItem video_thumbnail={anh.anh_7} gallery={gallery} index={6} />
-                        <ImageItem video_thumbnail={anh.anh_8} gallery={gallery} index={7} />
+                        <ImageItem video_thumbnail={anh.anh_7} gallery={gallery} index={0} />
+                        <ImageItem video_thumbnail={anh.anh_6} gallery={gallery} index={1} />
+                        <ImageItem video_thumbnail={anh.anh_11} gallery={gallery} index={2} />
+                        <ImageItem video_thumbnail={anh.anh_8} gallery={gallery} index={3} />
+                        <ImageItem video_thumbnail={anh.anh_13} gallery={gallery} index={4} />
+                        <ImageItem video_thumbnail={anh.anh_12} gallery={gallery} index={5} />
+                        <ImageItem video_thumbnail={anh.anh_1} gallery={gallery} index={6} />
+                        <ImageItem video_thumbnail={anh.anh_9} gallery={gallery} index={7} />
+                        <ImageItem video_thumbnail={anh.anh_10} gallery={gallery} index={8} />
+                        <ImageItem video_thumbnail={anh.anh_2} gallery={gallery} index={9} />
+                        <ImageItem video_thumbnail={anh.anh_3} gallery={gallery} index={10} />
+                        <ImageItem video_thumbnail={anh.anh_4} gallery={gallery} index={11} />
+                        <ImageItem video_thumbnail={anh.anh_5} gallery={gallery} index={12} />
                     </ScrollView>
                     :
                     <View className={`flex justify-center items-center`}>
@@ -77,12 +109,23 @@ export default function QuaTrinhImage({ anh }: any) {
 
 const ImageItem = ({ video_thumbnail, gallery, index }: any) => {
     const [modalVisible, setModalVisible] = useState(false);
+
+    // Tính toán kích thước dựa trên tỷ lệ 16:9
+    const isWideImage = index >= 5 && index <= 12;
+    const width = isWideImage ? 320 : 180; // Width cho ảnh 16:9 hoặc mặc định
+    const height = isWideImage ? (width * 9) / 16 : 180; // Height dựa trên tỷ lệ 16:9 hoặc mặc định
+
     return (
         <View className={`flex-1 justify-center items-start my-2`}>
-            <TouchableOpacity activeOpacity={0.9} onPress={() => setModalVisible(true)} className={`rounded-[20px] h-[180px] w-[180px] md:h-[380px] md:w-[380px] ${index === 8 ? '' : 'mr-2'}`}>
+            <TouchableOpacity
+                activeOpacity={0.9}
+                onPress={() => setModalVisible(true)}
+                className={`rounded-[20px] ${index === 12 ? '' : 'mr-2'}`}
+                style={{ width, height }} // Áp dụng width và height động
+            >
                 <Image
                     source={video_thumbnail ? { uri: `${SERVER_URL}${video_thumbnail}` } : images.bannerDefault}
-                    className={`h-full w-full overflow-hidden rounded-[20px]`}
+                    className={`h-full w-full bg-gray-100 overflow-hidden rounded-[20px]`}
                     contentFit="contain"
                     transition={500}
                 />
@@ -93,19 +136,32 @@ const ImageItem = ({ video_thumbnail, gallery, index }: any) => {
                 onRequestClose={() => setModalVisible(false)}
             >
                 <View className='bg-white w-full h-full'>
-                    <ImageViewer enablePreload={true} flipThreshold={200} pageAnimateTime={200} enableSwipeDown={true} swipeDownThreshold={100} onCancel={() => setModalVisible(false)} imageUrls={gallery} index={index} />
+                    <ImageViewer
+                        enablePreload={true}
+                        flipThreshold={200}
+                        pageAnimateTime={200}
+                        enableSwipeDown={true}
+                        swipeDownThreshold={100}
+                        onCancel={() => setModalVisible(false)}
+                        imageUrls={gallery}
+                        index={index}
+                    />
                     <TouchableOpacity
                         onPress={() => setModalVisible(false)}
                         className='absolute bottom-10 left-5 bg-white rounded-full'
                     >
                         <View className='flex-row justify-center items-center gap-2 px-5 py-2'>
-                            <Image transition={500} source={icons.backArrow} contentFit='contain' className='w-[20px] h-[11px]' />
+                            <Image
+                                transition={500}
+                                source={icons.backArrow}
+                                contentFit='contain'
+                                className='w-[20px] h-[11px]'
+                            />
                             <Text className=' text-[14px] text-[#747474]'>Quay lại</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
             </Modal>
         </View>
-
     );
 };

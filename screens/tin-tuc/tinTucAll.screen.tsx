@@ -45,10 +45,16 @@ export default function TinTucAllScreen() {
             {/* <SearchInput placeholder="Tìm kiếm tin tức" /> */}
             <FlatList
                 data={[{ key: 'postList' }]}
-                renderItem={({ item }) => {
+                renderItem={({ item, index }) => {
+                    const isLast = index === 0; // hoặc index === data.length - 1 nếu danh sách dài hơn
+
                     switch (item.key) {
                         case 'postList':
-                            return <PostItem flag={flag} setFlag={setFlag} loading={loading} post={post} />
+                            return (
+                                <View className={isLast ? 'mb-28' : ''}>
+                                    <PostItem flag={flag} setFlag={setFlag} loading={loading} post={post} />
+                                </View>
+                            );
                         default:
                             return null;
                     }
@@ -57,6 +63,7 @@ export default function TinTucAllScreen() {
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 className="bg-white h-full"
             />
+
         </View>
 
     )

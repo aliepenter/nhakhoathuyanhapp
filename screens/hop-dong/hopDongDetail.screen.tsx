@@ -1,11 +1,10 @@
 import { View, Text, Alert, Button } from "react-native";
 import React, { useEffect, useState } from "react";
 import CustomHeader from "@/components/common/CustomHeader";
-import { useRoute } from "@react-navigation/native";
 import FileViewer from "react-native-file-viewer";
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
-
+import { useLocalSearchParams } from "expo-router";
 export default function HopDongDetailScreen() {
   // const [fileUri, setFileUri] = useState('');
 
@@ -60,8 +59,7 @@ export default function HopDongDetailScreen() {
   };
 
 
-  const route = useRoute();
-  const { headerTitle }: any = route.params;
+  const { headerTitle }: any = useLocalSearchParams();
   return (
     <>
       <CustomHeader

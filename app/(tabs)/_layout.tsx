@@ -79,6 +79,7 @@ const TabsLayout = () => {
                                 value: avatar?.value,
                             }} loading={loading} disable={disable} customBgColor="bg-white" disableChange={false} />
                         ),
+                        animation: 'fade',
                     }} name="index" />
                     <Tabs.Screen
                         name="image-gallery/index"
@@ -86,6 +87,8 @@ const TabsLayout = () => {
                             header: (props) => (
                                 <CustomHeader {...props} customStyle="bg-white" title="Thư viện nụ cười" disableBackButton={true} />
                             ),
+                            animation: 'fade',
+
                         }}
                     />
                     <Tabs.Screen
@@ -94,6 +97,8 @@ const TabsLayout = () => {
                             header: (props) => (
                                 <CustomHeader {...props} customStyle="bg-[#F2F2F2]" title="Thông báo" disableBackButton={true} />
                             ),
+                            animation: 'fade',
+
                         }}
                     />
                     <Tabs.Screen options={{
@@ -103,6 +108,8 @@ const TabsLayout = () => {
                                 value: avatar?.value,
                             }} loading={loading} disable={disable} customBgColor="bg-[#F2F1F6]" disableChange={disableChange} />
                         ),
+                        animation: 'fade',
+
                     }} name="profile/index" />
                 </Tabs>
                 <StatusBar style='light' />

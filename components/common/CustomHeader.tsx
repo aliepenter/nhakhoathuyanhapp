@@ -2,15 +2,14 @@
 
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, ImageBackground } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import images from '@/constants/images';
 import { icons } from '@/constants';
-
+import { useRouter } from 'expo-router';
 const CustomHeader = ({ title, customStyle, disableBackButton, downloadBtn }: any) => {
-    const navigation = useNavigation();
+    const router = useRouter();
     const handleBack = () => {
-        navigation.goBack();
+        router.back();
     };
     const truncatedTitle = title && title.length > 30 ? `${title.slice(0, 25)}...` : title;
 

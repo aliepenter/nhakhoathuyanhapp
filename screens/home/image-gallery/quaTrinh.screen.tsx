@@ -80,11 +80,17 @@ export default function QuaTrinhScreen({ user }: any) {
           anh.map((item: AnhQuaTrinh, index: number) => (
             <Pressable
               key={index}
-              className={`${index % 2 !== 0 ? "bg-[#F3F3F3]" : "bg-white"} px-[11px] py-[20px] md:py-[30px]`}
+              className={`
+                ${index % 2 !== 0 ? "bg-[#F3F3F3]" : "bg-white"}
+                px-[11px] py-[20px] md:py-[30px]
+                ${index === anh.length - 1 ? "mb-40" : ""}
+              `}
               onPress={() => handlePress(item)}
               disabled={flag}
             >
-              <Text className='text-[14px] md:text-[20px]'>{`Ngày ${formatDate(item.ngay_chup, "minimize")}: ${item.ten_anh}`}</Text>
+              <Text className='text-[14px] md:text-[20px]'>
+                {`Ngày ${formatDate(item.ngay_chup, "minimize")}: ${item.ten_anh}`}
+              </Text>
             </Pressable>
           ))
           :

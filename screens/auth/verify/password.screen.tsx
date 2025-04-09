@@ -7,12 +7,10 @@ import {
     KeyboardAvoidingView,
     Platform,
     ImageBackground,
-    TouchableOpacity,
 } from 'react-native';
 import React, { useState } from 'react';
 import { images } from '@/constants';
-import { router } from 'expo-router';
-import { useRoute } from "@react-navigation/native";
+import { router, useLocalSearchParams } from 'expo-router';
 import { login } from "@/lib/apiCall";
 import FormField from '@/components/common/FormField';
 import CustomButton from '@/components/common/CustomButton';
@@ -21,8 +19,7 @@ import CustomButton from '@/components/common/CustomButton';
 const PasswordScreen = () => {
     const [password, setPassword] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const route = useRoute();
-    const { username }: any = route.params;
+    const { username }: any = useLocalSearchParams();
     const isIOS = Platform.OS === 'ios';
     const submit = async () => {
         if (!password) {
@@ -33,7 +30,6 @@ const PasswordScreen = () => {
 
         try {
             await login!(username, password);
-
             setTimeout(() => {
                 router.dismissAll();
                 router.replace("/(tabs)");

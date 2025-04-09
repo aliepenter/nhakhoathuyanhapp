@@ -2,15 +2,13 @@ import { View, Text, FlatList, RefreshControl, ActivityIndicator, KeyboardAvoidi
 import React, { useEffect, useRef, useState } from 'react'
 import ThuThuat from '@/components/chinh-nha/ThuThuat';
 import CustomHeader from '@/components/common/CustomHeader';
-import { useRoute } from '@react-navigation/native';
 import QuaTrinhImage from '@/components/chinh-nha/QuaTrinhImage';
 import TinhTrang from '@/components/chinh-nha/TinhTrang';
 import LoiDan from '@/components/chinh-nha/LoiDan';
 import DichVuKhac from '@/components/chinh-nha/DichVuKhac';
 import DanhGiaDichVu from '@/components/chinh-nha/DanhGiaDichVu';
-
+import { useLocalSearchParams } from 'expo-router';
 export default function ChinhNhaDetailScreen() {
-    const route = useRoute();
     const [flag, setFlag] = useState<boolean>(false);
     const {
         thu_thuat_dieu_tri,
@@ -18,7 +16,7 @@ export default function ChinhNhaDetailScreen() {
         tinh_trang_rang_mieng,
         headerTitle,
         chinh_nha_id
-    }: any = route.params;
+    }: any = useLocalSearchParams();
     const [refreshing, setRefreshing] = useState(false);
     const [loading, setLoading] = useState(true);
     const onRefresh = async () => {

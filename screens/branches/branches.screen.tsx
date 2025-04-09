@@ -50,12 +50,18 @@ export default function BranchesScreen() {
         <View className="bg-white">
             <FlatList
                 data={[{ key: 'banner' }, { key: 'branches' }]}
-                renderItem={({ item }) => {
+                renderItem={({ item, index }) => {
+                    const isLast = index === 1; // hoặc index === data.length - 1
+
                     switch (item.key) {
                         case 'banner':
                             return <BannerSlide banners={banners} type={3} />;
                         case 'branches':
-                            return <BranchList branches={branches} />;
+                            return (
+                                <View className={isLast ? 'mb-24' : ''}>
+                                    <BranchList branches={branches} />
+                                </View>
+                            );
                         default:
                             return null;
                     }

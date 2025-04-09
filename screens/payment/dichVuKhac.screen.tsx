@@ -77,21 +77,32 @@ export default function DichVuKhacScreen() {
                 {!loading ?
                     lichSuThanhToanDvk && lichSuThanhToanDvk.length != 0
                         ?
-                        lichSuThanhToanDvk.map((item: DichVuKhac, index: number) => (
-                            <View key={index} className={`${index % 2 === 0 ? "bg-[#F3F3F3]" : "bg-white"} h-10 justify-center items-center px-[11px]`}>
-                                <View className='flex-row'>
-                                    <View className='w-[33.333333333%] justify-center'>
-                                        <Text className='font-pbold text-[12px]'>{item.ten_dich_vu}</Text>
-                                    </View>
-                                    <View className='w-[33.333333333%] items-center justify-center'>
-                                        <Text className='font-pbold text-[14px] text-[#FF0000]'>{formatMoney(item.gia_thanh)}</Text>
-                                    </View>
-                                    <View className='w-[33.333333333%] items-center justify-center'>
-                                        <Text className='font-pregular text-[12px]'>{formatDate(item.ngay_kham, 'minimize')}</Text>
+                        lichSuThanhToanDvk.map((item: DichVuKhac, index: number) => {
+                            const isEven = index % 2 === 0;
+                            const isLast = index === lichSuThanhToanDvk.length - 1;
+
+                            const containerClass = `
+                                ${isEven ? "bg-[#F3F3F3]" : "bg-white"}
+                                h-10 justify-center items-center px-[11px]
+                                ${isLast ? "mb-16" : ""}
+                            `;
+
+                            return (
+                                <View key={index} className={containerClass.trim()}>
+                                    <View className="flex-row">
+                                        <View className="w-[33.333333333%] justify-center">
+                                            <Text className="font-pbold text-[12px]">{item.ten_dich_vu}</Text>
+                                        </View>
+                                        <View className="w-[33.333333333%] items-center justify-center">
+                                            <Text className="font-pbold text-[14px] text-[#FF0000]">{formatMoney(item.gia_thanh)}</Text>
+                                        </View>
+                                        <View className="w-[33.333333333%] items-center justify-center">
+                                            <Text className="font-pregular text-[12px]">{formatDate(item.ngay_kham, 'minimize')}</Text>
+                                        </View>
                                     </View>
                                 </View>
-                            </View>
-                        ))
+                            );
+                        })
                         :
                         <View className='justify-center items-center h-56'>
                             <Text>Không có dữ liệu lịch sử thanh toán</Text>

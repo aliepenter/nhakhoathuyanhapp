@@ -57,17 +57,17 @@ export default function TimeTracking({ lichHen, schedule, totalTime, flag, setFl
                         :
                         <Text className='font-pextrabold text-[12px] text-[#FBFF49] md:text-[16px]'>Không có lịch hẹn</Text>
                     }
-                    {
-                        checkDay(lichHen)
-                            ?
-                            <View className='absolute left-[-5px] top-[-5px] w-[15px] h-[15px] rounded-full' style={styles.boxShadow}>
-                                <Image source={icons.notificationHighlight} resizeMode='cover' className='w-full h-full' />
-                            </View>
-                            :
-                            null
-                    }
-                </LinearGradient>
 
+                </LinearGradient>
+                {
+                    checkDay(lichHen)
+                        ?
+                        <View className='absolute left-[-5px] top-[-5px] w-[15px] h-[15px] rounded-full' style={styles.boxShadow}>
+                            <Image source={icons.notificationHighlight} resizeMode='cover' className='w-full h-full' />
+                        </View>
+                        :
+                        null
+                }
             </Pressable>
             <Pressable
                 className={`w-[48%] h-[59px] `}

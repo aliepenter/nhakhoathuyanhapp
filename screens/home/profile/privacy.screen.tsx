@@ -5,7 +5,7 @@ export default function PrivacyScreen() {
   return (
     <View className='h-full bg-[#F2F1F6] px-[19px]'>
       <Text className='font-psemibold text-[16px] mt-[20px] mb-[10px] ml-[15px]'>Điều kiện và điều khoản</Text>
-      <View className='bg-white h-[85%] rounded-[7px]'>
+      <View className='bg-white h-[80%] rounded-[7px]'>
         <ScrollView>
           <Text className='font-pregular text-[12px] m-[14px] text-[#7E7E7E]'>
             Ứng dụng My Braces được phát triển nhằm phục vụ mục đích giúp khách hàng của phòng khám trực tiếp theo dõi được các thông tin về hồ sơ, tình trạng bệnh của họ. Bên cạnh đó giúp họ tra cứu đọc và xem các bài viết, lời dặn hay video.
@@ -65,7 +65,7 @@ export default function PrivacyScreen() {
             Chúng tôi có quyền thay đổi, chỉnh sửa hoặc bổ sung Chính sách về quyền riêng tư theo quyết định của mình và vào bất kỳ lúc nào, bằng cách đăng Chính sách về quyền riêng tư đã được thay đổi, sửa đổi hoặc bổ sung trên hoặc thông qua ứng dụng My Braces hoặc thông qua các phương tiện khác. Việc bạn tiếp tục sử dụng My Braces sau khi đăng bất kỳ thay đổi, sửa đổi hoặc bổ sung nào về Chính sách quyền riêng tư sẽ cấu thành việc bạn chấp nhận sự thay đổi, sửa đổi hoặc bổ sung đó. Nếu bạn không đồng ý với bất kỳ thay đổi, chỉnh sửa hoặc bổ sung nào đối với Chính sách về quyền riêng tư, vui lòng không sử dụng ứng dụng My Braces.
           </Text>
           <Text className='font-pregular text-[12px] mx-[14px] text-[#7E7E7E]'>
-            © Bản quyền thuộc về 2025 Đặng Tuấn Đạt
+            © Bản quyền thuộc về 2025 Thùy Anh Dental Clinic. Tất cả quyền được bảo lưu.
           </Text>
         </ScrollView>
       </View>

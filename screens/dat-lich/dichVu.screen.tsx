@@ -43,7 +43,7 @@ export default function DichVuScreen({ services, selectedServiceId, handleServic
                                 onPress={() => handleServiceSelect(service.id)}
                             >
                                 <Image
-                                    className='w-[97px] h-[97px]'
+                                    className='w-[90px] h-[90px]'
                                     source={selectedServiceId === service.id ? service.activeIcon : service.icon}
                                     contentFit='cover'
                                 />

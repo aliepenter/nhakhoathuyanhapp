@@ -62,7 +62,7 @@ export default function NewsSection({ post, flag, setFlag }: NewsSectionProps) {
                 <View className="flex-wrap flex-row justify-between">
                     {post && post.length != 0
                         ?
-                        post.slice(0, 4).map((item: Post, index: number) => (
+                        post.slice(0, 6).map((item: Post, index: number) => (
                             <Pressable
                                 key={index}
                                 onPress={() => onPress(item)}
@@ -71,7 +71,7 @@ export default function NewsSection({ post, flag, setFlag }: NewsSectionProps) {
 
                             >
                                 <Image
-                                    className="w-full h-full"
+                                    className="w-full h-full rounded-xl"
                                     source={{ uri: `${SERVER_URL}${item.banner_id.banner_path}` }}
                                     contentFit='cover'
                                     transition={500}

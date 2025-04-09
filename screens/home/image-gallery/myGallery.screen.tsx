@@ -10,17 +10,15 @@ import { deleteCustomerLibrary, getCustomerLibrary } from '@/lib/apiCall'
 import { Image } from 'expo-image';
 import { router } from 'expo-router'
 import { useCameraPermissions } from 'expo-camera';
-import { useRoute } from '@react-navigation/native'
 import useLibrary from '@/hooks/useTodayLibrary'
-
+import { useLocalSearchParams } from 'expo-router'
 export default function MyGalleryScreen({ user }: any) {
   const [customerLibraryData, setCustomerLibraryData] = useState<Array<CustomerLibrary>>();
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [hasImage, setHasImage] = useState(false);
   const [id, setId] = useState<number | null>(null);
-  const route = useRoute();
-  const { refresh }: any = route.params || {};
+  const { refresh }: any = useLocalSearchParams() || {};
   const onRefresh = async () => {
     setRefreshing(true);
     setLoading(true);

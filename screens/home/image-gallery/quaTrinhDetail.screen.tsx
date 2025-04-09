@@ -1,14 +1,12 @@
 import { View, Text, Image, Dimensions, TouchableOpacity, ActivityIndicator, Modal, Platform } from 'react-native'
 import React, { useState } from 'react'
-import { useRoute } from '@react-navigation/native';
 import CustomHeader from '@/components/common/CustomHeader';
 import { SERVER_URL } from '@/utils/uri';
 import { icons } from '@/constants';
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 import ImageViewer from 'react-native-image-zoom-viewer';
-
+import { useLocalSearchParams } from 'expo-router';
 export default function QuaTrinhDetailScreen() {
-    const route = useRoute();
     const {
         anh_1,
         anh_2,
@@ -25,10 +23,11 @@ export default function QuaTrinhDetailScreen() {
         anh_13,
         headerTitle,
         title
-    }: any = route.params;
+    }: any = useLocalSearchParams();
     const imageUrls = [anh_1, anh_9, anh_10, anh_2, anh_3, anh_4, anh_5, anh_7, anh_6, anh_11, anh_8, anh_12, anh_13];
 
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [currentActiveIndex, setCurrenActiveIndex] = useState(0);
     const [modalVisible, setModalVisible] = useState(false);
 
     const [imageHeight, setImageHeight] = useState(187);
@@ -51,7 +50,7 @@ export default function QuaTrinhDetailScreen() {
         }
         setImageHeight(h);
         setImageWidth(w);
-        if (height > width) {
+        if (height >= width) {
             setIsIn(false);
         } else {
             setIsIn(true);
@@ -62,12 +61,18 @@ export default function QuaTrinhDetailScreen() {
     };
 
     const changeImage = (index: number) => {
-        setImageError(false);
-        setLoading(true);
-        setCurrentImageIndex(index);
-        if (!imageUrls[index]) {
-            setImageError(true);
-            setLoading(false);
+        if (index !== currentImageIndex) {
+            setCurrenActiveIndex(index); // Cập nhật trạng thái active của icon
+            setLoading(true); // Bật trạng thái loading
+            setImageError(false); // Đặt lại trạng thái lỗi ảnh
+            setTimeout(() => {
+                setCurrentImageIndex(index); // Cập nhật trạng thái active của icon ngay lập tức
+            }, 200);
+            // Trì hoãn việc hiển thị ảnh để loading hiển thị trước
+            if (!imageUrls[index]) {
+                setImageError(true);
+                setLoading(false);
+            }// Thời gian trễ (300ms)
         }
     };
     const iconList = [
@@ -93,17 +98,19 @@ export default function QuaTrinhDetailScreen() {
                     activeOpacity={0.9}
                     onPress={() => setModalVisible(true)}
                 >
-                    <Image
-                        source={{ uri: `${SERVER_URL}${imageUrls[currentImageIndex]}` }}
-                        style={{ height: imageHeight, width: imageWidth }}
-                        className={`rounded-[10px] bg-[#F1F1F1] ${isIn ? 'mt-36' : 'mt-10'}`}
-                        resizeMode='contain'
-                        onLoad={onImageLoad}
-                        onError={() => {
-                            setImageError(true);
-                            setLoading(false);
-                        }}
-                    />
+                    {
+                        <Image
+                            source={{ uri: `${SERVER_URL}${imageUrls[currentImageIndex]}` }}
+                            style={{ height: imageHeight, width: imageWidth }}
+                            className={`rounded-[10px] bg-[#F1F1F1] ${isIn ? 'mt-36' : 'mt-24'}`}
+                            resizeMode='contain'
+                            onLoad={onImageLoad}
+                            onError={() => {
+                                setImageError(true);
+                                setLoading(false);
+                            }}
+                        />
+                    }
                 </TouchableOpacity>
                 {
                     imageError && (
@@ -113,7 +120,7 @@ export default function QuaTrinhDetailScreen() {
                     )
 
                 }
-                <View className={`${!loading ? 'hidden' : ''} absolute left-[50%] h-96 justify-center`}>
+                <View className={`${!loading ? 'hidden' : ''} absolute left-[52%] h-[500px] justify-center`}>
                     <ActivityIndicator color={'#00E5E5'} />
                 </View>
 
@@ -146,7 +153,7 @@ export default function QuaTrinhDetailScreen() {
                 </Modal>
             </View>
 
-            <View className={`${Platform.OS === 'ios' ? 'mt-[20px]' : 'mt-[10px]'} flex-wrap flex-row justify-center absolute bottom-5 px-[20px]`}>
+            <View className={`${Platform.OS === 'ios' ? 'mt-[20px]' : 'mt-[10px]'} flex-wrap flex-row justify-center absolute bottom-16 px-[20px]`}>
                 {iconList.map((icon, index) => (
                     <TouchableOpacity
                         key={index}
@@ -154,7 +161,7 @@ export default function QuaTrinhDetailScreen() {
                         onPress={() => changeImage(index)}
                     >
                         <Image
-                            source={index === currentImageIndex ? activeIconList[index] : icon}
+                            source={index === currentActiveIndex ? activeIconList[index] : icon}
                             className="w-[36px] h-[36px]"
                             resizeMode='contain'
                         />
