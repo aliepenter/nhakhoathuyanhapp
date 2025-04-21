@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Alert, ActivityIndicator, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, ActivityIndicator, Platform, StyleSheet } from 'react-native';
 import React, { useState } from 'react';
 import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
@@ -11,6 +11,9 @@ import { formatInformation, getToday } from '@/lib/commonFunctions';
 import useUser from '@/hooks/auth/useUser';
 import { createCustomerLibrary, updateCustomerLibrary } from '@/lib/apiCall';
 import { SERVER_URI } from '@/utils/uri';
+import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
+
 interface PictureViewProps {
     picture: string;
     status: string;
@@ -96,38 +99,84 @@ export default function PreviewScreen({ picture, setPicture, status, id }: Pictu
     };
 
     return (
-        <View className='w-full h-full'>
-            <View className='bg-black h-28 w-full justify-end'>
-                <TouchableOpacity className='p-[10px]' onPress={handleBack}>
+        <View className='w-full h-full bg-black'>
+            <LinearGradient
+                colors={['rgba(0,0,0,0.8)', 'transparent']}
+                className='absolute top-0 left-0 right-0 h-32 z-10'
+            />
+            <View className='h-28 w-full justify-end z-20'>
+                <TouchableOpacity 
+                    className='p-[10px] ml-4 w-10 h-10 items-center justify-center'
+                    onPress={handleBack}
+                >
                     <Ionicons name="arrow-back" size={24} color="white" />
                 </TouchableOpacity>
             </View>
-            <Image source={picture} className='w-full flex-1' style={[{ transform: [{ scaleX: -1 }] }]} />
-            <View className='bg-black h-40 w-full flex flex-row justify-center items-center'>
-                {
-                    !loading
-                        ?
-                        <View className='flex flex-row'>
-                            <TouchableOpacity onPress={handleUpload} className='w-[33.333333%] h-full items-center'>
-                                <Image source={icons.upload} className='w-[30px] h-[30px]' />
-                                <Text className='text-white mt-2'>Sử dụng ảnh</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={handleSave} className='w-[33.333333%] h-full items-center'>
-                                <Image source={icons.download2} className='w-[30px] h-[30px]' />
-                                <Text className='text-white mt-2'>Tải về máy</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={handleBack} className='w-[33.333333%] h-full items-center'>
-                                <Image source={icons.trashWhite} className='w-[30px] h-[30px]' />
-                                <Text className='text-white mt-2'>Xóa ảnh</Text>
-                            </TouchableOpacity>
-                        </View>
-                        :
-                        <View className={`justify-center`}>
-                            <ActivityIndicator color={'#00E5E5'} />
-                        </View>
-                }
-
-            </View>
+            <Image 
+                source={picture} 
+                className='w-full flex-1' 
+                style={[{ transform: [{ scaleX: -1 }] }]} 
+                contentFit="cover"
+            />
+            <LinearGradient
+                colors={['transparent', 'rgba(0,0,0,0.8)']}
+                className='absolute bottom-0 left-0 right-0 h-40 z-10'
+            />
+            <BlurView intensity={20} className='absolute bottom-0 left-0 right-0 h-40 z-20'>
+                <View className='h-full w-full flex justify-center items-center'>
+                    {
+                        !loading
+                            ?
+                            <View className='flex flex-row w-full px-4'>
+                                <TouchableOpacity 
+                                    onPress={handleUpload} 
+                                    className='flex-1 h-full items-center justify-center'
+                                >
+                                    <View className='bg-white/10 p-4 rounded-full'>
+                                        <Image source={icons.upload} className='w-[30px] h-[30px]' />
+                                    </View>
+                                    <Text className='text-white mt-2 font-semibold'>Sử dụng ảnh</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity 
+                                    onPress={handleSave} 
+                                    className='flex-1 h-full items-center justify-center'
+                                >
+                                    <View className='bg-white/10 p-4 rounded-full'>
+                                        <Image source={icons.download2} className='w-[30px] h-[30px]' />
+                                    </View>
+                                    <Text className='text-white mt-2 font-semibold'>Tải về máy</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity 
+                                    onPress={handleBack} 
+                                    className='flex-1 h-full items-center justify-center'
+                                >
+                                    <View className='bg-white/10 p-4 rounded-full'>
+                                        <Image source={icons.trashWhite} className='w-[30px] h-[30px]' />
+                                    </View>
+                                    <Text className='text-white mt-2 font-semibold'>Xóa ảnh</Text>
+                                </TouchableOpacity>
+                            </View>
+                            :
+                            <View className='justify-center items-center'>
+                                <ActivityIndicator size="large" color="#00E5E5" />
+                                <Text className='text-white mt-4 font-semibold'>Đang xử lý...</Text>
+                            </View>
+                    }
+                </View>
+            </BlurView>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    buttonContainer: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    }
+});
