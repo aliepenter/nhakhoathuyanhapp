@@ -67,7 +67,7 @@ export default function NewsSection({ post, flag, setFlag }: NewsSectionProps) {
                                 key={index}
                                 onPress={() => onPress(item)}
                                 disabled={flag}
-                                className="h-[142px] md:h-[200px] w-[49%] md:w-[32%] rounded-[10px] mb-5 bg-gray-300"
+                                className="h-[120px] md:h-[200px] w-[49%] md:w-[32%] rounded-[10px] mb-5 bg-gray-300"
 
                             >
                                 <Image

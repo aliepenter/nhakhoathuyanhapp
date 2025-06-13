@@ -30,7 +30,7 @@ export default function VideoSection({ item, isLast, customImageStyle, flag, set
     }
     return (
         <Pressable
-            className={`${customImageStyle ? customImageStyle : "w-80 h-48"} justify-center items-center ${isLast ? "" : "mr-2"}`}
+            className={`${customImageStyle ? customImageStyle : "w-64 h-36"} justify-center items-center ${isLast ? "" : "mr-2"}`}
             onPress={onPress}
             disabled={flag}
         >

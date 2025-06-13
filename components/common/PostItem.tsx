@@ -40,9 +40,9 @@ export default function PostItem({ loading, post, flag, setFlag }: PostItemProps
                                     transition={500}
                                     contentFit='contain'
                                     source={{ uri: `${SERVER_URL}${item.banner_id.banner_path}` }}
-                                    className="h-[135px] md:h-[200px] w-full rounded-[10px] mb-[5px]"
+                                    className="h-[125px] md:h-[200px] w-full rounded-[10px] mb-[5px]"
                                 />
-                                <Text className='font-semibold text-[12px]'>{item.title}</Text>
+                                <Text className='font-semibold text-[14px]'>{item.title}</Text>
                             </Pressable>
                         ))
                     }

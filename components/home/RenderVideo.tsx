@@ -26,7 +26,7 @@ export default function RenderVideo({ videos, flag, setFlag }: RenderVideoProps)
         }, 1000);
     }
     return (
-        <View className="px-[11px] space-y-6 mt-[27px] h-[230px]">
+        <View className="px-[11px] space-y-6 mt-[27px] h-[190px]">
             <View className="w-full flex-1">
                 <View className="justify-between items-start flex-row md:mb-[10px]">
                     <View className="flex-row">

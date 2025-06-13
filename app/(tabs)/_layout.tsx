@@ -62,9 +62,9 @@ const TabsLayout = () => {
 
     useFocusEffect(
         React.useCallback(() => {
-            BackHandler.addEventListener('hardwareBackPress', handleBackAction);
+            const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackAction);
             return () => {
-                BackHandler.removeEventListener('hardwareBackPress', handleBackAction);
+                backHandler.remove(); 
             }
         }, [])
     )

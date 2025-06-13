@@ -69,7 +69,7 @@ export default function HopDongScreen() {
                         ))
                         :
                         <View className='justify-center items-center h-96'>
-                            <Text>Không có dữ liệu hợp đồng</Text>
+                            <Text>Không có dữ liệu hồ sơ</Text>
                         </View>
                     :
                     <View className={`h-[202px] justify-center`}>

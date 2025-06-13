@@ -61,18 +61,19 @@ export default function QuaTrinhDetailScreen() {
     };
 
     const changeImage = (index: number) => {
+
         if (index !== currentImageIndex) {
             setCurrenActiveIndex(index); // Cập nhật trạng thái active của icon
             setLoading(true); // Bật trạng thái loading
             setImageError(false); // Đặt lại trạng thái lỗi ảnh
             setTimeout(() => {
                 setCurrentImageIndex(index); // Cập nhật trạng thái active của icon ngay lập tức
-            }, 200);
+            }, 0);
             // Trì hoãn việc hiển thị ảnh để loading hiển thị trước
             if (!imageUrls[index]) {
                 setImageError(true);
                 setLoading(false);
-            }// Thời gian trễ (300ms)
+            }
         }
     };
     const iconList = [
@@ -94,35 +95,40 @@ export default function QuaTrinhDetailScreen() {
             <View className='mt-[20px] px-[20px]'>
                 <Text className='font-pbold text-[16px] text-center text-[#525252]'>{title}</Text>
                 <TouchableOpacity
-                    className={`${Platform.OS === 'ios' ? !loading && !imageError ? '' : 'opacity-0' : !loading && !imageError ? '' : 'hidden'} md:items-center`}
+                    className="md:items-center"
                     activeOpacity={0.9}
                     onPress={() => setModalVisible(true)}
                 >
-                    {
-                        <Image
-                            source={{ uri: `${SERVER_URL}${imageUrls[currentImageIndex]}` }}
-                            style={{ height: imageHeight, width: imageWidth }}
-                            className={`rounded-[10px] bg-[#F1F1F1] ${isIn ? 'mt-36' : 'mt-24'}`}
-                            resizeMode='contain'
-                            onLoad={onImageLoad}
-                            onError={() => {
-                                setImageError(true);
-                                setLoading(false);
-                            }}
-                        />
-                    }
+                    <View style={{ position: 'relative' }}>
+                        {!imageError && (
+                            <Image
+                                source={{ uri: `${SERVER_URL}${imageUrls[currentImageIndex]}` }}
+                                style={{ 
+                                    height: imageHeight, 
+                                    width: imageWidth,
+                                    opacity: loading ? 0 : 1
+                                }}
+                                className={`rounded-[10px] bg-[#F1F1F1] ${isIn ? 'mt-36' : 'mt-24'}`}
+                                resizeMode='contain'
+                                onLoad={onImageLoad}
+                                onError={() => {
+                                    setImageError(true);
+                                    setLoading(false);
+                                }}
+                            />
+                        )}
+                        {loading && !imageError && (
+                            <View className='absolute left-[47%] top-1/2 -translate-x-1/2 -translate-y-1/2'>
+                                <ActivityIndicator color={'#00E5E5'} />
+                            </View>
+                        )}
+                    </View>
                 </TouchableOpacity>
-                {
-                    imageError && (
-                        <View className='absolute left-[40%] h-96 justify-center items-center'>
-                            <Text className='font-bold'>Không thể tải ảnh</Text>
-                        </View>
-                    )
-
-                }
-                <View className={`${!loading ? 'hidden' : ''} absolute left-[52%] h-[500px] justify-center`}>
-                    <ActivityIndicator color={'#00E5E5'} />
-                </View>
+                {imageError && (
+                    <View className='absolute left-[40%] h-96 justify-center items-center'>
+                        <Text className='font-bold'>Không thể tải ảnh</Text>
+                    </View>
+                )}
 
                 <Modal
                     visible={modalVisible}

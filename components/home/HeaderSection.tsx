@@ -108,7 +108,7 @@ export default function HeaderSection({
           <View>
             {!loading ? (
               avatar ? (
-                <View className="h-[100px] w-[100px] bg-gray-500 rounded-full justify-center items-center">
+                <View className="h-[70px] w-[70px] bg-gray-500 rounded-full justify-center items-center">
                   {
                     !disable ? (
                       <Image
@@ -135,7 +135,7 @@ export default function HeaderSection({
             )}
             {editAvatar ? (
               <TouchableOpacity disabled={flag == true ? true : disableChange == false ? false : true} onPress={handleCamera}>
-                <View className={`absolute bg-black bottom-[5px] right-[5px] rounded-[50px] w-[20px] h-[20px] justify-center items-center ${!disableChange ? "" : "opacity-30"}`}>
+                <View className={`absolute bg-black bottom-[0px] right-[0px] rounded-[50px] w-[20px] h-[20px] justify-center items-center ${!disableChange ? "" : "opacity-30"}`}>
                   <Image
                     source={icons.edit}
                     resizeMode="contain"

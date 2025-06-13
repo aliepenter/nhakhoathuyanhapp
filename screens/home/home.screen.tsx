@@ -189,9 +189,9 @@ const HomeScreen = () => {
             :
             null
         }
-        <BannerSlide banners={banners} type={1} />
-        <FunctionItemsList schedule={lichHen ? lichHen : null} flag={flag} setFlag={setFlag} />
         <TimeTracking lichHen={lichHen ? lichHen : null} schedule={lichHen ? formatDate(lichHen, 'minimize') : 0} totalTime={user && user.ngay_gan_mc != null ? calculateDaysDifference(user.ngay_gan_mc) : 0} flag={flag} setFlag={setFlag} />
+        <FunctionItemsList schedule={lichHen ? lichHen : null} flag={flag} setFlag={setFlag} />
+        <BannerSlide banners={banners} type={1} />
         <RenderVideo videos={videos} flag={flag} setFlag={setFlag} />
         <NewsSection post={post} flag={flag} setFlag={setFlag} />
       </ScrollView>

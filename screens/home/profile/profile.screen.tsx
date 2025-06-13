@@ -207,7 +207,7 @@ export default function ProfileScreen() {
                     <View className='bg-white rounded-[10px] py-3  mt-[10px] mb-[16px]'>
                         <TouchableOpacity disabled={flag} onPress={() => handleRouter("(routes)/profile/privacy")} className='flex-row flex-nowrap'>
                             <View className='w-[15%] justify-center items-center'>
-                                <Image source={icons.dieuKhoan} resizeMode='cover' className='w-[14px] h-[17px]' />
+                                <Image source={icons.veChungToi} resizeMode='cover' className='w-[14px] h-[17px]' />
                             </View>
                             <View className='w-[75%]'>
                                 <Text className='text-[14px]'>
@@ -244,6 +244,19 @@ export default function ProfileScreen() {
                                 <Image source={icons.next} resizeMode='cover' className='w-[18px] h-[18px]' />
                             </View>
                         </TouchableOpacity> */}
+                        <TouchableOpacity disabled={flag} onPress={() => handleRouter("/(routes)/hop-dong")} className='flex-row flex-nowrap mt-3'>
+                            <View className='w-[15%] justify-center items-center'>
+                                <Image source={icons.dieuKhoan} resizeMode='cover' className='w-[14px] h-[17px]' />
+                            </View>
+                            <View className='w-[75%]'>
+                                <Text className='text-[14px]'>
+                                    Hồ sơ khách hàng
+                                </Text>
+                            </View>
+                            <View className='w-[10%] justify-center items-center'>
+                                <Image source={icons.next} resizeMode='cover' className='w-[18px] h-[18px]' />
+                            </View>
+                        </TouchableOpacity>
                         <TouchableOpacity disabled={flag} onPress={() => handleRouter("(routes)/branches")} className='flex-row flex-nowrap mt-3'>
                             <View className='w-[15%] justify-center items-center'>
                                 <Image source={icons.lienHe} resizeMode='cover' className='w-[22px] h-[22px]' />

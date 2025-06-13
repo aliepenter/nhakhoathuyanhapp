@@ -10,7 +10,7 @@ import { Image } from 'expo-image';
 
 export default function BannerSlide({ banners, type }: any) {
     return (
-        <View className="mt-[10px] pl-[8px] pr-[8px] mb-[30px]" >
+        <View className="mt-[10px] pl-[8px] pr-[8px] mb-[10px]" >
             {
                 banners && banners.length != 0
                     ?
