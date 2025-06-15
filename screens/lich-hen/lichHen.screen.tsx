@@ -282,7 +282,7 @@ export default function LichHenScreen() {
                                     <View className={`${Platform.OS === 'ios' ? 'h-[90%]' : ''} w-[80%] items-end justify-center`}>
                                         <View className='bg-white w-[95%] h-[80%] rounded-[4px] border-l-[6px] border-[#51B81A]'>
                                             <View className='justify-center items-end h-[35%] w-[98%]'>
-                                                <Text className='font-pregular text-[10px]'>{formatISODateToAMPM(item.ngay_chinh_nha)}</Text>
+                                                {/* <Text className='font-pregular text-[10px]'>{formatISODateToAMPM(item.ngay_chinh_nha)}</Text> */}
                                             </View>
                                             <View className='justify-start ml-2 h-[65%]'>
                                                 <Text className='font-pregular text-[14px]'>Chỉnh nha tại {item.branch_id.ten_chi_nhanh}</Text>
