@@ -67,7 +67,6 @@ export default function HoSoTraGopCnScreen() {
       }, 200);
     }
   };
-
   return (
     <View className='mt-[22px]'>
       <View className='px-[11px]'>
@@ -108,7 +107,15 @@ export default function HoSoTraGopCnScreen() {
                     </View>
                     <View className='w-[50%]'>
                       <Text className='font-pregular text-[12px]'>Ngày đến hạn thanh toán</Text>
-                      <Text className={`mt-1 font-pregular text-[14px] ${thongTinThanhToan && thongTinThanhToan.status ? 'text-[#FF0000] font-pbold' : 'text-[#666666]'}`} >{thongTinThanhToan ? formatDate(thongTinThanhToan.ngay_den_han_thanh_toan, 'minimize') : 0}</Text>
+                      {
+                        (
+                          thongTinThanhToan && new Date(thongTinThanhToan.ngay_den_han_thanh_toan) < new Date()
+                            ?
+                            <Text className={`mt-1 font-pregular text-[14px] ${thongTinThanhToan && thongTinThanhToan.status ? 'text-[#FF0000] font-pbold' : 'text-[#666666]'}`} >Không có dữ liệu</Text>
+                            :
+                            <Text className={`mt-1 font-pregular text-[14px] ${thongTinThanhToan && thongTinThanhToan.status ? 'text-[#FF0000] font-pbold' : 'text-[#666666]'}`} >{thongTinThanhToan ? formatDate(thongTinThanhToan.ngay_den_han_thanh_toan, 'minimize') : 0}</Text>
+                        )
+                      }
                     </View>
                   </View>
                 </View>
