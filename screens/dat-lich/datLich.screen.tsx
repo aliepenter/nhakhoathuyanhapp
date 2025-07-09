@@ -7,7 +7,7 @@ import NgayKhamScreen from './ngayKham.screen';
 import Toast from 'react-native-toast-message';
 import { runOnJS } from 'react-native-reanimated';
 import ThanhCongScreen from './thanhCong.screen';
-import { createDatLich } from '@/lib/apiCall';
+import { createLichHen } from '@/lib/apiCall';
 import useUser from '@/hooks/auth/useUser';
 
 export enum StatusTab {
@@ -69,30 +69,54 @@ export default function DatLichScreen() {
     }
 
     const handleDatLich = async (index: number) => {
-        if (selectedDate != '') {
-            setLoading(true);
-            const lichHen: any = {
-                user_id: user?.id,
-                dich_vu: selectedServiceName,
-                ngay_kham: selectedDate,
-                status: 0
-            };
-            try {
-                await createDatLich(lichHen);
-                setLoading(false)
-                setSelected(index);
-            } catch (error) {
-                Toast.show({
-                    type: 'error',
-                    text1: 'Đã có lỗi xảy ra, xin thử lại sau',
-                });
-                setLoading(false)
-            } finally {
-                setLoading(false)
-            }
-        } else {
-            showToast();
+        // Validation đầy đủ
+        if (!selectedServiceName || selectedServiceName === '') {
+            Toast.show({
+                type: 'error',
+                text1: 'Vui lòng chọn dịch vụ',
+            });
+            return;
+        }
+        
+        if (!selectedDate || selectedDate === '') {
+            Toast.show({
+                type: 'error',
+                text1: 'Vui lòng chọn ngày khám',
+            });
+            return;
+        }
 
+        // Kiểm tra ngày không được trong quá khứ
+        const selectedDateObj = new Date(selectedDate);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        if (selectedDateObj < today) {
+            Toast.show({
+                type: 'error',
+                text1: 'Không thể chọn ngày trong quá khứ',
+            });
+            return;
+        }
+
+        setLoading(true);
+        const lichHen: any = {
+            ngay_kham: selectedDate,
+            dich_vu: selectedServiceName,
+            change_request_status: 'pending',
+            change_request_date: null
+        };
+        
+        try {
+            await createLichHen(lichHen);
+            setSelected(index); // Chuyển sang màn hình thành công
+        } catch (error) {
+            Toast.show({
+                type: 'error',
+                text1: 'Đã có lỗi xảy ra, xin thử lại sau',
+            });
+        } finally {
+            setLoading(false);
         }
     };
     

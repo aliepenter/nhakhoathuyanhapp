@@ -171,4 +171,6 @@ type LichHen = {
   ngay_kham: string;
   user_id: number;
   dich_vu: string;
+  change_request_status: 'none' | 'pending' | 'approved';
+  change_request_date: string | null;
 };

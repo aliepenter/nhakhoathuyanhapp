@@ -145,20 +145,20 @@ export default function HeaderSection({
               </TouchableOpacity>
             ) : null}
           </View>
-          <View className="ml-4">
-            <View className="flex-row items-center w-[70%]">
+          <View className="ml-4 flex-1">
+            <View className="flex-row items-center flex-wrap">
               <Text className="text-white text-[14px] md:text-[18px]">
                 Xin chào,{" "}
               </Text>
-              <Text className="text-white text-[14px] md:text-[18px] font-pbold">
+              <Text className="text-white text-[14px] md:text-[18px] font-pbold flex-1" numberOfLines={1}>
                 {user?.ho_va_ten}
               </Text>
             </View>
-            <View className="flex-col w-[80%]">
-              <Text className="text-white text-[14px] md:text-[18px] font-pbold my-1">
+            <View className="flex-col">
+              <Text className="text-white text-[14px] md:text-[18px] font-pbold my-1" numberOfLines={1}>
                 {user?.so_dien_thoai}
               </Text>
-              <Text className="text-white text-[14px] md:text-[18px] font-semibold">
+              <Text className="text-white text-[14px] md:text-[18px] font-semibold" numberOfLines={2}>
                 {user?.dia_chi}
               </Text>
             </View>

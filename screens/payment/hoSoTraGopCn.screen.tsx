@@ -105,18 +105,6 @@ export default function HoSoTraGopCnScreen() {
                       <Text className='font-pregular text-[12px]'>Số tiền cần trả kỳ tới</Text>
                       <Text className='mt-1 font-pbold text-[14px] text-[#666666]'>{thongTinThanhToan ? formatMoney(thongTinThanhToan.so_tien_can_tra_ki_toi) : 0}</Text>
                     </View>
-                    <View className='w-[50%]'>
-                      <Text className='font-pregular text-[12px]'>Ngày đến hạn thanh toán</Text>
-                      {
-                        (
-                          thongTinThanhToan && new Date(thongTinThanhToan.ngay_den_han_thanh_toan) < new Date()
-                            ?
-                            <Text className={`mt-1 font-pregular text-[14px] ${thongTinThanhToan && thongTinThanhToan.status ? 'text-[#FF0000] font-pbold' : 'text-[#666666]'}`} >Không có dữ liệu</Text>
-                            :
-                            <Text className={`mt-1 font-pregular text-[14px] ${thongTinThanhToan && thongTinThanhToan.status ? 'text-[#FF0000] font-pbold' : 'text-[#666666]'}`} >{thongTinThanhToan ? formatDate(thongTinThanhToan.ngay_den_han_thanh_toan, 'minimize') : 0}</Text>
-                        )
-                      }
-                    </View>
                   </View>
                 </View>
                 :

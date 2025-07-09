@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import CalendarComponent from '@/components/common/CalendarComponent';
 import { icons } from '@/constants';
 import useUser from '@/hooks/auth/useUser';
-import { createDatLich, getChinhNha, getLichHenByUserId } from '@/lib/apiCall';
+import { createDatLich, getChinhNha, getLichHenByUserId, updateLichHen } from '@/lib/apiCall';
 import { formatDate, formatISODateToAMPM } from '@/lib/commonFunctions';
 import { router } from 'expo-router';
 import Dialog from "react-native-dialog";
@@ -64,15 +64,17 @@ export default function LichHenScreen() {
                     if (lichHenRes) {
                         const today = new Date();
                         if (lichHenRes.data.length !== 0) {
+                            // Lọc bỏ các lịch hẹn đã approved
+                            const filteredLichHen = lichHenRes.data.filter((item: any) => item.change_request_status !== 'approved');
                             const dates: MarkedDates = {};
-                            lichHenRes.data.forEach((item: { ngay_kham: any }) => {
+                            filteredLichHen.forEach((item: { ngay_kham: any }) => {
                                 const formattedDate = formatDate(item.ngay_kham, 'isoDate');
                                 const itemDate = new Date(item.ngay_kham);
                                 if (formattedDate && itemDate > today) {
                                     dates[formattedDate] = { selected: true, selectedColor: '#B90826' };
                                 }
                             });
-                            setLichHenData(lichHenRes.data);
+                            setLichHenData(filteredLichHen);
                             setLichHenSapToi(dates);
                         }
                         setLoading(false)
@@ -173,14 +175,19 @@ export default function LichHenScreen() {
     };
 
     const handleChangeDayAccept = async () => {
-        const lichHenUpdate: any = {
-            user_id: user?.id,
-            dich_vu: "Đổi lịch chỉnh nha",
+        if (!selectedDay || !lichHenData) return;
+        // Tìm lịch hẹn ứng với ngày đang chọn
+        const matchedLichHen = lichHenData.find(item => {
+            const ngayKhamDate = formatDate(item.ngay_kham, 'isoDate');
+            return ngayKhamDate === selectedDay;
+        });
+        if (!matchedLichHen) return;
+        const lichHenUpdate: Partial<LichHen> = {
             ngay_kham: selectedDay,
-            status: 1
+            change_request_status: 'pending',
         };
         try {
-            await createDatLich(lichHenUpdate);
+            await updateLichHen(matchedLichHen.id, lichHenUpdate);
             setVisible(false);
             Toast.show({
                 type: 'success',

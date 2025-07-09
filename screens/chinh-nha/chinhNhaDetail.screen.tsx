@@ -1,4 +1,4 @@
-import { View, Text, FlatList, RefreshControl, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, Keyboard } from 'react-native'
+import { View, Text, FlatList, RefreshControl, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, Keyboard, StyleSheet } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import ThuThuat from '@/components/chinh-nha/ThuThuat';
 import CustomHeader from '@/components/common/CustomHeader';
@@ -48,31 +48,31 @@ export default function ChinhNhaDetailScreen() {
             keyboardDidShowListener.remove();
         };
     }, []);
-console.log(tinh_trang_rang_mieng);
     return (
         <>
             <CustomHeader title={headerTitle} customStyle="bg-transparent" />
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                className='flex-1'
+                style={{ flex: 1, backgroundColor: '#F6F6F6' }}
             >
                 {
                     !loading
                         ?
                         <ScrollView
                             ref={scrollViewRef}
-                            className={`px-[11px] bg-white`}
+                            style={{ flex: 1 }}
+                            contentContainerStyle={styles.scrollContent}
                             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                         >
-                            <ThuThuat thuthuat={thu_thuat_dieu_tri} />
-                            <QuaTrinhImage anh={qua_trinh_image_id ? JSON.parse(qua_trinh_image_id as string) : null} />
-                            <TinhTrang tinhtrang={tinh_trang_rang_mieng ? JSON.parse(tinh_trang_rang_mieng as string).noi_dung : null} />
-                            <LoiDan chinh_nha_id={chinh_nha_id} flag={flag} setFlag={setFlag} />
-                            <DichVuKhac chinh_nha_id={chinh_nha_id} />
-                            <DanhGiaDichVu />
+                            <View style={styles.card}><ThuThuat thuthuat={thu_thuat_dieu_tri} /></View>
+                            <View style={styles.card}><QuaTrinhImage anh={qua_trinh_image_id ? JSON.parse(qua_trinh_image_id as string) : null} /></View>
+                            <View style={styles.card}><TinhTrang tinhtrang={tinh_trang_rang_mieng ? JSON.parse(tinh_trang_rang_mieng as string).noi_dung : null} /></View>
+                            <View style={styles.card}><LoiDan chinh_nha_id={chinh_nha_id} flag={flag} setFlag={setFlag} /></View>
+                            <View style={styles.card}><DichVuKhac chinh_nha_id={chinh_nha_id} /></View>
+                            <View style={[styles.card, { marginBottom: 32 }]}><DanhGiaDichVu /></View>
                         </ScrollView>
                         :
-                        <View className="bg-[#FAFAFA] h-full justify-center">
+                        <View style={{ backgroundColor: '#FAFAFA', flex: 1, justifyContent: 'center' }}>
                             <ActivityIndicator color={'#00E5E5'} />
                         </View>
                 }
@@ -81,3 +81,24 @@ console.log(tinh_trang_rang_mieng);
 
     )
 }
+
+const styles = StyleSheet.create({
+    scrollContent: {
+        paddingHorizontal: 14,
+        paddingTop: 16,
+        paddingBottom: 32,
+    },
+    card: {
+        backgroundColor: '#fff',
+        borderRadius: 18,
+        padding: 18,
+        marginBottom: 18,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.07,
+        shadowRadius: 8,
+        elevation: 2,
+        borderWidth: 1,
+        borderColor: '#ECECEC',
+    },
+});

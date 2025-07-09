@@ -707,24 +707,6 @@ export const updateAvatar = async (id: number | null, data: any) => {
   }
 };
 
-// PUT UPDATE MAIN STATUS USER
-export const updateMainStatus = async (id: number | null) => {
-  const token = await SecureStore.getItemAsync(TOKEN_KEY);
-  if (token) {
-    try {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      const response = await axios.put(`${SERVER_URI}/users/update-main-status/${id}`);
-      return {
-        code: 200,
-        data: response.data,
-      };
-    } catch (error: any) {
-      throw error;
-    }
-  } else {
-    return null;
-  }
-};
 
 
 export const getAnhQuaTrinh = async (userId: any) => {
@@ -895,3 +877,41 @@ export const getChinhNhaThuThuatByChinhNhaId = async (chinh_nha_id: any) => {
     throw error;
   }
 };
+
+// PUT UPDATE
+export const updateLichHen = async (id: number | null, data: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const response = await axios.put(`${SERVER_URI}/lich-hen/by-user/${id}`, data);
+      return {
+        code: 200,
+        data: response.data,
+      };
+    } catch (error: any) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+};
+
+export const createLichHen = async (data: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const response = await axios.post(`${SERVER_URI}/lich-hen/by-user`, data);
+
+      return {
+        code: 200,
+        data: response.data,
+      };
+    } catch (error: any) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+}
