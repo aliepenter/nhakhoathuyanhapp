@@ -6,6 +6,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import { icons } from '@/constants';
 import { formatDate } from '@/lib/commonFunctions';
 import { Image } from 'expo-image';
+import EmptyState from '../common/EmptyState';
 export default function QuaTrinhImage({ anh }: any) {
     const gallery = [
         {
@@ -98,9 +99,7 @@ export default function QuaTrinhImage({ anh }: any) {
                         <ImageItem video_thumbnail={anh.anh_5} gallery={gallery} index={12} />
                     </ScrollView>
                     :
-                    <View className={`flex justify-center items-center`}>
-                        <Text className={`text-[14px] md:text-[20px] ml-5`}>Không có dữ liệu</Text>
-                    </View>
+                    <EmptyState text="Không có ảnh quá trình" />
             }
 
         </View>

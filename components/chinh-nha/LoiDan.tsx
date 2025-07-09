@@ -4,6 +4,7 @@ import VideoSection from '../common/VideoSection'
 import { getBaiVietByThuThuat, getBaiVietCategoryById, getChinhNhaThuThuatByChinhNhaId, getVideoCategoryById, getVideosByThuThuat } from '@/lib/apiCall';
 import BaiVietSection from '../common/BaiVietSection';
 import { router } from 'expo-router';
+import EmptyState from '../common/EmptyState';
 type LoiDanProps = {
     flag: boolean;
     setFlag: (index: boolean) => void;
@@ -138,9 +139,7 @@ export default function LoiDan({ chinh_nha_id, flag, setFlag }: LoiDanProps) {
                         )}
                     </View>
                 ) : (
-                    <View className={`flex justify-center items-center`}>
-                        <Text className={`text-[14px] md:text-[20px] ml-5`}>Không có lời dặn</Text>
-                    </View>
+                    <EmptyState text="Không có lời dặn" />
                 )
             }
         </View >

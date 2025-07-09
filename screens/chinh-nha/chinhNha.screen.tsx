@@ -45,8 +45,8 @@ export default function ChinhNhaScreen() {
       }, 1000);
     }
   };
-
   const handlePress = (item: ChinhNha) => {
+
     const title = `Chỉnh nha ngày ${formatDate(item.ngay_chinh_nha, "minimize")}`;
     setFlag(true);
     router.push({

@@ -2,6 +2,7 @@ import { View, Text, FlatList, ActivityIndicator, ScrollView } from 'react-nativ
 import React, { useEffect, useState } from 'react'
 import { getDichVuKhac } from '@/lib/apiCall';
 import { formatMoney } from '@/lib/commonFunctions';
+import EmptyState from '../common/EmptyState';
 
 export default function DichVuKhac({ chinh_nha_id }: any) {
     const [dichVuKhac, setDichVuKhac] = useState<Array<any>>([]);
@@ -37,9 +38,7 @@ export default function DichVuKhac({ chinh_nha_id }: any) {
                     has ?
                         <DichVuKhacListItem dichVuKhac={dichVuKhac} />
                         :
-                        <View className={`flex justify-center items-center`}>
-                            <Text className={`text-[14px] md:text-[20px] ml-5`}>Không sử dụng dịch vụ khác</Text>
-                        </View>
+                        <EmptyState text="Không sử dụng dịch vụ khác" />
                 }
             </View>
 
