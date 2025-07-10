@@ -18,21 +18,20 @@ import TimeTracking from "@/components/home/TimeTracking";
 import { calculateDaysDifference, checkDay, checkTodayIsShoot, formatDate } from "@/lib/commonFunctions";
 import Toast from "react-native-toast-message";
 import { usePushNotifications } from "@/hooks/usePushNotifications";
-import * as Application from 'expo-application';
-import { getVersion } from "@/lib/apiCall";
-import CardNotification from "@/components/home/CardNotification";
+import { useVersionUpdate } from "@/hooks/useVersionUpdate";
+import VersionUpdatePopup from "@/components/home/VersionUpdatePopup";
 // Lấy thông tin thiết bị từ expo-device
 
 const HomeScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [videos, setVideos] = useState([]);
-  const [version, setVersion] = useState<string | null>('');
   const [banners, setBanners] = useState([]);
   const [post, setPost] = useState([]);
   const [lichHen, setLichHen] = useState(null);
   const { user } = useUser();
   const { expoPushToken } = usePushNotifications();
   const [flag, setFlag] = useState<boolean>(false);
+  const { showPopup, newVersion, closePopup } = useVersionUpdate();
   const handleUpdateExpoToken = async (id: any, data: any) => {
     try {
       await updateExpoToken(id, data);
@@ -40,29 +39,13 @@ const HomeScreen = () => {
       console.log(error)
     }
   };
-  const checkVersion = async () => {
-    try {
-      const versionData = await getVersion();
-      const version = Application.nativeApplicationVersion;  // Phiên bản ứng dụng (ví dụ: "1.2.3")
-      const build = Application.nativeBuildVersion;
-      if (versionData && versionData.data) {
-        console.log(versionData.data.number);
-        console.log("version:", version);  // Mã build (ví dụ: "123")
-        console.log("build:", build);  //
-        if (version != versionData.data.number) {
-          setVersion(versionData.data.number);
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  console.log(expoPushToken);
+
 
   useEffect(() => {
     fetchVideoData();
     fetchBannerData();
     fetchNews();
-    checkVersion();
     handleDeleteRequest();
     if (user && expoPushToken) {
       handleUpdateExpoToken(user.id, expoPushToken.data);
@@ -92,7 +75,11 @@ const HomeScreen = () => {
 
       if (lichHenRes && lichHenRes.data.length > 0) {
         const today = new Date();
-        const upcomingAppointments = lichHenRes.data.filter((appointment: { ngay_kham: string | number | Date; }) => new Date(appointment.ngay_kham) > today);
+        // Lọc các lịch hẹn sắp tới có status là 'none' hoặc 'pending'
+        const upcomingAppointments = lichHenRes.data.filter((appointment: { ngay_kham: string | number | Date; change_request_status?: string }) => {
+          const status = appointment.change_request_status;
+          return (status === 'none' || status === 'pending') && new Date(appointment.ngay_kham) > today;
+        });
 
         if (upcomingAppointments.length > 0) {
           const closestAppointment = upcomingAppointments.reduce((closest: { ngay_kham: string | number | Date; }, current: { ngay_kham: string | number | Date; }) => {
@@ -177,24 +164,34 @@ const HomeScreen = () => {
     }
   };
 
+  const handleUpdateApp = () => {
+    const url =
+      Platform.OS === 'android'
+        ? 'market://details?id=com.anonymous.nhakhoathuyanh' // Link cho Android
+        : 'https://apps.apple.com/us/app/my-braces-ni%E1%BB%81ng-r%C4%83ng-th%C3%B9y-anh/id6743517132'; // Link cho iOS
+
+    Linking.openURL(url)
+      .catch(err => console.error('Failed to open app:', err));
+  };
+
   return (
     <View className="bg-white">
       <ScrollView
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
-        {
-          version != ''
-            ?
-            <CardNotification flag={false} setFlag={setFlag} version={version ? version : ""} />
-            :
-            null
-        }
         <TimeTracking lichHen={lichHen ? lichHen : null} schedule={lichHen ? formatDate(lichHen, 'minimize') : 0} totalTime={user && user.ngay_gan_mc != null ? calculateDaysDifference(user.ngay_gan_mc) : 0} flag={flag} setFlag={setFlag} />
         <FunctionItemsList schedule={lichHen ? lichHen : null} flag={flag} setFlag={setFlag} />
         <BannerSlide banners={banners} type={1} />
         <RenderVideo videos={videos} flag={flag} setFlag={setFlag} />
         <NewsSection post={post} flag={flag} setFlag={setFlag} />
       </ScrollView>
+      
+      <VersionUpdatePopup
+        visible={showPopup}
+        version={newVersion || ''}
+        onClose={closePopup}
+        onUpdate={handleUpdateApp}
+      />
     </View>
   );
 };

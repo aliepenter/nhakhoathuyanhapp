@@ -1,6 +1,6 @@
 import { View, Text, Alert, Image, ScrollView, TouchableOpacity, Pressable, Linking } from 'react-native'
 import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react'
-import { createDeleteRequest, getAllAccount, getAvatar, logout, updateMainStatus } from '@/lib/apiCall';
+import { createDeleteRequest, getAllAccount, getAvatar, logout, updateMainStatus, deleteExpoToken } from '@/lib/apiCall';
 import { icons } from '@/constants';
 import CustomButton from '@/components/common/CustomButton';
 import { router } from 'expo-router';
@@ -13,11 +13,13 @@ import {
 import { SERVER_URL } from '@/utils/uri';
 import * as Updates from 'expo-updates';
 import Toast from 'react-native-toast-message';
+import { usePushNotifications } from '@/hooks/usePushNotifications';
 
 export default function ProfileScreen() {
     const [flag, setFlag] = useState<boolean>(false);
     const [loading, setLoading] = useState(true);
     const { user, setRefetch } = useUser();
+    const { expoPushToken } = usePushNotifications();
     const snapPoints = useMemo(() => ["40%"], []);
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
     const [account, setAccount] = useState<Array<User>>();
@@ -31,6 +33,9 @@ export default function ProfileScreen() {
 
     const handleLogout = async () => {
         try {
+            if (user && expoPushToken && expoPushToken.data) {
+                await deleteExpoToken(user.id, expoPushToken.data);
+            }
             await logout();
         } catch (error) {
             Alert.alert("Đăng xuất thất bại", "Xin vui lòng thử lại sau");

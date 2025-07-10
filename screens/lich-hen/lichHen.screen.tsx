@@ -3,11 +3,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import CalendarComponent from '@/components/common/CalendarComponent';
 import { icons } from '@/constants';
 import useUser from '@/hooks/auth/useUser';
-import { createDatLich, getChinhNha, getLichHenByUserId, updateLichHen } from '@/lib/apiCall';
+import { createDatLich, getChinhNha, getLichHenByUserId, updateLichHen, postDanhGiaChinhNha } from '@/lib/apiCall';
 import { formatDate, formatISODateToAMPM } from '@/lib/commonFunctions';
 import { router } from 'expo-router';
 import Dialog from "react-native-dialog";
 import Toast from 'react-native-toast-message';
+import ReviewPopup from '@/components/common/ReviewPopup';
+import { getPendingReviews, removePendingReview } from '@/lib/reviewStorage';
 
 const ITEM_HEIGHT = 80;
 
@@ -42,6 +44,9 @@ export default function LichHenScreen() {
     const [selectedDay, setSelectedDay] = useState<string | null>(null);
     const [visible, setVisible] = useState(false);
     const [visibleLichHen, setVisibleLichHen] = useState(false);
+    const [showReview, setShowReview] = useState(false);
+    const [reviewLoading, setReviewLoading] = useState(false);
+    const [pendingReviewId, setPendingReviewId] = useState<number | null>(null);
 
     const scrollToItem = (index: number) => {
         const positionY = index * ITEM_HEIGHT;
@@ -105,6 +110,16 @@ export default function LichHenScreen() {
             };
             fetchData();
         }
+        // Kiểm tra danh sách cần review khi vào trang
+        (async () => {
+            const ids = await getPendingReviews();
+            if (ids.length > 0) {
+                // Ưu tiên buổi gần nhất (id lớn nhất)
+                const latestId = ids[ids.length - 1];
+                setPendingReviewId(latestId);
+                setShowReview(true);
+            }
+        })();
     }, [user]);
 
     const handlePress = (item: ChinhNha) => {
@@ -201,8 +216,17 @@ export default function LichHenScreen() {
             });
         }
     };
+
+    // Lấy chinh_nha_id gần nhất (theo ngày giảm dần)
+    const getLatestChinhNhaId = () => {
+        if (!chinhNha || chinhNha.length === 0) return null;
+        const sorted = [...chinhNha].sort((a, b) => new Date(b.ngay_chinh_nha).getTime() - new Date(a.ngay_chinh_nha).getTime());
+        return sorted[0].id;
+    };
+
     return (
-        <View>
+        <>
+            
             <Dialog.Container visible={visible}>
                 <Dialog.Title>
                     <Text className='text-black font-bold'>Thay đổi lịch hẹn sắp tới</Text>
@@ -309,6 +333,39 @@ export default function LichHenScreen() {
                     </View>
                 }
             </ScrollView>
-        </View>
+            <ReviewPopup
+                visible={showReview}
+                onClose={async () => {
+                    setShowReview(false);
+                    if (pendingReviewId) await removePendingReview(pendingReviewId);
+                }}
+                loading={reviewLoading}
+                onSubmit={async ({ rating, content }) => {
+                    if (!user || !pendingReviewId) return;
+                    setReviewLoading(true);
+                    try {
+                        await postDanhGiaChinhNha({
+                            user_id: user.id,
+                            chinh_nha_id: pendingReviewId,
+                            star_num: rating,
+                            content,
+                        });
+                        setShowReview(false);
+                        await removePendingReview(pendingReviewId);
+                        Toast.show({
+                            type: 'success',
+                            text1: 'Cảm ơn bạn đã đánh giá!',
+                        });
+                    } catch (error) {
+                        Toast.show({
+                            type: 'error',
+                            text1: 'Gửi đánh giá thất bại',
+                        });
+                    } finally {
+                        setReviewLoading(false);
+                    }
+                }}
+            />
+        </>
     )
 }

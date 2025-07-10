@@ -650,6 +650,29 @@ export const updateExpoToken = async (id: any, data: string) => {
   }
 };
 
+// XÓA EXPO TOKEN KHI LOGOUT
+export const deleteExpoToken = async (userId: number, expoToken: string) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      // Truyền token dưới dạng query hoặc body nếu backend yêu cầu, ở đây giả sử truyền query
+      const response = await axios.delete(`${SERVER_URI}/users/expo-token/${userId}`, {
+        data: { expo_notification_token: expoToken },
+      });
+      return {
+        code: 200,
+        data: response.data,
+      };
+    } catch (error) {
+      console.error('Error deleting expo token:', error);
+      throw error;
+    }
+  } else {
+    return null;
+  }
+};
+
 // GET VERSION
 export const getVersion = async () => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);
@@ -915,3 +938,35 @@ export const createLichHen = async (data: any) => {
     return null;
   }
 }
+
+// PUT UPDATE MAIN STATUS USER
+export const updateMainStatus = async (id: number | null) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const response = await axios.put(`${SERVER_URI}/users/update-main-status/${id}`);
+      return {
+        code: 200,
+        data: response.data,
+      };
+    } catch (error: any) {
+      throw error;
+    }
+  } else {
+    return null;
+  }
+};
+
+// Gửi đánh giá chỉnh nha
+export const postDanhGiaChinhNha = async (data: { user_id: number; chinh_nha_id: number; star_num: number; content: string }) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+  if (!token) throw new Error('No auth token');
+  try {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    const res = await axios.post(`${SERVER_URI}/danh-gia`, data);
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};

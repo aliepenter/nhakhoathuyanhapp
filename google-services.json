@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "121003074709",
-    "project_id": "my-braces-notifications",
-    "storage_bucket": "my-braces-notifications.firebasestorage.app"
+    "project_number": "740268456061",
+    "project_id": "my-braces-8f7c5",
+    "storage_bucket": "my-braces-8f7c5.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:121003074709:android:620d8db823302fcc1f279c",
+        "mobilesdk_app_id": "1:740268456061:android:3e196115de6a2cea3ed914",
         "android_client_info": {
           "package_name": "com.anonymous.nhakhoathuyanh"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC3g9TrpsO8LEy0fQ9ygihoghQ3xiG5NXI"
+          "current_key": "AIzaSyBg6TJHa8a5mRPp0-yQrt0SXLB-WYKtfYA"
         }
       ],
       "services": {
