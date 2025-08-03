@@ -36,20 +36,23 @@ export default function DichVuScreen({ services, selectedServiceId, handleServic
             <View className='h-[90%]'>
                 <ScrollView>
                     <View className='flex-row flex-wrap gap-y-[25px]'>
-                        {services.map((service: { id: React.Key | null | undefined; activeIcon: string | number | ImageSource | ImageSource[] | string[] | null | undefined; icon: string | number | ImageSource | ImageSource[] | string[] | null | undefined; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }) => (
+                        {services.map((service: { id: React.Key | null | undefined; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }) => (
                             <TouchableOpacity
                                 key={service.id}
                                 className='w-[33.333333%] justify-center items-center'
                                 onPress={() => handleServiceSelect(service.id)}
                             >
-                                <Image
-                                    className='w-[90px] h-[90px]'
-                                    source={selectedServiceId === service.id ? service.activeIcon : service.icon}
-                                    contentFit='cover'
-                                />
-                                <Text className='font-pregular text-[11px]'>
-                                    {service.name}
-                                </Text>
+                                <View className={`w-[90px] h-[90px] rounded-lg justify-center items-center mb-2 ${
+                                    selectedServiceId === service.id 
+                                        ? 'bg-blue-500 border-2 border-blue-600' 
+                                        : 'bg-gray-100 border-2 border-gray-200'
+                                }`}>
+                                    <Text className={`font-pbold text-center text-[12px] px-2 ${
+                                        selectedServiceId === service.id ? 'text-white' : 'text-gray-700'
+                                    }`}>
+                                        {service.name}
+                                    </Text>
+                                </View>
                             </TouchableOpacity>
                         ))}
                     </View>

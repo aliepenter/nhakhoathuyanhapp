@@ -6,6 +6,8 @@ import {
   RefreshControl,
   ScrollView,
   View,
+  TouchableOpacity,
+  Text,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { deleteRequest, getBanners, getCustomerLibrary, getLichHenByUserId, getPosts, getTrending, updateExpoToken } from "@/lib/apiCall";
@@ -18,7 +20,7 @@ import TimeTracking from "@/components/home/TimeTracking";
 import { calculateDaysDifference, checkDay, checkTodayIsShoot, formatDate } from "@/lib/commonFunctions";
 import Toast from "react-native-toast-message";
 import { usePushNotifications } from "@/hooks/usePushNotifications";
-import { useVersionUpdate } from "@/hooks/useVersionUpdate";
+import { useOTAUpdate } from "@/hooks/useOTAUpdate";
 import VersionUpdatePopup from "@/components/home/VersionUpdatePopup";
 // Lấy thông tin thiết bị từ expo-device
 
@@ -31,7 +33,7 @@ const HomeScreen = () => {
   const { user } = useUser();
   const { expoPushToken } = usePushNotifications();
   const [flag, setFlag] = useState<boolean>(false);
-  const { showPopup, newVersion, closePopup } = useVersionUpdate();
+  const { isUpdateAvailable, isUpdating, updateProgress, newVersion, handleUpdate, checkForOTAUpdate } = useOTAUpdate();
   const handleUpdateExpoToken = async (id: any, data: any) => {
     try {
       await updateExpoToken(id, data);
@@ -180,6 +182,7 @@ const HomeScreen = () => {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
         <TimeTracking lichHen={lichHen ? lichHen : null} schedule={lichHen ? formatDate(lichHen, 'minimize') : 0} totalTime={user && user.ngay_gan_mc != null ? calculateDaysDifference(user.ngay_gan_mc) : 0} flag={flag} setFlag={setFlag} />
+        
         <FunctionItemsList schedule={lichHen ? lichHen : null} flag={flag} setFlag={setFlag} />
         <BannerSlide banners={banners} type={1} />
         <RenderVideo videos={videos} flag={flag} setFlag={setFlag} />
@@ -187,10 +190,12 @@ const HomeScreen = () => {
       </ScrollView>
       
       <VersionUpdatePopup
-        visible={showPopup}
+        visible={isUpdateAvailable}
         version={newVersion || ''}
-        onClose={closePopup}
-        onUpdate={handleUpdateApp}
+        onUpdate={handleUpdate}
+        isOTAUpdate={isUpdateAvailable}
+        isUpdating={isUpdating}
+        updateProgress={updateProgress}
       />
     </View>
   );

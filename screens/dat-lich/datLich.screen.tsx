@@ -19,23 +19,20 @@ export enum StatusTab {
 interface Service {
     id: string;
     name: string;
-    icon: any;
-    activeIcon: any;
+    icon: any | null;
+    activeIcon: any | null;
 }
 
 const services: Service[] = [
-    { id: '1', name: 'Niềng răng mắc cài', icon: icons.niengRang, activeIcon: icons.niengRangActive },
-    { id: '2', name: 'Niềng răng Invisalign', icon: icons.niengRangInvi, activeIcon: icons.niengRangInviActive },
-    { id: '3', name: 'Trồng răng Implant', icon: icons.implant, activeIcon: icons.implantActive },
-    { id: '4', name: 'Trồng răng All on 4', icon: icons.ao4, activeIcon: icons.ao4Active },
-    { id: '5', name: 'Răng sứ thẩm mỹ', icon: icons.tayTrang, activeIcon: icons.tayTrangActive },
-    { id: '6', name: 'Dán sứ Veneer', icon: icons.veneer, activeIcon: icons.veneerActive },
-    { id: '7', name: 'Nhổ răng khôn', icon: icons.nhoRangKhon, activeIcon: icons.nhoRangKhonActive },
-    { id: '8', name: 'Chữa cười hở lợi', icon: icons.tiaLoi, activeIcon: icons.tiaLoiActive },
-    { id: '9', name: 'Thái dương hàm', icon: icons.thaiDuongHam, activeIcon: icons.thaiDuongHamActive },
-    { id: '10', name: 'Chữa tụt lợi', icon: icons.tutLoi, activeIcon: icons.tutLoiActive },
-    { id: '11', name: 'Điều trị tủy', icon: icons.dieuTriTuy, activeIcon: icons.dieuTriTuyActive },
-    { id: '12', name: 'Dịch vụ khác', icon: icons.dichVuKhac, activeIcon: icons.dichVuKhacActive },
+    { id: '1', name: 'Khám chỉnh nha', icon: null, activeIcon: null },
+    { id: '2', name: 'Khám tổng quát', icon: null, activeIcon: null },
+    { id: '3', name: 'Tẩy trắng răng', icon: null, activeIcon: null },
+    { id: '4', name: 'Lấy cao răng', icon: null, activeIcon: null },
+    { id: '5', name: 'Nhổ răng', icon: null, activeIcon: null },
+    { id: '6', name: 'Cắt chỉ', icon: null, activeIcon: null },
+    { id: '7', name: 'Gắn lại khí cụ', icon: null, activeIcon: null },
+    { id: '8', name: 'Chỉnh lại khí cụ', icon: null, activeIcon: null },
+    { id: '9', name: 'Dịch vụ khác', icon: null, activeIcon: null },
 ];
 export default function DatLichScreen() {
     const { user } = useUser();

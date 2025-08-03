@@ -44,6 +44,8 @@ export default function LichHenScreen() {
     const [selectedDay, setSelectedDay] = useState<string | null>(null);
     const [visible, setVisible] = useState(false);
     const [visibleLichHen, setVisibleLichHen] = useState(false);
+    const [hasPendingRequest, setHasPendingRequest] = useState(false);
+    const [changeRequestLoading, setChangeRequestLoading] = useState(false);
     const [showReview, setShowReview] = useState(false);
     const [reviewLoading, setReviewLoading] = useState(false);
     const [pendingReviewId, setPendingReviewId] = useState<number | null>(null);
@@ -66,22 +68,24 @@ export default function LichHenScreen() {
                         getLichHenByUserId(userId),
                         getChinhNha(userId),
                     ]);
-                    if (lichHenRes) {
-                        const today = new Date();
-                        if (lichHenRes.data.length !== 0) {
-                            // Lọc bỏ các lịch hẹn đã approved
-                            const filteredLichHen = lichHenRes.data.filter((item: any) => item.change_request_status !== 'approved');
-                            const dates: MarkedDates = {};
-                            filteredLichHen.forEach((item: { ngay_kham: any }) => {
-                                const formattedDate = formatDate(item.ngay_kham, 'isoDate');
-                                const itemDate = new Date(item.ngay_kham);
-                                if (formattedDate && itemDate > today) {
-                                    dates[formattedDate] = { selected: true, selectedColor: '#B90826' };
-                                }
-                            });
-                            setLichHenData(filteredLichHen);
-                            setLichHenSapToi(dates);
-                        }
+                                         if (lichHenRes) {
+                         const today = new Date();
+                         if (lichHenRes.data.length !== 0) {
+                             // Lọc bỏ các lịch hẹn đã approved
+                             const filteredLichHen = lichHenRes.data.filter((item: any) => item.change_request_status !== 'approved');
+                             const dates: MarkedDates = {};
+                             filteredLichHen.forEach((item: { ngay_kham: any }) => {
+                                 const formattedDate = formatDate(item.ngay_kham, 'isoDate');
+                                 const itemDate = new Date(item.ngay_kham);
+                                 if (formattedDate && itemDate > today) {
+                                     // Kiểm tra status để đặt màu khác nhau
+                                     const selectedColor = item.change_request_status === 'pending' ? '#FFA500' : '#B90826';
+                                     dates[formattedDate] = { selected: true, selectedColor };
+                                 }
+                             });
+                             setLichHenData(filteredLichHen);
+                             setLichHenSapToi(dates);
+                         }
                         setLoading(false)
                     } else {
                         setLoading(false)
@@ -173,36 +177,97 @@ export default function LichHenScreen() {
             const ngayKhamDate = formatDate(item.ngay_kham, 'isoDate');
             return ngayKhamDate === selectedDate;
         });
-        const sv = matchedServices?.map(item => item.dich_vu);
-        if (sv && sv.length > 0) {
-            setServices(sv)
+
+        if (matchedServices && matchedServices.length > 0) {
+            // Tách riêng lịch hẹn pending và none
+            const pendingAppointments = matchedServices.filter(item => item.change_request_status === 'pending');
+            const availableAppointments = matchedServices.filter(item => item.change_request_status !== 'pending');
+            
             setSelectedDay(selectedDate);
             setVisibleLichHen(true);
-        };
+            
+            // Tạo thông báo chi tiết
+            let message = `Bạn có ${matchedServices.length} lịch hẹn vào ngày ${formatDate(selectedDate, 'minimize')}:\n\n`;
+            
+            if (pendingAppointments.length > 0) {
+                message += `📋 Các lịch hẹn đã yêu cầu đặt lịch:\n`;
+                pendingAppointments.forEach((item, index) => {
+                    message += `• ${item.dich_vu}\n`;
+                });
+                message += '\n';
+            }
+            
+            if (availableAppointments.length > 0) {
+                message += `✅ Các lịch hẹn có thể đổi:\n`;
+                availableAppointments.forEach((item, index) => {
+                    message += `• ${item.dich_vu}\n`;
+                });
+                message += '\n';
+            }
+            
+            // Thêm hướng dẫn
+            if (availableAppointments.length > 0) {
+                message += `Bạn có muốn đổi lịch hẹn không?`;
+            } else {
+                message += `Tất cả lịch hẹn đã được yêu cầu đặt lịch.`;
+            }
+            
+            setServices([message]); // Sử dụng services để lưu message
+            setHasPendingRequest(pendingAppointments.length > 0 && availableAppointments.length === 0);
+        }
+        
         setTimeout(() => {
             setFlag(false)
         }, 1000);
     };
     const renderServicesText = (services: any[]) => {
         if (services.length === 0) return '';
+        // Nếu services chỉ có 1 item và là message chi tiết
+        if (services.length === 1 && services[0].includes('Bạn có')) {
+            return services[0];
+        }
+        // Logic cũ cho trường hợp đơn giản
         if (services.length === 1) return `Bạn có lịch ${services[0]} vào ngày ${selectedDay}`;
         return `Bạn có lịch ${services.join(', ')} vào ngày ${selectedDay}`;
     };
 
     const handleChangeDayAccept = async () => {
-        if (!selectedDay || !lichHenData) return;
+        if (!selectedDay || !lichHenData || changeRequestLoading) return;
+        
+        setChangeRequestLoading(true);
+        
         // Tìm lịch hẹn ứng với ngày đang chọn
         const matchedLichHen = lichHenData.find(item => {
             const ngayKhamDate = formatDate(item.ngay_kham, 'isoDate');
             return ngayKhamDate === selectedDay;
         });
-        if (!matchedLichHen) return;
+        if (!matchedLichHen) {
+            setChangeRequestLoading(false);
+            return;
+        }
+        
         const lichHenUpdate: Partial<LichHen> = {
             ngay_kham: selectedDay,
             change_request_status: 'pending',
         };
+        
         try {
             await updateLichHen(matchedLichHen.id, lichHenUpdate);
+            
+            // Cập nhật state ngay sau khi gửi thành công
+            const updatedLichHenData = lichHenData.map(item => {
+                if (item.id === matchedLichHen.id) {
+                    return { ...item, change_request_status: 'pending' };
+                }
+                return item;
+            });
+            setLichHenData(updatedLichHenData);
+            
+            // Cập nhật màu sắc trên calendar
+            const updatedLichHenSapToi = { ...lichHenSapToi };
+            updatedLichHenSapToi[selectedDay] = { selected: true, selectedColor: '#FFA500' };
+            setLichHenSapToi(updatedLichHenSapToi);
+            
             setVisible(false);
             Toast.show({
                 type: 'success',
@@ -214,6 +279,8 @@ export default function LichHenScreen() {
                 type: 'error',
                 text1: 'Đã có lỗi xảy ra, xin thử lại sau',
             });
+        } finally {
+            setChangeRequestLoading(false);
         }
     };
 
@@ -236,20 +303,35 @@ export default function LichHenScreen() {
                         Chúng tôi sẽ liên hệ lại với bạn để thực hiện thay đổi lịch hẹn.
                     </Text>
                 </Dialog.Description>
-                <Dialog.Button label="Hủy bỏ" onPress={handleCancel} />
-                <Dialog.Button label="Đồng ý" onPress={handleChangeDayAccept} />
+                <Dialog.Button label="Hủy bỏ" onPress={handleCancel} disabled={changeRequestLoading} />
+                <Dialog.Button 
+                    label={changeRequestLoading ? "Đang xử lý..." : "Đồng ý"} 
+                    onPress={handleChangeDayAccept} 
+                    disabled={changeRequestLoading}
+                />
             </Dialog.Container>
             <Dialog.Container visible={visibleLichHen}>
                 <Dialog.Title>
-                    <Text className='text-black font-bold'>Thay đổi lịch hẹn sắp tới</Text>
+                    <Text className='text-black font-bold'>
+                        {hasPendingRequest ? 'Thông báo' : 'Thay đổi lịch hẹn sắp tới'}
+                    </Text>
                 </Dialog.Title>
                 <Dialog.Description>
                     <Text className='text-gray-600'>
-                        {renderServicesText(services)}
+                        {hasPendingRequest 
+                            ? 'Yêu cầu của bạn đã được gửi, chúng tôi sẽ liên hệ lại với bạn sớm nhất.'
+                            : renderServicesText(services)
+                        }
                     </Text>
                 </Dialog.Description>
-                <Dialog.Button label="Thay đổi lịch hẹn" onPress={onChangeDay} />
-                <Dialog.Button label="Đồng ý" onPress={handleCancel} />
+                {hasPendingRequest ? (
+                    <Dialog.Button label="Đồng ý" onPress={handleCancel} />
+                ) : (
+                    <>
+                        <Dialog.Button label="Thay đổi lịch hẹn" onPress={onChangeDay} />
+                        <Dialog.Button label="Hủy bỏ" onPress={handleCancel} />
+                    </>
+                )}
             </Dialog.Container>
             <View className={`${Platform.OS === 'ios' ? 'h-[49%]' : 'h-[52%]'} bg-white`}>
                 <View className='h-[88%] bg-white'>

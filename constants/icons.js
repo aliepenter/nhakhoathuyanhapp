@@ -176,7 +176,7 @@ export default {
   nextGreen,
   download,
   download2,
-  flash,
+  flash,  
   flip,
   truocActive,
   traiActive,

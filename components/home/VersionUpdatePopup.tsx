@@ -8,6 +8,7 @@ import {
   Dimensions,
   Animated,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -19,7 +20,10 @@ type VersionUpdatePopupProps = {
   visible: boolean;
   version: string;
   onUpdate: () => void;
-  onClose?: () => void; // optional, chỉ hiện nút đóng khi truyền prop này
+  onClose?: () => void;
+  isOTAUpdate?: boolean;
+  isUpdating?: boolean;
+  updateProgress?: number;
 };
 
 export default function VersionUpdatePopup({
@@ -27,11 +31,15 @@ export default function VersionUpdatePopup({
   version,
   onUpdate,
   onClose,
+  isOTAUpdate = false,
+  isUpdating = false,
+  updateProgress = 0,
 }: VersionUpdatePopupProps) {
   const scaleAnim = useRef(new Animated.Value(0)).current;
   const opacityAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(50)).current;
-  const iconRotateAnim = useRef(new Animated.Value(0)).current;
+  const iconBounceAnim = useRef(new Animated.Value(0)).current;
+  const progressAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     if (visible) {
@@ -56,14 +64,14 @@ export default function VersionUpdatePopup({
       ]).start();
       Animated.loop(
         Animated.sequence([
-          Animated.timing(iconRotateAnim, {
+          Animated.timing(iconBounceAnim, {
             toValue: 1,
-            duration: 2000,
+            duration: 1500,
             useNativeDriver: true,
           }),
-          Animated.timing(iconRotateAnim, {
+          Animated.timing(iconBounceAnim, {
             toValue: 0,
-            duration: 0,
+            duration: 1500,
             useNativeDriver: true,
           }),
         ])
@@ -72,26 +80,54 @@ export default function VersionUpdatePopup({
       scaleAnim.setValue(0);
       opacityAnim.setValue(0);
       slideAnim.setValue(50);
-      iconRotateAnim.setValue(0);
+      iconBounceAnim.setValue(0);
     }
   }, [visible]);
 
+  useEffect(() => {
+    if (isUpdating) {
+      Animated.timing(progressAnim, {
+        toValue: updateProgress,
+        duration: 300,
+        useNativeDriver: false,
+      }).start();
+    }
+  }, [updateProgress, isUpdating]);
+
   const handleUpdate = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    onUpdate();
+    if (!isUpdating) {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      onUpdate();
+    }
   };
 
   const handleClose = () => {
-    if (onClose) {
+    if (onClose && !isUpdating) {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
       onClose();
     }
   };
 
-  const iconRotation = iconRotateAnim.interpolate({
+  const iconTranslateY = iconBounceAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
+    outputRange: [0, -20],
   });
+
+  const getUpdateText = () => {
+    if (isUpdating) {
+      return '🔄 Đang cập nhật...';
+    }
+    return isOTAUpdate ? '🔄 Cập nhật tự động' : '🔄 Cập nhật ngay';
+  };
+
+  const getDescription = () => {
+    if (isUpdating) {
+      return 'Đang tải bản cập nhật mới. Vui lòng chờ...';
+    }
+    return isOTAUpdate 
+      ? 'Đã có phiên bản mới. Ứng dụng sẽ tự động cập nhật và khởi động lại!'
+      : 'Đã có phiên bản mới của ứng dụng. Bạn cần cập nhật để tiếp tục sử dụng!';
+  };
 
   return (
     <Modal
@@ -126,61 +162,99 @@ export default function VersionUpdatePopup({
             end={{ x: 1, y: 1 }}
             style={styles.gradientBackground}
           >
-            {/* Nút đóng chỉ hiện khi có onClose */}
-            {onClose && (
+            {/* Nút đóng chỉ hiện khi có onClose và không đang update */}
+            {onClose && !isUpdating && (
               <Pressable style={styles.closeButton} onPress={handleClose}>
                 <Text style={styles.closeButtonText}>×</Text>
               </Pressable>
             )}
+            
             {/* Header with animated icon */}
             <View style={styles.header}>
               <Animated.View 
-                style={[
-                  styles.iconContainer,
-                  {
-                    transform: [{ rotate: iconRotation }],
-                  },
-                ]}
+                                                   style={[
+                    styles.iconContainer,
+                    {
+                      transform: [{ translateY: iconTranslateY }],
+                    },
+                  ]}
               >
-                <Image source={icons.download} style={styles.icon} />
+                                 {isUpdating ? (
+                   <ActivityIndicator size="large" color="#FFFFFF" />
+                 ) : (
+                   <Image source={icons.download} style={styles.icon} />
+                 )}
               </Animated.View>
-              <Text style={styles.title}>Cập nhật bắt buộc</Text>
+              <Text style={styles.title}>
+                {isUpdating ? 'Đang cập nhật' : 'Cập nhật bắt buộc'}
+              </Text>
               <Text style={styles.versionText}>v{version}</Text>
             </View>
 
             {/* Content */}
             <View style={styles.content}>
               <Text style={styles.description}>
-                Đã có phiên bản mới của ứng dụng. Bạn cần cập nhật để tiếp tục sử dụng!
+                {getDescription()}
               </Text>
-              <View style={styles.featuresContainer}>
-                <View style={styles.featureItem}>
-                  <View style={styles.featureDot} />
-                  <Text style={styles.featureText}>✨ Tính năng mới và cải tiến</Text>
+              
+              {/* Progress bar khi đang update */}
+              {isUpdating && (
+                <View style={styles.progressContainer}>
+                  <View style={styles.progressBar}>
+                    <Animated.View 
+                      style={[
+                        styles.progressFill,
+                        {
+                          width: progressAnim.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: ['0%', '100%'],
+                          }),
+                        },
+                      ]}
+                    />
+                  </View>
+                  <Text style={styles.progressText}>
+                    {Math.round(updateProgress * 100)}%
+                  </Text>
                 </View>
-                <View style={styles.featureItem}>
-                  <View style={styles.featureDot} />
-                  <Text style={styles.featureText}>🔧 Sửa lỗi và tối ưu hiệu suất</Text>
+              )}
+              
+              {!isUpdating && (
+                <View style={styles.featuresContainer}>
+                  <View style={styles.featureItem}>
+                    <View style={styles.featureDot} />
+                    <Text style={styles.featureText}>✨ Tính năng mới và cải tiến</Text>
+                  </View>
+                  <View style={styles.featureItem}>
+                    <View style={styles.featureDot} />
+                    <Text style={styles.featureText}>🔧 Sửa lỗi và tối ưu hiệu suất</Text>
+                  </View>
+                  <View style={styles.featureItem}>
+                    <View style={styles.featureDot} />
+                    <Text style={styles.featureText}>🔒 Bảo mật được nâng cấp</Text>
+                  </View>
                 </View>
-                <View style={styles.featureItem}>
-                  <View style={styles.featureDot} />
-                  <Text style={styles.featureText}>🔒 Bảo mật được nâng cấp</Text>
-                </View>
-              </View>
+              )}
             </View>
 
-            {/* Only update button */}
+            {/* Update button */}
             <View style={styles.buttonContainer}>
               <Pressable
-                style={styles.updateButton}
+                style={[
+                  styles.updateButton,
+                  isUpdating && styles.updateButtonDisabled
+                ]}
                 onPress={handleUpdate}
+                disabled={isUpdating}
                 android_ripple={{ color: 'rgba(255,255,255,0.3)' }}
               >
                 <LinearGradient
                   colors={['#FFFFFF', '#F8F9FA']}
                   style={styles.updateButtonGradient}
                 >
-                  <Text style={styles.updateButtonText}>🔄 Cập nhật ngay</Text>
+                  <Text style={styles.updateButtonText}>
+                    {getUpdateText()}
+                  </Text>
                 </LinearGradient>
               </Pressable>
             </View>
@@ -252,6 +326,10 @@ const styles = StyleSheet.create({
     height: 30,
     tintColor: '#FFFFFF',
   },
+  iconEmoji: {
+    fontSize: 30,
+    color: '#FFFFFF',
+  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -272,6 +350,27 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 24,
     marginBottom: 20,
+  },
+  progressContainer: {
+    marginBottom: 20,
+  },
+  progressBar: {
+    height: 8,
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    borderRadius: 4,
+    overflow: 'hidden',
+    marginBottom: 8,
+  },
+  progressFill: {
+    height: '100%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 4,
+  },
+  progressText: {
+    fontSize: 14,
+    color: '#FFFFFF',
+    textAlign: 'center',
+    fontWeight: '600',
   },
   featuresContainer: {
     gap: 12,
@@ -306,6 +405,9 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     shadowRadius: 4,
+  },
+  updateButtonDisabled: {
+    opacity: 0.7,
   },
   updateButtonGradient: {
     paddingVertical: 16,

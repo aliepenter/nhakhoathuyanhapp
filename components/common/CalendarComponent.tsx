@@ -59,7 +59,7 @@ export default function CalendarComponent({ flag, disableArrowLeft, enableDayCli
             [today]: { marked: true, dotColor: 'blue' },
             [selectedDate]: { selected: true, selectedColor: '#FB3F4A' }
         });
-    }, [selectedDate, markedDates, today]);
+    }, [selectedDate, markedDates, lichHenSapToi, today]);
 
     return (
         <View>

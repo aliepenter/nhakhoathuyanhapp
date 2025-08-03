@@ -5,6 +5,7 @@ import { LogBox, StatusBar, View, Text } from "react-native";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 import React from "react";
 import * as SplashScreen from 'expo-splash-screen';
+import OTAUpdateManager from '@/components/home/OTAUpdateManager';
 
 SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({
@@ -73,12 +74,12 @@ function RootLayoutNav() {
   };
 
   return (
-    <>
+    <OTAUpdateManager>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" />
       </Stack>
       <StatusBar barStyle={'light-content'} />
       <Toast config={toastConfig} />
-    </>
+    </OTAUpdateManager>
   );
 }

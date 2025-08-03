@@ -2,7 +2,7 @@
   "expo": {
     "name": "My Braces",
     "slug": "nha-khoa-thuy-anh",
-    "version": "1.0.9",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/logonotext.png",
     "scheme": "nha-khoa-thuy-anh",
@@ -19,7 +19,8 @@
         },
         "ITSAppUsesNonExemptEncryption": false
       },
-      "bundleIdentifier": "com.nhakhoathuyanh.mybraces"
+      "bundleIdentifier": "com.nhakhoathuyanh.mybraces",
+      "buildNumber": "2"
     },
     "android": {
       "icon": "./assets/images/logonotextandroid.png",
@@ -35,8 +36,15 @@
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.INTERNET",
         "android.permission.ACCESS_MEDIA_LOCATION",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_MEDIA_LOCATION",
         "android.permission.RECORD_AUDIO"
-      ]
+      ],
+      "versionCode": 2
     },
     "web": {
       "bundler": "metro",
@@ -46,6 +54,7 @@
     "plugins": [
       "expo-router",
       "expo-secure-store",
+      "expo-updates",
       [
         "expo-splash-screen",
         {
@@ -108,6 +117,15 @@
       "eas": {
         "projectId": "60d0a650-21c9-4072-a9da-33aeccd41f9b"
       }
+    },
+    "developmentClient": {
+      "silenceLaunchWarnings": true
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/60d0a650-21c9-4072-a9da-33aeccd41f9b"
     }
   }
 }

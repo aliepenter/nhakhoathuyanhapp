@@ -9,7 +9,11 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "publish-ota": "node ./scripts/publish-ota.js",
+    "deploy-ota": "node ./scripts/deploy-ota.js",
+    "version": "node ./scripts/version-manager.js",
+    "build-dev": "node ./scripts/build-dev.js"
   },
   "jest": {
     "preset": "jest-expo"
