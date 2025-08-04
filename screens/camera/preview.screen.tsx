@@ -1,9 +1,9 @@
-import { View, Text, TouchableOpacity, Alert, ActivityIndicator, Platform, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, ActivityIndicator, Platform, StyleSheet, Share } from 'react-native';
 import React, { useState } from 'react';
 import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
 import { router, useNavigation } from 'expo-router';
-import * as MediaLibrary from 'expo-media-library';
+import * as FileSystem from 'expo-file-system';
 import { icons } from '@/constants';
 import Toast from 'react-native-toast-message'
 import axios from 'axios';
@@ -23,31 +23,44 @@ interface PictureViewProps {
 export default function PreviewScreen({ picture, setPicture, status, id }: PictureViewProps) {
     const [loading, setLoading] = React.useState<boolean>(false);
     const { user } = useUser();
-    const [permissionResponse, requestPermission] = MediaLibrary.usePermissions();
+    
     const handleBack = () => {
         setPicture("");
     };
+    
     const handleSave = async () => {
-        if (permissionResponse && permissionResponse.status !== 'granted') {
-            await requestPermission().then(async res => {
-                if (res.granted) {
-                    await MediaLibrary.saveToLibraryAsync(picture);
-                    Toast.show({
-                        type: 'success',
-                        text1: 'Thành công',
-                        text2: 'Ảnh đã được lưu vào thư viện của bạn'
-                    });
-                }
+        try {
+            // Tạo tên file duy nhất
+            const fileName = `mybraces_${Date.now()}.jpg`;
+            const fileUri = `${FileSystem.documentDirectory}${fileName}`;
+            
+            // Copy ảnh từ camera temp sang Documents
+            await FileSystem.copyAsync({
+                from: picture,
+                to: fileUri
             });
-        } else {
-            await MediaLibrary.saveToLibraryAsync(picture);
+            
+            // Chia sẻ ảnh để người dùng có thể lưu vào thư viện
+            await Share.share({
+                url: fileUri,
+                message: 'Ảnh từ ứng dụng My Braces'
+            });
+            
             Toast.show({
                 type: 'success',
                 text1: 'Thành công',
-                text2: 'Ảnh đã được lưu vào thư viện của bạn'
+                text2: 'Ảnh đã được lưu và có thể chia sẻ'
+            });
+        } catch (error) {
+            console.error('Error saving image:', error);
+            Toast.show({
+                type: 'error',
+                text1: 'Lỗi',
+                text2: 'Không thể lưu ảnh'
             });
         }
     };
+    
     const handleUpload = async () => {
         setLoading(true);
         const fileName = `${getToday('path')}.jpg`;
@@ -144,7 +157,7 @@ export default function PreviewScreen({ picture, setPicture, status, id }: Pictu
                                     <View className='bg-white/10 p-4 rounded-full'>
                                         <Image source={icons.download2} className='w-[30px] h-[30px]' />
                                     </View>
-                                    <Text className='text-white mt-2 font-semibold'>Tải về máy</Text>
+                                    <Text className='text-white mt-2 font-semibold'>Chia sẻ ảnh</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity 
                                     onPress={handleBack} 

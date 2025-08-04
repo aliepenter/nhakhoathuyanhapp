@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { icons, images } from "@/constants";
 import * as ImagePicker from "expo-image-picker";
 
@@ -15,6 +15,7 @@ import { updateAvatar } from "@/lib/apiCall";
 import { formatDate, getToday } from "@/lib/commonFunctions";
 import axios from "axios";
 import Toast from "react-native-toast-message";
+
 type HeaderSectionProps = {
   showNotification: boolean;
   editAvatar: boolean;
@@ -28,6 +29,7 @@ type HeaderSectionProps = {
   setFlag: (index: boolean) => void;
   customBgColor: string;
 };
+
 export default function HeaderSection({
   disable,
   disableChange,
@@ -41,17 +43,30 @@ export default function HeaderSection({
   setRefetch,
   customBgColor,
 }: HeaderSectionProps) {
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [localAvatarUrl, setLocalAvatarUrl] = useState<string | null>(null);
+
   const handleCamera = async () => {
+    if (uploadingAvatar) return; // Prevent multiple uploads
+    
     setFlag(true);
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
-    if (!result.canceled) {
-      if (result.assets[0].uri && avatar?.id) {
+    setUploadingAvatar(true);
+    
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: "images",
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+      });
+      
+      if (!result.canceled && result.assets[0].uri && avatar?.id) {
         const fileName = `${user.id}_${user.so_dien_thoai}_${formatDate(user.ngay_sinh, "path")}.jpg`;
+        const timestamp = Date.now();
+        
+        // Show local image immediately
+        setLocalAvatarUrl(result.assets[0].uri);
+        
         try {
           const formData = new FormData();
           formData.append("file", {
@@ -59,44 +74,73 @@ export default function HeaderSection({
             type: "image/jpeg",
             name: fileName,
           } as any);
+          
           await axios.post(`${SERVER_URI}/file/upload-avatar`, formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
           });
+          
           const anh: any = {
-            value: `img/uploads/avatar/${fileName}?timestamp=${Date.now()}`,
+            value: `img/uploads/avatar/${fileName}?v=${timestamp}`,
           };
 
-          try {
-            await updateAvatar(avatar.id, anh);
-            setRefetch(Date.now());
-            Toast.show({
-              position: 'bottom',
-              type: "success",
-              text1: "Thành công",
-              text2: "Thay đổi ảnh đại diện thành công",
-            });
-          } catch (error) {
-            Toast.show({
-              type: "error",
-              text1: "Đã có lỗi xảy ra, xin thử lại sau",
-            });
-          }
-        } catch (error) {
+          await updateAvatar(avatar.id, anh);
+          
+          // Update local state with new server URL
+          setLocalAvatarUrl(`${SERVER_URL}${anh.value}`);
+          
+          // Trigger refetch after a short delay to ensure server has processed
+          setTimeout(() => {
+            setRefetch(timestamp);
+          }, 500);
+          
           Toast.show({
-            type: "info",
-            text1: "Ứng dụng chưa sẵn sàng",
-            text2: "Vui lòng thay thế ảnh sau vài giây",
+            position: 'bottom',
+            type: "success",
+            text1: "Thành công",
+            text2: "Thay đổi ảnh đại diện thành công",
           });
-          console.error("Error uploading file:", error);
+          
+        } catch (error) {
+          console.error("Error uploading avatar:", error);
+          Toast.show({
+            type: "error",
+            text1: "Lỗi upload",
+            text2: "Không thể tải ảnh lên server",
+          });
+          // Reset local avatar on error
+          setLocalAvatarUrl(null);
         }
       }
+    } catch (error) {
+      console.error("Error picking image:", error);
+      Toast.show({
+        type: "error",
+        text1: "Lỗi",
+        text2: "Không thể chọn ảnh",
+      });
+    } finally {
+      setUploadingAvatar(false);
+      setTimeout(() => {
+        setFlag(false);
+      }, 1000);
     }
-    setTimeout(() => {
-      setFlag(false);
-    }, 1000);
   };
+
+  // Determine which avatar URL to show
+  const getAvatarUrl = () => {
+    if (localAvatarUrl) {
+      return localAvatarUrl;
+    }
+    if (avatar?.value) {
+      return `${SERVER_URL}${avatar.value}`;
+    }
+    return null;
+  };
+
+  const avatarUrl = getAvatarUrl();
+
   return (
     <View className={`${customBgColor} h-[150px]`}>
       <ImageBackground
@@ -110,13 +154,17 @@ export default function HeaderSection({
               avatar ? (
                 <View className="h-[70px] w-[70px] bg-gray-500 rounded-full justify-center items-center">
                   {
-                    !disable ? (
+                    !disable && !uploadingAvatar ? (
                       <Image
-                        source={{ uri: `${SERVER_URL}${avatar.value}` }}
+                        source={avatarUrl ? { uri: avatarUrl } : undefined}
                         resizeMode="contain"
                         alt="avatar"
-                        fadeDuration={0.5}
+                        fadeDuration={0.3}
                         className="rounded-full w-full h-full"
+                        onError={() => {
+                          console.log("Avatar image failed to load");
+                          setLocalAvatarUrl(null);
+                        }}
                       />
                     ) : (
                       <ActivityIndicator color={'#00E5E5'} />
@@ -134,8 +182,11 @@ export default function HeaderSection({
               </View>
             )}
             {editAvatar ? (
-              <TouchableOpacity disabled={flag == true ? true : disableChange == false ? false : true} onPress={handleCamera}>
-                <View className={`absolute bg-black bottom-[0px] right-[0px] rounded-[50px] w-[20px] h-[20px] justify-center items-center ${!disableChange ? "" : "opacity-30"}`}>
+              <TouchableOpacity 
+                disabled={flag || uploadingAvatar || disableChange} 
+                onPress={handleCamera}
+              >
+                <View className={`absolute bg-black bottom-[0px] right-[0px] rounded-[50px] w-[20px] h-[20px] justify-center items-center ${!disableChange && !uploadingAvatar ? "" : "opacity-30"}`}>
                   <Image
                     source={icons.edit}
                     resizeMode="contain"

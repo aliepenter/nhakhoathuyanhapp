@@ -13,7 +13,8 @@
     "publish-ota": "node ./scripts/publish-ota.js",
     "deploy-ota": "node ./scripts/deploy-ota.js",
     "version": "node ./scripts/version-manager.js",
-    "build-dev": "node ./scripts/build-dev.js"
+    "build-dev": "node ./scripts/build-dev.js",
+    "build-minor": "node ./scripts/build-minor-update.js"
   },
   "jest": {
     "preset": "jest-expo"
@@ -57,7 +58,6 @@
     "expo-image-picker": "~16.1.4",
     "expo-linear-gradient": "~14.1.5",
     "expo-linking": "~7.1.7",
-    "expo-media-library": "~17.1.7",
     "expo-notifications": "~0.31.4",
     "expo-router": "~5.1.3",
     "expo-secure-store": "~14.2.3",
