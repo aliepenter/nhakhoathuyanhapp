@@ -20,8 +20,7 @@ const useLibrary = () => {
             console.error('Error fetching data:', err);
         }
     };
-
-    // Sử dụng useFocusEffect để gọi hàm fetch khi component được focus
+    // Sử dụng useFocusEffect để gọi hàm fetch khi component được focus 
     useFocusEffect(
         React.useCallback(() => {
             if (user && user.id) {

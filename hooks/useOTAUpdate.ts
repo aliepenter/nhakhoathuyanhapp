@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import * as Updates from 'expo-updates';
 import * as Application from 'expo-application';
-import { Alert, Platform } from 'react-native';
+import { Alert, Linking, Platform } from 'react-native';
 import { getVersion } from '@/lib/apiCall';
 
 export const useOTAUpdate = () => {
   const [isUpdateAvailable, setIsUpdateAvailable] = useState(false);
+  const [isOtaAvailable, setIsOtaAvailable] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [updateProgress, setUpdateProgress] = useState(0);
   const [newVersion, setNewVersion] = useState<string | null>(null);
@@ -14,26 +15,27 @@ export const useOTAUpdate = () => {
     try {
       // Kiểm tra xem có update OTA không
       const update = await Updates.checkForUpdateAsync();
-      
+
       if (update.isAvailable) {
         setIsUpdateAvailable(true);
+        setIsOtaAvailable(true);
         setNewVersion('Mới nhất');
         return true;
       }
-      
       // Nếu không có OTA, kiểm tra version từ server
       const currentVersion = Application.nativeApplicationVersion;
       const versionData = await getVersion();
-      
+
       if (versionData && versionData.data) {
         const latestVersion = versionData.data.number;
-        
+
         if (currentVersion !== latestVersion) {
+          setIsUpdateAvailable(true);
           setNewVersion(latestVersion);
           return false;
         }
       }
-      
+
       return false;
     } catch (error) {
       console.error('Error checking for OTA update:', error);
@@ -67,21 +69,17 @@ export const useOTAUpdate = () => {
   };
 
   const openAppStore = () => {
-    const storeUrl = Platform.select({
-      ios: `https://apps.apple.com/app/id${Application.applicationId}`,
-      android: `https://play.google.com/store/apps/details?id=${Application.applicationId}`,
-    });
-    
-    if (storeUrl) {
-      // Sử dụng Linking để mở store
-      import('expo-linking').then(({ openURL }) => {
-        openURL(storeUrl);
-      });
-    }
+    const url =
+      Platform.OS === 'android'
+        ? 'market://details?id=com.anonymous.nhakhoathuyanh' // Link cho Android
+        : 'https://apps.apple.com/us/app/my-braces-ni%E1%BB%81ng-r%C4%83ng-th%C3%B9y-anh/id6743517132'; // Link cho iOS
+
+    Linking.openURL(url)
+      .catch(err => console.error('Failed to open app:', err));
   };
 
   const handleUpdate = async () => {
-    if (isUpdateAvailable) {
+    if (isOtaAvailable) {
       // Có OTA update - thực hiện cập nhật tự động
       await performOTAUpdate();
     } else {

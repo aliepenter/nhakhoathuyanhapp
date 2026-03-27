@@ -627,7 +627,6 @@ export const changePassword = async (id: any, data: any) => {
 // PUT UPDATE TOKEN EXPO
 export const updateExpoToken = async (id: any, data: string) => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);
-  console.log("token:", data)
   if (token) {
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;

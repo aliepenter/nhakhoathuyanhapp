@@ -22,6 +22,7 @@ import Toast from "react-native-toast-message";
 import { usePushNotifications } from "@/hooks/usePushNotifications";
 import { useOTAUpdate } from "@/hooks/useOTAUpdate";
 import VersionUpdatePopup from "@/components/home/VersionUpdatePopup";
+import { useVersionUpdate } from "@/hooks/useVersionUpdate";
 // Lấy thông tin thiết bị từ expo-device
 
 const HomeScreen = () => {
@@ -33,6 +34,7 @@ const HomeScreen = () => {
   const { user } = useUser();
   const { expoPushToken } = usePushNotifications();
   const [flag, setFlag] = useState<boolean>(false);
+  const { showPopup, newVersionStore, closePopup } = useVersionUpdate();
   const { isUpdateAvailable, isUpdating, updateProgress, newVersion, handleUpdate, checkForOTAUpdate } = useOTAUpdate();
   const handleUpdateExpoToken = async (id: any, data: any) => {
     try {
@@ -41,8 +43,6 @@ const HomeScreen = () => {
       console.log(error)
     }
   };
-  console.log(expoPushToken);
-
 
   useEffect(() => {
     fetchVideoData();
@@ -182,13 +182,13 @@ const HomeScreen = () => {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
         <TimeTracking lichHen={lichHen ? lichHen : null} schedule={lichHen ? formatDate(lichHen, 'minimize') : 0} totalTime={user && user.ngay_gan_mc != null ? calculateDaysDifference(user.ngay_gan_mc) : 0} flag={flag} setFlag={setFlag} />
-        
+
         <FunctionItemsList schedule={lichHen ? lichHen : null} flag={flag} setFlag={setFlag} />
         <BannerSlide banners={banners} type={1} />
         <RenderVideo videos={videos} flag={flag} setFlag={setFlag} />
         <NewsSection post={post} flag={flag} setFlag={setFlag} />
       </ScrollView>
-      
+
       <VersionUpdatePopup
         visible={isUpdateAvailable}
         version={newVersion || ''}

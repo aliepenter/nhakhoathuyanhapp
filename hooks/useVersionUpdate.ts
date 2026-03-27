@@ -4,18 +4,19 @@ import { getVersion } from '@/lib/apiCall';
 
 export const useVersionUpdate = () => {
   const [showPopup, setShowPopup] = useState(false);
-  const [newVersion, setNewVersion] = useState<string | null>(null);
+  const [newVersionStore, setNewVersionStore] = useState<string | null>(null);
   const [isChecking, setIsChecking] = useState(true);
 
   const checkForUpdate = async () => {
     try {
       setIsChecking(true);
       const currentVersion = Application.nativeApplicationVersion;
+      console.log('currentVersion', currentVersion);
       const versionData = await getVersion();
       if (versionData && versionData.data) {
         const latestVersion = versionData.data.number;
         if (currentVersion !== latestVersion) {
-          setNewVersion(latestVersion);
+          setNewVersionStore(latestVersion);
           setShowPopup(true);
         } else {
           setShowPopup(false);
@@ -38,7 +39,7 @@ export const useVersionUpdate = () => {
 
   return {
     showPopup,
-    newVersion,
+    newVersionStore,
     isChecking,
     closePopup,
     checkForUpdate,
