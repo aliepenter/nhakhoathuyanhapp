@@ -2,7 +2,7 @@
   "expo": {
     "name": "My Braces",
     "slug": "nha-khoa-thuy-anh",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "orientation": "portrait",
     "icon": "./assets/images/logonotext.png",
     "scheme": "nha-khoa-thuy-anh",
