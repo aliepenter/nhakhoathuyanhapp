@@ -6,8 +6,6 @@ import { Platform } from "react-native";
 import { addPendingReview } from '@/lib/reviewStorage';
 import { router } from 'expo-router';
 
-const isExpoGo = Constants.executionEnvironment === 'storeClient';
-
 export interface PushNotificationState {
     notification?: Notifications.Notification;
     expoPushToken?: Notifications.ExpoPushToken;
@@ -42,11 +40,6 @@ export const usePushNotifications = (): PushNotificationState => {
         try {
             if (!Device.isDevice) {
                 setError("Please use a physical device for push notifications");
-                return;
-            }
-
-            // Expo Go does not support remote push tokens on Android (SDK 53+).
-            if (isExpoGo) {
                 return;
             }
 

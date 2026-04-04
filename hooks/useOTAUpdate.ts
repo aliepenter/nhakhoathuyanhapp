@@ -12,6 +12,13 @@ export const useOTAUpdate = () => {
   const [newVersion, setNewVersion] = useState<string | null>(null);
 
   const checkForOTAUpdate = async () => {
+    // expo-updates check API is unavailable when updates module is disabled.
+    if (!Updates.isEnabled || __DEV__) {
+      setIsUpdateAvailable(false);
+      setIsOtaAvailable(false);
+      return false;
+    }
+
     try {
       // Kiểm tra xem có update OTA không
       const update = await Updates.checkForUpdateAsync();
@@ -44,6 +51,10 @@ export const useOTAUpdate = () => {
   };
 
   const performOTAUpdate = async () => {
+    if (!Updates.isEnabled || __DEV__) {
+      return;
+    }
+
     try {
       setIsUpdating(true);
       setUpdateProgress(0);
