@@ -2,7 +2,7 @@
   "expo": {
     "name": "My Braces",
     "slug": "nha-khoa-thuy-anh",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "orientation": "portrait",
     "icon": "./assets/images/logonotext.png",
     "scheme": "nha-khoa-thuy-anh",
@@ -87,7 +87,8 @@
         "expo-build-properties",
         {
           "android": {
-            "usesCleartextTraffic": true
+            "usesCleartextTraffic": true,
+            "ndkVersion": "27.1.12297006"
           }
         }
       ],
