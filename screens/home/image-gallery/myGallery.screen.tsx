@@ -8,7 +8,7 @@ import CustomButton from '@/components/common/CustomButton'
 import { icons } from '@/constants'
 import { deleteCustomerLibrary, getCustomerLibrary } from '@/lib/apiCall'
 import { Image } from 'expo-image';
-import { router } from 'expo-router'
+import { useRouter } from 'expo-router'
 import { useCameraPermissions } from 'expo-camera';
 import useLibrary from '@/hooks/useTodayLibrary'
 import { useLocalSearchParams } from 'expo-router'
@@ -19,6 +19,7 @@ export default function MyGalleryScreen({ user }: any) {
   const [hasImage, setHasImage] = useState(false);
   const [id, setId] = useState<number | null>(null);
   const { refresh }: any = useLocalSearchParams() || {};
+  const router = useRouter();
   const onRefresh = async () => {
     setRefreshing(true);
     setLoading(true);
@@ -64,18 +65,14 @@ export default function MyGalleryScreen({ user }: any) {
   };
   const [permission, requestPermission] = useCameraPermissions();
   const handleCamera = async () => {
+    const cameraUrl = `/(routes)/camera?statusImage=${encodeURIComponent(String(hasImage))}&id=${encodeURIComponent(id == null ? '' : String(id))}&statusUpload=customLibrary`;
+
     if (permission && permission.granted) {
-      router.push({
-        pathname: "/(routes)/camera",
-        params: { statusImage: String(hasImage), id: id, statusUpload: 'customLibrary' }
-      });
+      router.push(cameraUrl as any);
     } else {
       await requestPermission().then(res => {
         if (res.granted) {
-          router.push({
-            pathname: "/(routes)/camera",
-            params: { statusImage: String(hasImage), id: id, statusUpload: 'customLibrary' }
-          });
+          router.push(cameraUrl as any);
         }
       })
     }

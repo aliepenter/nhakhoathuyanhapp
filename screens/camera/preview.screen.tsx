@@ -20,6 +20,27 @@ interface PictureViewProps {
     id: number | null
     setPicture: React.Dispatch<React.SetStateAction<string>>
 }
+
+const RETRYABLE_UPLOAD_ERROR_PATTERNS = [
+    'eai_again',
+    'getaddrinfo',
+    'timeout',
+    'network request failed',
+    'internal server error',
+    's3 upload failed',
+];
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const isRetryableUploadError = (statusCode?: number, message?: string) => {
+    if (typeof statusCode === 'number' && statusCode >= 500) {
+        return true;
+    }
+
+    const normalized = (message || '').toLowerCase();
+    return RETRYABLE_UPLOAD_ERROR_PATTERNS.some((pattern) => normalized.includes(pattern));
+};
+
 export default function PreviewScreen({ picture, setPicture, status, id }: PictureViewProps) {
     const [loading, setLoading] = React.useState<boolean>(false);
     const { user } = useUser();
@@ -64,9 +85,9 @@ export default function PreviewScreen({ picture, setPicture, status, id }: Pictu
     const handleUpload = async () => {
         setLoading(true);
         const fileName = `${getToday('path')}.jpg`;
+        let uploadUri = picture;
         try {
             // Normalize EXIF orientation before upload (fixes iOS 90° rotation bug)
-            let uploadUri = picture;
             if (Platform.OS === 'ios') {
                 const manipulated = await ImageManipulator.manipulateAsync(
                     picture,
@@ -88,25 +109,62 @@ export default function PreviewScreen({ picture, setPicture, status, id }: Pictu
                 name: fileName
             } as any);
 
-            const response = await fetch(`${SERVER_URI}/file/upload-selfie`, {
-                method: 'POST',
-                body: formData,
-            });
-
+            const maxRetries = 3;
             let responseData: any = null;
-            const contentType = response.headers.get('content-type') || '';
-            if (contentType.includes('application/json')) {
-                responseData = await response.json();
-            } else {
-                responseData = await response.text();
+            let lastUploadError: any = null;
+
+            for (let attempt = 1; attempt <= maxRetries; attempt++) {
+                try {
+                    const response = await fetch(`${SERVER_URI}/file/upload-selfie`, {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    const contentType = response.headers.get('content-type') || '';
+                    if (contentType.includes('application/json')) {
+                        responseData = await response.json();
+                    } else {
+                        responseData = await response.text();
+                    }
+
+                    if (!response.ok) {
+                        throw {
+                            status: response.status,
+                            responseData,
+                            message: 'Upload selfie failed',
+                        };
+                    }
+
+                    lastUploadError = null;
+                    break;
+                } catch (error) {
+                    const uploadError = error as any;
+                    const statusCode = uploadError?.status || uploadError?.response?.status;
+                    const responsePayload = uploadError?.responseData || uploadError?.response?.data;
+                    const errorMessage =
+                        responsePayload?.message ||
+                        responsePayload?.error ||
+                        uploadError?.message ||
+                        '';
+
+                    lastUploadError = {
+                        ...uploadError,
+                        status: statusCode,
+                        responseData: responsePayload,
+                        message: uploadError?.message || 'Upload selfie failed',
+                    };
+
+                    const canRetry = isRetryableUploadError(statusCode, errorMessage);
+                    if (!canRetry || attempt === maxRetries) {
+                        break;
+                    }
+
+                    await sleep(600 * attempt);
+                }
             }
 
-            if (!response.ok) {
-                throw {
-                    status: response.status,
-                    responseData,
-                    message: 'Upload selfie failed',
-                };
+            if (lastUploadError) {
+                throw lastUploadError;
             }
 
             const anh: any = {
@@ -144,7 +202,7 @@ export default function PreviewScreen({ picture, setPicture, status, id }: Pictu
                 message: uploadError?.message,
                 status: statusCode,
                 responseData,
-                uploadUri: picture,
+                uploadUri,
             });
 
             Toast.show({
