@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
 import { router, useNavigation } from 'expo-router';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
+import * as ImageManipulator from 'expo-image-manipulator';
 import { icons } from '@/constants';
 import Toast from 'react-native-toast-message'
-import axios from 'axios';
 import { formatInformation, getToday } from '@/lib/commonFunctions';
 import useUser from '@/hooks/auth/useUser';
 import { createCustomerLibrary, updateCustomerLibrary } from '@/lib/apiCall';
@@ -65,26 +65,56 @@ export default function PreviewScreen({ picture, setPicture, status, id }: Pictu
         setLoading(true);
         const fileName = `${getToday('path')}.jpg`;
         try {
+            // Normalize EXIF orientation before upload (fixes iOS 90° rotation bug)
+            let uploadUri = picture;
+            if (Platform.OS === 'ios') {
+                const manipulated = await ImageManipulator.manipulateAsync(
+                    picture,
+                    [],
+                    { compress: 0.9, format: ImageManipulator.SaveFormat.JPEG }
+                );
+                uploadUri = manipulated.uri;
+            }
+
+            const fileInfo = await FileSystem.getInfoAsync(uploadUri);
+            if (!fileInfo.exists) {
+                throw new Error('Local image file not found before upload');
+            }
+
             const formData = new FormData();
             formData.append('file', {
-                uri: picture,
+                uri: uploadUri,
                 type: 'image/jpeg',
                 name: fileName
             } as any);
-            await axios.post(`${SERVER_URI}/file/upload-selfie`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
+
+            const response = await fetch(`${SERVER_URI}/file/upload-selfie`, {
+                method: 'POST',
+                body: formData,
             });
-        } catch (error) {
-            console.error('Error uploading file:', error);
-        }
-        const anh: any = {
-            image_path: `img/uploads/selfie/${fileName}`,
-            user_id: user?.id,
-            system: Platform.OS === 'ios' ? 1 : 0
-        };
-        try {
+
+            let responseData: any = null;
+            const contentType = response.headers.get('content-type') || '';
+            if (contentType.includes('application/json')) {
+                responseData = await response.json();
+            } else {
+                responseData = await response.text();
+            }
+
+            if (!response.ok) {
+                throw {
+                    status: response.status,
+                    responseData,
+                    message: 'Upload selfie failed',
+                };
+            }
+
+            const anh: any = {
+                image_path: `img/uploads/selfie/${fileName}`,
+                user_id: user?.id,
+                system: Platform.OS === 'ios' ? 1 : 0
+            };
+
             if (status == 'true') {
                 await updateCustomerLibrary(id, anh);
             } else {
@@ -102,9 +132,25 @@ export default function PreviewScreen({ picture, setPicture, status, id }: Pictu
                 params: { refresh: Date.now() }
             });
         } catch (error) {
+            const uploadError = error as any;
+            const statusCode = uploadError?.status || uploadError?.response?.status;
+            const responseData = uploadError?.responseData || uploadError?.response?.data;
+            const serverMessage =
+                responseData?.message ||
+                responseData?.error ||
+                uploadError?.message;
+
+            console.error('Error uploading file:', {
+                message: uploadError?.message,
+                status: statusCode,
+                responseData,
+                uploadUri: picture,
+            });
+
             Toast.show({
                 type: 'error',
-                text1: 'Đã có lỗi xảy ra, xin thử lại sau',
+                text1: statusCode ? `Upload lỗi (${statusCode})` : 'Đã có lỗi xảy ra',
+                text2: serverMessage || 'Xin thử lại sau',
             });
         } finally {
             setLoading(false);
