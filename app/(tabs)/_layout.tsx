@@ -69,7 +69,7 @@ const TabsLayout = () => {
         }, [])
     )
     return (
-        <GestureHandlerRootView>
+        <GestureHandlerRootView style={{ flex: 1 }}>
             <BottomSheetModalProvider>
                 <Tabs tabBar={props => <TabBar {...props} />}>
                     <Tabs.Screen options={{

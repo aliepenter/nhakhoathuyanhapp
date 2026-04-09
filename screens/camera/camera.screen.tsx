@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, SafeAreaView, Dimensions, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, Platform } from 'react-native';
 import React, { useRef, useState, useEffect } from 'react';
 import { CameraView, CameraRatio, CameraType, Camera } from 'expo-camera';
 import { Image } from 'expo-image';
