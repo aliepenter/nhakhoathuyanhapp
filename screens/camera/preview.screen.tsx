@@ -13,6 +13,7 @@ import { createCustomerLibrary, updateCustomerLibrary } from '@/lib/apiCall';
 import { SERVER_URI } from '@/utils/uri';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
+import NetInfo from '@react-native-community/netinfo';
 
 interface PictureViewProps {
     picture: string;
@@ -39,6 +40,24 @@ const isRetryableUploadError = (statusCode?: number, message?: string) => {
 
     const normalized = (message || '').toLowerCase();
     return RETRYABLE_UPLOAD_ERROR_PATTERNS.some((pattern) => normalized.includes(pattern));
+};
+
+const createSelfieFormData = (uri: string, fileName: string) => {
+    const formData = new FormData();
+    formData.append('file', {
+        uri,
+        type: 'image/jpeg',
+        name: fileName,
+    } as any);
+
+    return formData;
+};
+
+const getRetryDelay = (attempt: number) => {
+    // Exponential backoff with a small jitter to reduce retry burst.
+    const base = 800 * Math.pow(2, attempt - 1);
+    const jitter = Math.floor(Math.random() * 250);
+    return base + jitter;
 };
 
 export default function PreviewScreen({ picture, setPicture, status, id }: PictureViewProps) {
@@ -102,19 +121,18 @@ export default function PreviewScreen({ picture, setPicture, status, id }: Pictu
                 throw new Error('Local image file not found before upload');
             }
 
-            const formData = new FormData();
-            formData.append('file', {
-                uri: uploadUri,
-                type: 'image/jpeg',
-                name: fileName
-            } as any);
+            const netState = await NetInfo.fetch();
+            if (!netState.isConnected || netState.isInternetReachable === false) {
+                throw new Error('Thiết bị đang mất kết nối internet');
+            }
 
-            const maxRetries = 3;
+            const maxRetries = 5;
             let responseData: any = null;
             let lastUploadError: any = null;
 
             for (let attempt = 1; attempt <= maxRetries; attempt++) {
                 try {
+                    const formData = createSelfieFormData(uploadUri, fileName);
                     const response = await fetch(`${SERVER_URI}/file/upload-selfie`, {
                         method: 'POST',
                         body: formData,
@@ -159,7 +177,8 @@ export default function PreviewScreen({ picture, setPicture, status, id }: Pictu
                         break;
                     }
 
-                    await sleep(600 * attempt);
+                    const nextDelay = getRetryDelay(attempt);
+                    await sleep(nextDelay);
                 }
             }
 

@@ -3,6 +3,7 @@ import * as Updates from 'expo-updates';
 import * as Application from 'expo-application';
 import { Alert, Linking, Platform } from 'react-native';
 import { getVersion } from '@/lib/apiCall';
+import { isVersionAllowed, parseAllowedVersions } from '@/utils/version';
 
 export const useOTAUpdate = () => {
   const [isUpdateAvailable, setIsUpdateAvailable] = useState(false);
@@ -34,11 +35,13 @@ export const useOTAUpdate = () => {
       const versionData = await getVersion();
 
       if (versionData && versionData.data) {
-        const latestVersion = versionData.data.number;
+        const rawVersion = versionData.data.number;
+        const allowedVersions = parseAllowedVersions(rawVersion);
+        const shouldForceUpdate = !isVersionAllowed(currentVersion, rawVersion);
 
-        if (currentVersion !== latestVersion) {
+        if (shouldForceUpdate) {
           setIsUpdateAvailable(true);
-          setNewVersion(latestVersion);
+          setNewVersion(allowedVersions[0] || String(rawVersion || ''));
           return false;
         }
       }

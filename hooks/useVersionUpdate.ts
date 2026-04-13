@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import * as Application from 'expo-application';
 import { getVersion } from '@/lib/apiCall';
+import { isVersionAllowed, parseAllowedVersions } from '@/utils/version';
 
 export const useVersionUpdate = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -14,9 +15,12 @@ export const useVersionUpdate = () => {
       console.log('currentVersion', currentVersion);
       const versionData = await getVersion();
       if (versionData && versionData.data) {
-        const latestVersion = versionData.data.number;
-        if (currentVersion !== latestVersion) {
-          setNewVersionStore(latestVersion);
+        const rawVersion = versionData.data.number;
+        const allowedVersions = parseAllowedVersions(rawVersion);
+        const shouldForceUpdate = !isVersionAllowed(currentVersion, rawVersion);
+
+        if (shouldForceUpdate) {
+          setNewVersionStore(allowedVersions[0] || String(rawVersion || ''));
           setShowPopup(true);
         } else {
           setShowPopup(false);
