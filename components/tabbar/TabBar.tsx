@@ -6,9 +6,12 @@ import images from '@/constants/images';
 import * as Haptics from 'expo-haptics';
 import useUnseenMessages from '@/hooks/useUnseenMessages';
 import useLibrary from '@/hooks/useTodayLibrary';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function TabBars({ state, descriptors, navigation }: any) {
     const { unseenCount } = useUnseenMessages();
+    const insets = useSafeAreaInsets();
+    const tabbarBaseHeight = Platform.OS === 'ios' ? 100 : 95;
 
     const handlePress = useCallback(async () => {
         Haptics.selectionAsync();
@@ -16,7 +19,17 @@ export default function TabBars({ state, descriptors, navigation }: any) {
     }, []);
 
     return (
-        <ImageBackground className={`${Platform.OS === 'ios' ? "h-[100px]" : "h-[95px]"} absolute bottom-0 opacity-[0.987]`} source={images.bgTabbar} resizeMode='stretch'>
+        <ImageBackground
+            className='absolute bottom-0 opacity-[0.987]'
+            source={images.bgTabbar}
+            resizeMode='stretch'
+            style={{
+                height: tabbarBaseHeight + insets.bottom,
+                paddingBottom: insets.bottom,
+                left: 0,
+                right: 0,
+            }}
+        >
             <View className={`flex-row justify-between items-center w-full`}>
                 {
                     state.routes.map((route: any, index: any) => {
@@ -96,7 +109,8 @@ export default function TabBars({ state, descriptors, navigation }: any) {
                     })}
             </View>
             <TouchableOpacity
-                className={`${Platform.OS === 'ios' ? "left-[41%] md:left-[46%]" : "left-[42%]"} bg-[#F1F1F1] bottom-4 absolute rounded-full`}
+                className={`${Platform.OS === 'ios' ? "left-[41%] md:left-[46%]" : "left-[42%]"} bg-[#F1F1F1] absolute rounded-full`}
+                style={{ bottom: insets.bottom + 16 }}
                 onPress={handlePress}
             >
                 <LinearGradient

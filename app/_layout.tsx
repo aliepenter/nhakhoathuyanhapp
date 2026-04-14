@@ -1,10 +1,11 @@
 import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
-import { LogBox, StatusBar, View, Text } from "react-native";
+import { LogBox, StatusBar, View, Text, Platform } from "react-native";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 import React from "react";
 import * as SplashScreen from 'expo-splash-screen';
+import * as NavigationBar from 'expo-navigation-bar';
 import OTAUpdateManager from '@/components/home/OTAUpdateManager';
 
 SplashScreen.preventAutoHideAsync();
@@ -31,6 +32,12 @@ export default function RootLayout() {
     if (error) throw error;
     if (fontsLoaded) SplashScreen.hideAsync();
     LogBox.ignoreAllLogs(true);
+
+    if (Platform.OS === 'android') {
+      NavigationBar.setBackgroundColorAsync('#000000');
+      NavigationBar.setButtonStyleAsync('light');
+      NavigationBar.setPositionAsync('relative');
+    }
   }, [fontsLoaded, error]);
 
   if (!fontsLoaded && !error) return null;
