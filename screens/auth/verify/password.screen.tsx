@@ -7,8 +7,10 @@ import {
     KeyboardAvoidingView,
     Platform,
     ImageBackground,
+    ScrollView,
+    TextInput,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { images } from '@/constants';
 import { router, useLocalSearchParams } from 'expo-router';
 import { login } from "@/lib/apiCall";
@@ -21,6 +23,14 @@ const PasswordScreen = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { username }: any = useLocalSearchParams();
     const isIOS = Platform.OS === 'ios';
+    const inputRef = useRef<TextInput>(null);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            inputRef.current?.focus();
+        }, 500);
+        return () => clearTimeout(timer);
+    }, []);
     const submit = async () => {
         if (!password) {
             Alert.alert('Đăng nhập thất bại', 'Xin vui lòng điền đầy đủ thông tin');
@@ -46,9 +56,14 @@ const PasswordScreen = () => {
     return (
         <ImageBackground source={images.bgPhoneInput} resizeMode='cover' className='flex-1'>
             <KeyboardAvoidingView
-                behavior={isIOS ? 'padding' : 'height'}
-                className={`flex flex-1 ${isIOS ? 'justify-center' : 'justify-center'}`}
+                behavior={isIOS ? 'padding' : 'padding'}
+                className='flex-1'
             >
+                <ScrollView
+                    contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+                    keyboardShouldPersistTaps='handled'
+                    showsVerticalScrollIndicator={false}
+                >
                 <View
                     className={`items-center ${isIOS ? 'my-8 mb-[60px]' : 'mt-10 mb-[30px]'}`}
                 >
@@ -67,9 +82,9 @@ const PasswordScreen = () => {
                         <Text className='text-[14px] text-white font-pregular'>Nhập mật khẩu cho tài khoản {username}</Text>
                     </View>
                     <FormField
+                        ref={inputRef}
                         title="password"
                         keyboardType="default"
-                        autoFocus={true}
                         value={password}
                         placeholder="********"
                         handleChangeText={(e: any) => setPassword(e)}
@@ -87,6 +102,7 @@ const PasswordScreen = () => {
                             textStyles="text-white font-psemibold text-lg" flag={false} iconStyle={undefined} icon={undefined} iconRight={undefined} notification={false} />
                     </View>
                 </View>
+                </ScrollView>
             </KeyboardAvoidingView>
         </ImageBackground>
     );

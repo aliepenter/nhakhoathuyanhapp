@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Tabs } from 'expo-router';
 
 import TabBar from '@/components/tabbar/TabBar';
-import { Alert, BackHandler } from 'react-native';
+import { Alert, BackHandler, Platform } from 'react-native';
 import { StatusBar } from 'expo-status-bar'
 import { useFocusEffect } from '@react-navigation/native';
 import CustomHeader from '@/components/common/CustomHeader';
@@ -11,10 +11,13 @@ import useUser from '@/hooks/auth/useUser';
 import { getAvatar } from '@/lib/apiCall';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 
 const TabsLayout = () => {
     const { user } = useUser();
+    const insets = useSafeAreaInsets();
+    const tabBarHeight = Platform.OS === 'ios' ? 0 : 20;
     const [flag, setFlag] = useState<boolean>(false);
     const [loading, setLoading] = useState(true);
     const [disable, setDisable] = useState(false);
@@ -71,7 +74,7 @@ const TabsLayout = () => {
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <BottomSheetModalProvider>
-                <Tabs tabBar={props => <TabBar {...props} />}>
+                <Tabs tabBar={props => <TabBar {...props} />} screenOptions={{ sceneStyle: { paddingBottom: tabBarHeight }, tabBarStyle: { backgroundColor: 'transparent', borderTopWidth: 0, elevation: 0, shadowOpacity: 0 } }}>
                     <Tabs.Screen options={{
                         header: (props) => (
                             <HeaderSection user={user} setRefetch={setRefetch} showNotification={false} editAvatar={false} setFlag={setFlag} flag={flag} avatar={{

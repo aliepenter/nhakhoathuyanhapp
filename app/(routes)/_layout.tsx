@@ -2,11 +2,13 @@ import React from 'react';
 import { Stack } from 'expo-router';
 import CustomHeader from '@/components/common/CustomHeader';
 import { StatusBar } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const PageLayout = () => {
+    const insets = useSafeAreaInsets();
     return (
         <>
-            <Stack>
+            <Stack screenOptions={{ contentStyle: { paddingBottom: insets.bottom, backgroundColor: 'white' } }}>
                 <Stack.Screen
                     name="chinh-sach/index"
                     options={{

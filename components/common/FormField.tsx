@@ -1,8 +1,8 @@
 import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, forwardRef } from 'react'
 import { icons } from '@/constants';
 
-const FormField = ({ title, keyboardType, autoFocus, value, placeholder, handleChangeText, otherStyles, ...pros }: any) => {
+const FormField = forwardRef(({ title, keyboardType, autoFocus, value, placeholder, handleChangeText, otherStyles, ...pros }: any, ref: any) => {
     const [showPassword, setShowPassword] = useState(false);
 
     return (
@@ -11,6 +11,7 @@ const FormField = ({ title, keyboardType, autoFocus, value, placeholder, handleC
                 className='w-11/12 bg-white rounded-2xl flex-row border-2 border-[#2594B8]'
             >
                 <TextInput className='flex-1 p-4 text-black font-semibold text-base'
+                    ref={ref}
                     value={value}
                     placeholder={placeholder}
                     placeholderTextColor="#7b7b8b"
@@ -31,6 +32,6 @@ const FormField = ({ title, keyboardType, autoFocus, value, placeholder, handleC
             </View>
         </View>
     )
-}
+});
 
 export default FormField

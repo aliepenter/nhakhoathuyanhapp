@@ -281,7 +281,6 @@ export const logout = async () => {
   try {
     await SecureStore.deleteItemAsync(TOKEN_KEY);
     axios.defaults.headers.common['Authorization'] = '';
-    router.dismissAll();
     router.replace('/(routes)/login');
   } catch (error) {
     throw error;

@@ -11,24 +11,20 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 export default function TabBars({ state, descriptors, navigation }: any) {
     const { unseenCount } = useUnseenMessages();
     const insets = useSafeAreaInsets();
-    const tabbarBaseHeight = Platform.OS === 'ios' ? 100 : 95;
 
     const handlePress = useCallback(async () => {
         Haptics.selectionAsync();
         await Linking.openURL('tel:0869800318');
     }, []);
 
+    const TAB_BAR_HEIGHT = Platform.OS === 'ios' ? 100 : 80;
+
     return (
+        <View style={{ position: 'absolute', bottom: 0, width: '100%', backgroundColor: 'transparent' }}>
         <ImageBackground
-            className='absolute bottom-0 opacity-[0.987]'
+            style={{ height: TAB_BAR_HEIGHT, width: '100%', opacity: 0.987 }}
             source={images.bgTabbar}
             resizeMode='stretch'
-            style={{
-                height: tabbarBaseHeight + insets.bottom,
-                paddingBottom: insets.bottom,
-                left: 0,
-                right: 0,
-            }}
         >
             <View className={`flex-row justify-between items-center w-full`}>
                 {
@@ -82,7 +78,7 @@ export default function TabBars({ state, descriptors, navigation }: any) {
                                 className={`${Platform.OS === 'ios' ? 'mt-[17px]' : 'mt-4'} flex-1 items-center ${route.name === 'image-gallery/index' ? 'mr-[38px]' : ''} ${route.name === 'notification/index' ? 'ml-14' : ''}`}
 
                             >
-                                <View className={`items-center ${isFocused ? "border-t-[#5EBA1B] border-t-2 pt-2" : "pt-2"}`}>
+                                <View className={`items-center ${isFocused ? "border-t-[#5EBA1B] border-t-2 pt-2 -mt-[2px]" : "pt-2"}`}>
                                     {
                                         route.name === "notification/index"
                                             ?
@@ -109,20 +105,23 @@ export default function TabBars({ state, descriptors, navigation }: any) {
                     })}
             </View>
             <TouchableOpacity
-                className={`${Platform.OS === 'ios' ? "left-[41%] md:left-[46%]" : "left-[42%]"} bg-[#F1F1F1] absolute rounded-full`}
-                style={{ bottom: insets.bottom + 16 }}
+                className={`${Platform.OS === 'ios' ? "left-[41%] md:left-[46%] bottom-4" : "left-[41%] bottom-2"} bg-[#F1F1F1] absolute rounded-full`}
                 onPress={handlePress}
             >
                 <LinearGradient
                     colors={['#1361AA', '#5EBA1B']}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}
-                    className={`w-[70px] h-[70px] justify-center items-center rounded-full`}
+                    className={`${Platform.OS === 'ios' ? 'w-[70px] h-[70px]' : 'w-[65px] h-[65px]'} justify-center items-center rounded-full`}
                 >
-                    <Image source={icons.iconPhoneGif} resizeMode='contain' className='w-[45px] h-[45x]' />
+                    <Image source={icons.iconPhoneGif} resizeMode='contain' className={`${Platform.OS === 'ios' ? 'w-[45px] h-[45px]' : 'w-[36px] h-[36px]'}`} />
                 </LinearGradient>
             </TouchableOpacity>
 
         </ImageBackground>
+        {Platform.OS === 'android' && insets.bottom > 0 && (
+            <View style={{ height: insets.bottom, backgroundColor: 'white' }} />
+        )}
+        </View>
     );
 }
