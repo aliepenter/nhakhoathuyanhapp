@@ -29,6 +29,7 @@ import iconChiNhanh from "../assets/icons/icon-chi-nhanh.png";
 import iconTinTuc from "../assets/icons/icon-tin-tuc.png";
 import iconHopDong from "../assets/icons/icon-hop-dong.png";
 import iconLoiDan from "../assets/icons/icon-loi-dan.png";
+import giftGif from "../assets/icons/gift.gif";
 import verticalLine from "../assets/icons/vertical-line.png";
 import iconPhoneGif from "../assets/icons/icon-phone-gif.gif";
 import map from "../assets/icons/map.png";
@@ -236,6 +237,7 @@ export default {
   iconTinTuc,
   iconHopDong,
   iconLoiDan,
+  giftGif,
   iconDatLich,
   iconChinhNha,
   play,

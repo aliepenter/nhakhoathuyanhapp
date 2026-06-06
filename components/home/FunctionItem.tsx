@@ -27,7 +27,7 @@ const FunctionItem = ({ icon, title, path, flag, setFlag, notification }: any) =
             className='items-center w-1/3 mb-[10px]'
         >
             <View style={styles.boxShadow} className={`justify-center items-center bg-[#FAFAFA] rounded-lg w-[60px] h-[60px]`}>
-                <Image source={icon} className='w-[35px] h-[35px]' contentFit='contain' transition={500} />
+                <Image source={icon} className='w-[50px] h-[50px]' contentFit='contain' transition={500} />
                 {
                     notification
                         ?
@@ -52,7 +52,7 @@ export default function FunctionItemsList({ flag, setFlag, schedule }: Props) {
             <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconDatLich} path="/(routes)/dat-lich" title="Đặt lịch" />
             <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconThanhToan} path="/(routes)/payment" title="Thanh toán" />
             <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconTinTuc} path="/(routes)/kien-thuc" title="Kiến thức" />
-            <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconLoiDan} path="/(routes)/loi-dan" title="Lời dặn" />
+            <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.giftGif} path="/(routes)/gioi-thieu" title="Quà tặng" />
             {/* <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconHopDong} path="/(routes)/hop-dong" title="Hồ sơ" /> */}
             <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconChiNhanh} path="/(routes)/branches" title="Chi nhánh" />
         </View>

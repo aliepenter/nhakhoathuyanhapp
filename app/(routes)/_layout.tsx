@@ -144,6 +144,22 @@ const PageLayout = () => {
                         ),
                     }}
                 />
+                <Stack.Screen
+                    name="gioi-thieu/index"
+                    options={{
+                        header: (props) => (
+                            <CustomHeader {...props} customStyle="bg-white" title="Giới thiệu nhận quà" />
+                        ),
+                    }}
+                />
+                <Stack.Screen
+                    name="gioi-thieu/chiTiet"
+                    options={{
+                        header: (props) => (
+                            <CustomHeader {...props} customStyle="bg-white" title="Chi tiết giới thiệu" />
+                        ),
+                    }}
+                />
                 <Stack.Screen options={{ headerShown: false }} name="login/index" />
                 <Stack.Screen options={{ headerShown: false }} name="chat/index" />
                 <Stack.Screen options={{ headerShown: false }} name="verify-password/index" />

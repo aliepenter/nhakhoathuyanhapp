@@ -957,6 +957,45 @@ export const updateMainStatus = async (id: number | null) => {
   }
 };
 
+// Lấy số lần giới thiệu thành công
+export const getReferralCount = async (userId: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const res = await axios.get(`${SERVER_URI}/referrals/count/${userId}`);
+      if (!res) return null;
+      return {
+        code: 200,
+        data: res.data,
+      };
+    } catch (error) {
+      return null;
+    }
+  } else {
+    return null;
+  }
+};
+
+export const getReferralList = async (userId: any) => {
+  const token = await SecureStore.getItemAsync(TOKEN_KEY);
+  if (token) {
+    try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const res = await axios.get(`${SERVER_URI}/referrals/list/${userId}`);
+      if (!res) return null;
+      return {
+        code: 200,
+        data: res.data,
+      };
+    } catch (error) {
+      return null;
+    }
+  } else {
+    return null;
+  }
+};
+
 // Gửi đánh giá chỉnh nha
 export const postDanhGiaChinhNha = async (data: { user_id: number; chinh_nha_id: number; star_num: number; content: string }) => {
   const token = await SecureStore.getItemAsync(TOKEN_KEY);
