@@ -3,28 +3,28 @@ import { View, Text, useWindowDimensions, PressableAndroidRippleConfig, StylePro
 import { TabView, SceneMap, TabBar, NavigationState, Route, SceneRendererProps, TabBarIndicatorProps, TabBarItemProps } from 'react-native-tab-view';
 import HomThuScreen from './homThu.screen';
 import KhuyenMaiScreen from './khuyenMai.screen';
-import TroChuyenScreen from './troChuyen.screen';
-import useUnseenMessages from '@/hooks/useUnseenMessages';
+// import TroChuyenScreen from './troChuyen.screen';
+// import useUnseenMessages from '@/hooks/useUnseenMessages';
 import { Scene, Event } from 'react-native-tab-view/lib/typescript/src/types';
 
 
-const FirstRoute = () => <TroChuyenScreen />;
+// const FirstRoute = () => <TroChuyenScreen />;
 const SecondRoute = () => <HomThuScreen />;
 const ThirdRoute = () => <KhuyenMaiScreen />;
 
 const renderScene = SceneMap({
-    first: FirstRoute,
+    // first: FirstRoute,
     // second: SecondRoute,
     third: ThirdRoute
 });
 
 export default function NotificationScreen() {
-    const { unseenCount } = useUnseenMessages();
+    // const { unseenCount } = useUnseenMessages();
     const layout = useWindowDimensions();
 
     const [index, setIndex] = useState(0);
     const [routes] = useState([
-        { key: 'first', title: 'Trò chuyện' },
+        // { key: 'first', title: 'Trò chuyện' },
         // { key: 'second', title: 'Hòm thư' },
         { key: 'third', title: 'Tin tức' }
     ]);
@@ -35,7 +35,7 @@ export default function NotificationScreen() {
             renderScene={renderScene}
             onIndexChange={setIndex}
             initialLayout={{ width: layout.width }}
-            renderTabBar={(props) => renderTabBar(props, unseenCount)} // Pass unseenCount here
+            renderTabBar={() => null} // Tab bar ẩn vì chỉ còn 1 tab
         />
     );
 }

@@ -73,7 +73,7 @@ export default function KhuyenMaiScreen() {
     }
   }
   return (
-    <View className="bg-white">
+    <View className="bg-white flex-1">
       <FlatList
         data={[{ key: 'banner' }, { key: 'branches' }]}
         renderItem={({ item }) => {

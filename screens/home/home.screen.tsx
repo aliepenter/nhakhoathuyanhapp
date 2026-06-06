@@ -20,9 +20,6 @@ import TimeTracking from "@/components/home/TimeTracking";
 import { calculateDaysDifference, checkDay, checkTodayIsShoot, formatDate } from "@/lib/commonFunctions";
 import Toast from "react-native-toast-message";
 import { usePushNotifications } from "@/hooks/usePushNotifications";
-import { useOTAUpdate } from "@/hooks/useOTAUpdate";
-import VersionUpdatePopup from "@/components/home/VersionUpdatePopup";
-import { useVersionUpdate } from "@/hooks/useVersionUpdate";
 // Lấy thông tin thiết bị từ expo-device
 
 const HomeScreen = () => {
@@ -34,8 +31,6 @@ const HomeScreen = () => {
   const { user } = useUser();
   const { expoPushToken } = usePushNotifications();
   const [flag, setFlag] = useState<boolean>(false);
-  const { showPopup, newVersionStore, closePopup } = useVersionUpdate();
-  const { isUpdateAvailable, isUpdating, updateProgress, newVersion, handleUpdate, checkForOTAUpdate } = useOTAUpdate();
   const handleUpdateExpoToken = async (id: any, data: any) => {
     try {
       await updateExpoToken(id, data);
@@ -166,16 +161,6 @@ const HomeScreen = () => {
     }
   };
 
-  const handleUpdateApp = () => {
-    const url =
-      Platform.OS === 'android'
-        ? 'market://details?id=com.anonymous.nhakhoathuyanh' // Link cho Android
-        : 'https://apps.apple.com/us/app/my-braces-ni%E1%BB%81ng-r%C4%83ng-th%C3%B9y-anh/id6743517132'; // Link cho iOS
-
-    Linking.openURL(url)
-      .catch(err => console.error('Failed to open app:', err));
-  };
-
   return (
     <View className="bg-white">
       <ScrollView
@@ -188,15 +173,6 @@ const HomeScreen = () => {
         <RenderVideo videos={videos} flag={flag} setFlag={setFlag} />
         <NewsSection post={post} flag={flag} setFlag={setFlag} />
       </ScrollView>
-
-      <VersionUpdatePopup
-        visible={isUpdateAvailable}
-        version={newVersion || ''}
-        onUpdate={handleUpdate}
-        isOTAUpdate={isUpdateAvailable}
-        isUpdating={isUpdating}
-        updateProgress={updateProgress}
-      />
     </View>
   );
 };

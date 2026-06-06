@@ -7,60 +7,45 @@ interface OTAUpdateManagerProps {
 }
 
 export default function OTAUpdateManager({ children }: OTAUpdateManagerProps) {
-  const {
-    isUpdateAvailable,
-    isUpdating,
-    updateProgress,
-    newVersion,
-    handleUpdate,
-    checkForOTAUpdate,
-  } = useOTAUpdate();
+  const { newVersion, checkForUpdate, openAppStore } = useOTAUpdate();
 
   const [showPopup, setShowPopup] = useState(false);
-  const [hasUpdate, setHasUpdate] = useState(false);
 
   useEffect(() => {
-    const checkUpdate = async () => {
-      const hasOTAUpdate = await checkForOTAUpdate();
-      if (hasOTAUpdate) {
-        setHasUpdate(true);
+    const run = async () => {
+      // true = có major update cần lên store, false = OTA tải ngầm hoặc không có gì
+      const needStoreUpdate = await checkForUpdate();
+      if (needStoreUpdate) {
         setShowPopup(true);
       }
     };
 
-    // Kiểm tra update khi app khởi động
-    checkUpdate();
+    // Kiểm tra khi app khởi động
+    run();
 
-    // Kiểm tra update định kỳ (mỗi 30 phút)
-    const interval = setInterval(checkUpdate, 30 * 60 * 1000);
-
+    // Kiểm tra định kỳ mỗi 30 phút
+    const interval = setInterval(run, 30 * 60 * 1000);
     return () => clearInterval(interval);
-  }, [checkForOTAUpdate]);
-
-  const handleUpdatePress = async () => {
-    await handleUpdate();
-    // Nếu là OTA update, popup sẽ tự động đóng khi app reload
-    if (!isUpdateAvailable) {
-      setShowPopup(false);
-    }
-  };
-
-  const handleClosePopup = () => {
-    setShowPopup(false);
-  };
+  }, []);
 
   return (
     <>
       {children}
-      <VersionUpdatePopup
-        visible={showPopup && hasUpdate}
-        version={newVersion || 'Mới nhất'}
-        onUpdate={handleUpdatePress}
-        onClose={handleClosePopup}
-        isOTAUpdate={isUpdateAvailable}
-        isUpdating={isUpdating}
-        updateProgress={updateProgress}
-      />
+      {/* Popup chỉ hiện khi cần cập nhật lên Store (major update) */}
+      {showPopup && newVersion ? (
+        <VersionUpdatePopup
+          visible={showPopup}
+          version={newVersion}
+          onUpdate={() => {
+            openAppStore();
+            setShowPopup(false);
+          }}
+          onClose={() => setShowPopup(false)}
+          isOTAUpdate={false}
+          isUpdating={false}
+          updateProgress={0}
+        />
+      ) : null}
     </>
   );
 } 

@@ -9,8 +9,10 @@ import {
     KeyboardAvoidingView,
     Keyboard,
     RefreshControl,
+    Animated,
 } from 'react-native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CustomHeader from '@/components/common/CustomHeader';
 import { Image } from 'expo-image';
 import useUser from '@/hooks/auth/useUser';
@@ -32,6 +34,7 @@ interface ChatScreenProps {
 
 export default function ChatScreen({ headerTitle, cuoc_tro_chuyen_id, disable }: ChatScreenProps) {
     const { user } = useUser();
+    const insets = useSafeAreaInsets();
     const [messages, setMessages] = useState<Messages[]>([]);
     const [refreshing, setRefreshing] = useState(false);
     const [loading, setLoading] = useState<boolean>(true);
@@ -44,6 +47,7 @@ export default function ChatScreen({ headerTitle, cuoc_tro_chuyen_id, disable }:
     };
     const [socket, setSocket] = useState<Socket | null>(null);
     const [newMessage, setNewMessage] = useState<string>('');
+    const keyboardHeight = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
         fetchMessages();
@@ -59,14 +63,34 @@ export default function ChatScreen({ headerTitle, cuoc_tro_chuyen_id, disable }:
         // Handle keyboard showing
         const keyboardDidShowListener = Keyboard.addListener(
             Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
-            () => {
+            (e) => {
                 scrollToBottom();
+                if (Platform.OS === 'android') {
+                    Animated.timing(keyboardHeight, {
+                        toValue: e.endCoordinates.height,
+                        duration: 150,
+                        useNativeDriver: false,
+                    }).start();
+                }
+            }
+        );
+        const keyboardDidHideListener = Keyboard.addListener(
+            Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+            () => {
+                if (Platform.OS === 'android') {
+                    Animated.timing(keyboardHeight, {
+                        toValue: 0,
+                        duration: 150,
+                        useNativeDriver: false,
+                    }).start();
+                }
             }
         );
 
         return () => {
             socketIo.disconnect();
             keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
         };
     }, [cuoc_tro_chuyen_id]);
 
@@ -163,7 +187,11 @@ export default function ChatScreen({ headerTitle, cuoc_tro_chuyen_id, disable }:
     };
 
     return (
-        <View className='bg-white flex-1'>
+        <KeyboardAvoidingView
+            className='bg-white flex-1'
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
+        >
             <CustomHeader title={headerTitle} customStyle='bg-white' />
             {!loading ? (
                 <>
@@ -250,7 +278,7 @@ export default function ChatScreen({ headerTitle, cuoc_tro_chuyen_id, disable }:
                     </ScrollView>
                     {
                         !disable ?
-                            <KeyboardAvoidingView className='rounded-t-[16px] bg-[#EDEDED]' behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+                            <Animated.View style={[{ borderTopLeftRadius: 16, borderTopRightRadius: 16, backgroundColor: '#EDEDED' }, Platform.OS === 'android' ? { paddingBottom: keyboardHeight } : {}]}>
                                 <View className='h-[73px] px-[11px] pt-2 pb-4 w-full flex-row'>
                                     <View className='h-full w-[90%]'>
                                         <TextInput
@@ -271,7 +299,7 @@ export default function ChatScreen({ headerTitle, cuoc_tro_chuyen_id, disable }:
                                         </TouchableOpacity>
                                     </View>
                                 </View>
-                            </KeyboardAvoidingView>
+                            </Animated.View>
                             :
                             null
                     }
@@ -283,6 +311,6 @@ export default function ChatScreen({ headerTitle, cuoc_tro_chuyen_id, disable }:
                 </View>
             )
             }
-        </View >
+        </KeyboardAvoidingView>
     );
 }

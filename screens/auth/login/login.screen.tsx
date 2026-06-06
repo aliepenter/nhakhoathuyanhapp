@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, Alert, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, ImageBackground, BackHandler, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, Image, Alert, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, ImageBackground, BackHandler, TouchableOpacity, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import { images } from '@/constants'
 import { Link, router } from 'expo-router'
@@ -49,10 +49,13 @@ const LoginScreen = () => {
     try {
       const phoneNumberStatus = await trackPhoneNumber!(phoneNumber);
       if (phoneNumberStatus) {
-        router.push({
-          pathname: "/(routes)/verify-password",
-          params: { username: phoneNumber },
-        });
+        Keyboard.dismiss();
+        setTimeout(() => {
+          router.push({
+            pathname: "/(routes)/verify-password",
+            params: { username: phoneNumber },
+          });
+        }, 200);
       } else {
         Alert.alert('Đăng nhập thất bại', 'Số điện thoại chưa có trên hệ thống');
       }
@@ -74,9 +77,14 @@ const LoginScreen = () => {
   return (
     <ImageBackground source={images.bgPhoneInput} resizeMode='cover' className='flex-1'>
       <KeyboardAvoidingView
-        behavior={isIOS ? 'padding' : 'height'}
-        className={`flex flex-1 ${isIOS ? 'justify-center' : 'justify-center'}`}
+        behavior={isIOS ? 'padding' : 'padding'}
+        className='flex-1'
       >
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+          keyboardShouldPersistTaps='handled'
+          showsVerticalScrollIndicator={false}
+        >
         <View
           className={`items-center ${isIOS ? 'my-8 mb-[60px]' : 'mt-16  mb-[30px]'}`}
         >
@@ -125,8 +133,9 @@ const LoginScreen = () => {
             </TouchableOpacity>
           </View>
         </View>
+        </ScrollView>
       </KeyboardAvoidingView>
-    </ImageBackground >
+    </ImageBackground>
   )
 }
 
