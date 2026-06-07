@@ -1,5 +1,7 @@
 export const formatDate = (isoDateString: any, type: DateFormatType, timeZone: string = 'Asia/Ho_Chi_Minh'): string => {
+    if (!isoDateString) return '';
     const date = new Date(isoDateString);
+    if (isNaN(date.getTime())) return '';
 
     const options: Intl.DateTimeFormatOptions = {
         year: 'numeric',
