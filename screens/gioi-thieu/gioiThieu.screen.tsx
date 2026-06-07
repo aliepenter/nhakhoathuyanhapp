@@ -7,9 +7,9 @@ import {
     ActivityIndicator,
     Modal,
     StatusBar,
-    useWindowDimensions,
+    RefreshControl,
 } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import useUser from '@/hooks/auth/useUser';
 import * as Haptics from 'expo-haptics';
 import { getReferralCount } from '@/lib/apiCall';
@@ -21,18 +21,22 @@ import ViewShot from 'react-native-view-shot';
 import * as Sharing from 'expo-sharing';
 import Toast from 'react-native-toast-message';
 
+const SHOW_REWARD_PROGRESS = false;
+
 export default function GioiThieuScreen() {
     const { user } = useUser();
-    const { width: screenWidth } = useWindowDimensions();
-    const [referralCount, setReferralCount] = useState<number | null>(4);
-    const [totalCommission, setTotalCommission] = useState<number | null>(1500000);
-    const [loadingCount, setLoadingCount] = useState(false);
+    const [referralCount, setReferralCount] = useState<number | null>(null);
+    const [totalCommission, setTotalCommission] = useState<number | null>(null);
+    const [loadingCount, setLoadingCount] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
     const [showShareModal, setShowShareModal] = useState(false);
     const [sharing, setSharing] = useState(false);
     const viewShotRef = useRef<ViewShot>(null);
 
     const MILESTONES = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30];
     const MAX = 30;
+    const PROGRESS_TRACK_WIDTH = 1000;
+    const PROGRESS_END_PADDING = 64;
 
     const generateReferralCode = (hoVaTen: string, id: number): string => {
         const initials = hoVaTen
@@ -54,9 +58,11 @@ export default function GioiThieuScreen() {
         return `${amount}đ`;
     };
 
-    useEffect(() => {
+    const fetchReferralCount = useCallback(async (showLoading = true) => {
         if (user) {
-            getReferralCount(user.id).then((res) => {
+            if (showLoading) setLoadingCount(true);
+            try {
+                const res = await getReferralCount(user.id);
                 if (res && res.data !== undefined) {
                     setReferralCount(res.data.count ?? 0);
                     setTotalCommission(res.data.totalCommission ?? 0);
@@ -64,16 +70,29 @@ export default function GioiThieuScreen() {
                     setReferralCount(0);
                     setTotalCommission(0);
                 }
-                setLoadingCount(false);
-            }).catch(() => {
+            } catch {
                 setReferralCount(0);
                 setTotalCommission(0);
+            } finally {
                 setLoadingCount(false);
-            });
+                setRefreshing(false);
+            }
         } else {
+            setReferralCount(0);
+            setTotalCommission(0);
             setLoadingCount(false);
+            setRefreshing(false);
         }
     }, [user]);
+
+    useEffect(() => {
+        fetchReferralCount();
+    }, [fetchReferralCount]);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        fetchReferralCount(false);
+    }, [fetchReferralCount]);
 
     const handleShare = async () => {
         Haptics.selectionAsync();
@@ -144,7 +163,11 @@ export default function GioiThieuScreen() {
 
     return (
         <>
-        <ScrollView className='flex-1 bg-[#F5F5F5]' showsVerticalScrollIndicator={false}>
+        <ScrollView
+            className='flex-1 bg-[#F5F5F5]'
+            showsVerticalScrollIndicator={false}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['#1361AA']} />}
+        >
             {/* Banner */}
             <View style={styles.banner} className='mx-4 mt-4 rounded-2xl p-5 flex-row items-center justify-between'>
                 <View className='flex-1'>
@@ -194,7 +217,7 @@ export default function GioiThieuScreen() {
             </TouchableOpacity>
 
             {/* Thanh tiến trình nhận quà */}
-            <View className='mx-4 mt-4 bg-white rounded-2xl p-4' style={styles.card}>
+            {SHOW_REWARD_PROGRESS && <View className='mx-4 mt-4 bg-white rounded-2xl p-4' style={styles.card}>
                 <View className='flex-row items-center justify-between mb-3'>
                     <Text className='font-pbold text-[14px] text-[#333]'>Tiến trình nhận quà 🏆</Text>
                     <Text className='font-psemibold text-[12px] text-[#1361AA]'>{Math.min(referralCount ?? 0, MAX)}/{MAX}</Text>
@@ -207,10 +230,10 @@ export default function GioiThieuScreen() {
                     contentContainerStyle={{ paddingHorizontal: 8, paddingBottom: 8 }}
                 >
                     {/* Container cố định rộng để giãn các mốc */}
-                    <View style={{ width: 1000, height: 95 }}>
+                    <View style={{ width: PROGRESS_TRACK_WIDTH + PROGRESS_END_PADDING, height: 95 }}>
                         {/* Reward placeholders phía trên mỗi mốc */}
                         {MILESTONES.map((m) => {
-                            const pct = (m / MAX) * 100;
+                            const left = (m / MAX) * PROGRESS_TRACK_WIDTH;
                             const reached = (referralCount ?? 0) >= m;
                             return (
                                 <View
@@ -218,7 +241,7 @@ export default function GioiThieuScreen() {
                                     style={[
                                         styles.rewardPlaceholder,
                                         reached ? styles.rewardPlaceholderReached : null,
-                                        { left: `${pct}%`, marginLeft: -22 },
+                                        { left, marginLeft: -22 },
                                     ]}
                                 >
                                     {/* Đặt ảnh quà vào đây sau */}
@@ -227,7 +250,7 @@ export default function GioiThieuScreen() {
                         })}
 
                         {/* Track nền */}
-                        <View style={[styles.progressTrack, { width: 1000 }]}>
+                        <View style={[styles.progressTrack, { width: PROGRESS_TRACK_WIDTH }]}>
                             <View style={[
                                 styles.progressFill,
                                 { width: `${Math.min(((referralCount ?? 0) / MAX) * 100, 100)}%` }
@@ -236,7 +259,7 @@ export default function GioiThieuScreen() {
 
                         {/* Milestone dots */}
                         {MILESTONES.map((m) => {
-                            const pct = (m / MAX) * 100;
+                            const left = (m / MAX) * PROGRESS_TRACK_WIDTH;
                             const reached = (referralCount ?? 0) >= m;
                             return (
                                 <View
@@ -244,7 +267,7 @@ export default function GioiThieuScreen() {
                                     style={[
                                         styles.milestoneDot,
                                         reached ? styles.milestoneDotReached : styles.milestoneDotPending,
-                                        { left: `${pct}%`, marginLeft: -10 },
+                                        { left, marginLeft: -10 },
                                     ]}
                                 >
                                     {reached
@@ -257,14 +280,14 @@ export default function GioiThieuScreen() {
 
                         {/* Labels số dưới mỗi mốc */}
                         {MILESTONES.map((m) => {
-                            const pct = (m / MAX) * 100;
+                            const left = (m / MAX) * PROGRESS_TRACK_WIDTH;
                             const reached = (referralCount ?? 0) >= m;
                             return (
                                 <Text
                                     key={`label-${m}`}
                                     style={[
                                         styles.milestoneLabel,
-                                        { left: `${pct}%`, marginLeft: -10, color: reached ? '#1361AA' : '#bbb' },
+                                        { left, marginLeft: -10, color: reached ? '#1361AA' : '#bbb' },
                                     ]}
                                 >
                                     {m}
@@ -294,7 +317,7 @@ export default function GioiThieuScreen() {
                         <Text style={[styles.nextMilestoneText, { color: '#2E7D32' }]}>🎉 Bạn đã đạt mốc tối đa! Phòng khám sẽ liên hệ trao thưởng.</Text>
                     </View>
                 )}
-            </View>
+            </View>}
 
             {/* Mã giới thiệu */}
             <View className='mx-4 mt-4 bg-white rounded-2xl p-4' style={styles.card}>
