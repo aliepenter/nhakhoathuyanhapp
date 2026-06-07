@@ -7,6 +7,7 @@ import {
     ActivityIndicator,
     Modal,
     StatusBar,
+    useWindowDimensions,
 } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import useUser from '@/hooks/auth/useUser';
@@ -22,12 +23,16 @@ import Toast from 'react-native-toast-message';
 
 export default function GioiThieuScreen() {
     const { user } = useUser();
-    const [referralCount, setReferralCount] = useState<number | null>(null);
-    const [totalCommission, setTotalCommission] = useState<number | null>(null);
-    const [loadingCount, setLoadingCount] = useState(true);
+    const { width: screenWidth } = useWindowDimensions();
+    const [referralCount, setReferralCount] = useState<number | null>(4);
+    const [totalCommission, setTotalCommission] = useState<number | null>(1500000);
+    const [loadingCount, setLoadingCount] = useState(false);
     const [showShareModal, setShowShareModal] = useState(false);
     const [sharing, setSharing] = useState(false);
     const viewShotRef = useRef<ViewShot>(null);
+
+    const MILESTONES = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30];
+    const MAX = 30;
 
     const generateReferralCode = (hoVaTen: string, id: number): string => {
         const initials = hoVaTen
@@ -113,7 +118,7 @@ export default function GioiThieuScreen() {
         {
             step: '02',
             title: 'Cách nhận thưởng',
-            content: 'Chia sẻ tên và mã giới thiệu của bạn cho người thân, bạn bè. Khi đến phòng khám, khách được giới thiệu cần đề cập đúng tên và mã giới thiệu của bạn.',
+            content: 'Chia sẻ tên và mã giới thiệu của bạn cho người thân, bạn bè. Khi đến phòng khám, khách được giới thiệu cần phải đề cập đúng tên và mã giới thiệu của bạn.',
         },
         {
             step: '03',
@@ -187,6 +192,109 @@ export default function GioiThieuScreen() {
                     <Text className='font-pregular text-[11px] text-[#aaa]'>đã nhận</Text>
                 </View>
             </TouchableOpacity>
+
+            {/* Thanh tiến trình nhận quà */}
+            <View className='mx-4 mt-4 bg-white rounded-2xl p-4' style={styles.card}>
+                <View className='flex-row items-center justify-between mb-3'>
+                    <Text className='font-pbold text-[14px] text-[#333]'>Tiến trình nhận quà 🏆</Text>
+                    <Text className='font-psemibold text-[12px] text-[#1361AA]'>{Math.min(referralCount ?? 0, MAX)}/{MAX}</Text>
+                </View>
+
+                {/* Bar + milestones - scroll ngang */}
+                <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={{ paddingHorizontal: 8, paddingBottom: 8 }}
+                >
+                    {/* Container cố định rộng để giãn các mốc */}
+                    <View style={{ width: 1000, height: 95 }}>
+                        {/* Reward placeholders phía trên mỗi mốc */}
+                        {MILESTONES.map((m) => {
+                            const pct = (m / MAX) * 100;
+                            const reached = (referralCount ?? 0) >= m;
+                            return (
+                                <View
+                                    key={`reward-${m}`}
+                                    style={[
+                                        styles.rewardPlaceholder,
+                                        reached ? styles.rewardPlaceholderReached : null,
+                                        { left: `${pct}%`, marginLeft: -22 },
+                                    ]}
+                                >
+                                    {/* Đặt ảnh quà vào đây sau */}
+                                </View>
+                            );
+                        })}
+
+                        {/* Track nền */}
+                        <View style={[styles.progressTrack, { width: 1000 }]}>
+                            <View style={[
+                                styles.progressFill,
+                                { width: `${Math.min(((referralCount ?? 0) / MAX) * 100, 100)}%` }
+                            ]} />
+                        </View>
+
+                        {/* Milestone dots */}
+                        {MILESTONES.map((m) => {
+                            const pct = (m / MAX) * 100;
+                            const reached = (referralCount ?? 0) >= m;
+                            return (
+                                <View
+                                    key={m}
+                                    style={[
+                                        styles.milestoneDot,
+                                        reached ? styles.milestoneDotReached : styles.milestoneDotPending,
+                                        { left: `${pct}%`, marginLeft: -10 },
+                                    ]}
+                                >
+                                    {reached
+                                        ? <Text style={{ fontSize: 10 }}>🎁</Text>
+                                        : <Text style={styles.milestoneDotText}>{m}</Text>
+                                    }
+                                </View>
+                            );
+                        })}
+
+                        {/* Labels số dưới mỗi mốc */}
+                        {MILESTONES.map((m) => {
+                            const pct = (m / MAX) * 100;
+                            const reached = (referralCount ?? 0) >= m;
+                            return (
+                                <Text
+                                    key={`label-${m}`}
+                                    style={[
+                                        styles.milestoneLabel,
+                                        { left: `${pct}%`, marginLeft: -10, color: reached ? '#1361AA' : '#bbb' },
+                                    ]}
+                                >
+                                    {m}
+                                </Text>
+                            );
+                        })}
+
+                        {/* Label 0 */}
+                        <Text style={[styles.milestoneLabel, { left: 0, color: '#bbb' }]}>0</Text>
+                    </View>
+                </ScrollView>
+
+                {/* Mốc tiếp theo */}
+                {(referralCount ?? 0) < MAX && (() => {
+                    const next = MILESTONES.find(m => (referralCount ?? 0) < m);
+                    const remaining = next ? next - (referralCount ?? 0) : 0;
+                    return next ? (
+                        <View style={styles.nextMilestoneBox} className='mt-3 rounded-xl px-3 py-2 flex-row items-center'>
+                            <Text style={styles.nextMilestoneText}>
+                                Còn <Text style={styles.nextMilestoneHighlight}>{remaining} lượt</Text> nữa để đạt mốc <Text style={styles.nextMilestoneHighlight}>{next} 🎁</Text>
+                            </Text>
+                        </View>
+                    ) : null;
+                })()}
+                {(referralCount ?? 0) >= MAX && (
+                    <View style={[styles.nextMilestoneBox, { backgroundColor: '#E8F5E9' }]} className='mt-3 rounded-xl px-3 py-2'>
+                        <Text style={[styles.nextMilestoneText, { color: '#2E7D32' }]}>🎉 Bạn đã đạt mốc tối đa! Phòng khám sẽ liên hệ trao thưởng.</Text>
+                    </View>
+                )}
+            </View>
 
             {/* Mã giới thiệu */}
             <View className='mx-4 mt-4 bg-white rounded-2xl p-4' style={styles.card}>
@@ -432,6 +540,96 @@ const styles = StyleSheet.create({
     },
     hintBox: {
         backgroundColor: '#F0F7FF',
+    },
+    // Progress bar styles
+    progressTrack: {
+        height: 12,
+        backgroundColor: '#E0E0E0',
+        borderRadius: 6,
+        overflow: 'hidden',
+        marginTop: 56,
+        position: 'relative',
+    },
+    progressFill: {
+        height: '100%',
+        backgroundColor: '#1361AA',
+        borderRadius: 6,
+    },
+    milestoneDot: {
+        position: 'absolute',
+        top: 52,
+        width: 20,
+        height: 20,
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    milestoneDotReached: {
+        backgroundColor: '#5EBA1B',
+        borderWidth: 2,
+        borderColor: '#fff',
+        shadowColor: '#5EBA1B',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.5,
+        shadowRadius: 3,
+        elevation: 3,
+    },
+    milestoneDotPending: {
+        backgroundColor: '#fff',
+        borderWidth: 2,
+        borderColor: '#BDBDBD',
+    },
+    milestoneDotText: {
+        fontSize: 7,
+        fontFamily: 'Poppins-Bold',
+        color: '#999',
+    },
+    milestoneLabel: {
+        position: 'absolute',
+        top: 78,
+        fontSize: 10,
+        fontFamily: 'Poppins-Regular',
+        textAlign: 'center',
+        width: 20,
+    },
+    rewardPlaceholder: {
+        position: 'absolute',
+        top: 0,
+        width: 44,
+        height: 44,
+        borderRadius: 10,
+        borderWidth: 1.5,
+        borderStyle: 'dashed',
+        borderColor: '#D0D0D0',
+        backgroundColor: '#FAFAFA',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    rewardPlaceholderReached: {
+        borderColor: '#5EBA1B',
+        backgroundColor: '#F0FFF0',
+    },
+    progressLabelStart: {
+        fontSize: 11,
+        fontFamily: 'Poppins-Regular',
+        color: '#aaa',
+    },
+    progressLabelEnd: {
+        fontSize: 11,
+        fontFamily: 'Poppins-SemiBold',
+        color: '#1361AA',
+    },
+    nextMilestoneBox: {
+        backgroundColor: '#EAF4FF',
+    },
+    nextMilestoneText: {
+        fontSize: 12,
+        fontFamily: 'Poppins-Regular',
+        color: '#555',
+    },
+    nextMilestoneHighlight: {
+        fontFamily: 'Poppins-Bold',
+        color: '#1361AA',
     },
     hintText: {
         fontSize: 12,
