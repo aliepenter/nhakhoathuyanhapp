@@ -7,7 +7,9 @@ import bgTabbar from "../assets/images/bg-tabbar.png";
 import bgLovingPage from "../assets/images/bg-loving-page.png";
 import heartFly from "../assets/images/heart-fly.gif";
 import logonotext from "../assets/images/logonotext.png";
+import referralscreen from "../assets/images/referralscreen.jpg";
 export default {
+    referralscreen,
     logonotext,
     bgLovingPage,
     heartFly,

@@ -2,6 +2,7 @@ type User = {
   id: number;
   avatar_id: any;
   ho_va_ten: string;
+  referral_code?: string;
   so_dien_thoai: string;
   dia_chi: string;
   anh_dai_dien: string;

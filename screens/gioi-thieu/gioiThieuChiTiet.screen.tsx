@@ -12,18 +12,37 @@ import { getReferralList } from '@/lib/apiCall';
 
 type ReferralItem = {
     id: number;
-    referred_name: string;
+    referred_user_id?: number | null;
+    referred_name?: string;
+    referred_user_name?: string;
+    referred_user?: {
+        id?: number;
+        ho_va_ten?: string;
+        name?: string;
+        full_name?: string;
+    } | null;
     commission: number;
     status: 'paid' | 'unpaid';
     created_at: string;
 }
 
+const resolveReferredName = (item: ReferralItem): string => {
+    return (
+        item.referred_user?.ho_va_ten ??
+        item.referred_user?.full_name ??
+        item.referred_user?.name ??
+        item.referred_user_name ??
+        item.referred_name ??
+        (item.referred_user_id != null ? `Người được giới thiệu #${item.referred_user_id}` : `Lượt giới thiệu #${item.id}`)
+    );
+};
+
 const formatCommission = (amount: number): string => {
     if (amount >= 1000000) {
         const millions = amount / 1000000;
-        return millions % 1 === 0 ? `${millions}tr đ` : `${(amount / 1000).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}đ`;
+        return millions % 1 === 0 ? `${millions}tr` : `${(amount / 1000).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}đ`;
     }
-    if (amount >= 1000) return `${(amount / 1000).toFixed(0)}k đ`;
+    if (amount >= 1000) return `${(amount / 1000).toFixed(0)}k`;
     return `${amount}đ`;
 };
 
@@ -58,7 +77,7 @@ export default function GioiThieuChiTietScreen() {
         <View className='bg-white mx-4 mb-3 rounded-2xl p-4 flex-row items-center justify-between' style={styles.card}>
             <View className='flex-1'>
                 <Text className='font-psemibold text-[14px] text-[#333]' numberOfLines={1}>
-                    {item.referred_name}
+                    {resolveReferredName(item)}
                 </Text>
                 <Text className='font-pregular text-[12px] text-[#888] mt-1'>
                     Hoa hồng: <Text className='font-psemibold text-[#1361AA]'>{formatCommission(item.commission)}</Text>

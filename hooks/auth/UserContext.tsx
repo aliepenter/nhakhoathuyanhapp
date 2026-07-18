@@ -9,6 +9,7 @@ interface User {
     id: string;
     name: string;
     main_status: number;
+    referral_code?: string;
 }
 
 interface UserContextType {
