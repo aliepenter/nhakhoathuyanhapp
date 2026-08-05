@@ -1,17 +1,20 @@
-import { View, Text, Dimensions, Linking, Alert, ScrollView, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
+import React from 'react'
 import { icons } from '@/constants'
 import CustomButton from '@/components/common/CustomButton';
-import { Image, ImageSource } from 'expo-image';
 import { runOnJS } from 'react-native-reanimated';
 import Toast from 'react-native-toast-message';
+
+const CHINH_NHA_SERVICE_ID = '1';
+
 type ServiceProps = {
     services: any;
     selectedServiceId: any;
     setSelectedTab: (index: number) => void
     handleServiceSelect: (index: any) => void;
+    disabledChinhNha?: boolean;
 }
-export default function DichVuScreen({ services, selectedServiceId, handleServiceSelect, setSelectedTab }: ServiceProps) {
+export default function DichVuScreen({ services, selectedServiceId, handleServiceSelect, setSelectedTab, disabledChinhNha }: ServiceProps) {
     const onTabPress = (index: number) => {
         runOnJS(handlePress)(index);
     }
@@ -36,25 +39,37 @@ export default function DichVuScreen({ services, selectedServiceId, handleServic
             <View className='h-[90%]'>
                 <ScrollView>
                     <View className='flex-row flex-wrap gap-y-[25px]'>
-                        {services.map((service: { id: React.Key | null | undefined; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }) => (
-                            <TouchableOpacity
-                                key={service.id}
-                                className='w-[33.333333%] justify-center items-center'
-                                onPress={() => handleServiceSelect(service.id)}
-                            >
-                                <View className={`w-[90px] h-[90px] rounded-lg justify-center items-center mb-2 ${
-                                    selectedServiceId === service.id 
-                                        ? 'bg-blue-500 border-2 border-blue-600' 
-                                        : 'bg-gray-100 border-2 border-gray-200'
-                                }`}>
-                                    <Text className={`font-pbold text-center text-[12px] px-2 ${
-                                        selectedServiceId === service.id ? 'text-white' : 'text-gray-700'
+                        {services.map((service: { id: string; name: string }) => {
+                            const isDisabled = disabledChinhNha && service.id === CHINH_NHA_SERVICE_ID;
+
+                            return (
+                                <TouchableOpacity
+                                    key={service.id}
+                                    className='w-[33.333333%] justify-center items-center'
+                                    onPress={() => handleServiceSelect(service.id)}
+                                    activeOpacity={isDisabled ? 1 : 0.7}
+                                >
+                                    <View className={`w-[90px] h-[90px] rounded-lg justify-center items-center mb-2 ${
+                                        isDisabled
+                                            ? 'bg-gray-100 border-2 border-gray-300 opacity-60'
+                                            : selectedServiceId === service.id
+                                                ? 'bg-blue-500 border-2 border-blue-600'
+                                                : 'bg-gray-100 border-2 border-gray-200'
                                     }`}>
-                                        {service.name}
-                                    </Text>
-                                </View>
-                            </TouchableOpacity>
-                        ))}
+                                        <Text className={`font-pbold text-center text-[12px] px-2 ${
+                                            selectedServiceId === service.id ? 'text-white' : 'text-gray-700'
+                                        }`}>
+                                            {service.name}
+                                        </Text>
+                                        {isDisabled && (
+                                            <Text className='font-pregular text-center text-[10px] text-gray-500 mt-1 px-2'>
+                                                Đổi trong Lịch hẹn
+                                            </Text>
+                                        )}
+                                    </View>
+                                </TouchableOpacity>
+                            )
+                        })}
                     </View>
                     <View className='my-[20px]'>
                         <CustomButton

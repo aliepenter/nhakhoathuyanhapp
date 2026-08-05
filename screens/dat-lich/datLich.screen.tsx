@@ -1,13 +1,12 @@
-import { View, Text } from 'react-native'
-import React, { useState } from 'react'
+import { View } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import StatusButton, { StatusButtonType } from '@/components/common/StatusButton';
 import DichVuScreen from './dichVu.screen';
-import { icons } from '@/constants';
 import NgayKhamScreen from './ngayKham.screen';
 import Toast from 'react-native-toast-message';
 import { runOnJS } from 'react-native-reanimated';
 import ThanhCongScreen from './thanhCong.screen';
-import { createLichHen } from '@/lib/apiCall';
+import { createLichHen, getLichHenByUserId } from '@/lib/apiCall';
 import useUser from '@/hooks/auth/useUser';
 
 export enum StatusTab {
@@ -34,16 +33,66 @@ const services: Service[] = [
     { id: '8', name: 'Chỉnh lại khí cụ', icon: null, activeIcon: null },
     { id: '9', name: 'Dịch vụ khác', icon: null, activeIcon: null },
 ];
+
+const CHINH_NHA_SERVICE_ID = '1';
+
+const isUpcomingAppointment = (item: LichHen) => {
+    const appointmentDate = new Date(item.ngay_kham);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    appointmentDate.setHours(0, 0, 0, 0);
+
+    return (
+        item.change_request_status !== 'approved' &&
+        appointmentDate >= today
+    );
+};
+
 export default function DatLichScreen() {
     const { user } = useUser();
     const [selected, setSelected] = useState<StatusTab>(StatusTab.Tab1);
     const [selectedDate, setSelectedDate] = useState<string>('');
     const [loading, setLoading] = useState(false);
+    const [hasUpcomingAppointment, setHasUpcomingAppointment] = useState(false);
     const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
     const [selectedServiceName, setSelectedServiceName] = useState<string>('');
+
+    useEffect(() => {
+        const fetchUpcomingAppointments = async () => {
+            if (!user?.id) return;
+
+            try {
+                const res = await getLichHenByUserId(user.id);
+                const hasUpcoming = !!res?.data?.some((item: LichHen) => isUpcomingAppointment(item));
+                setHasUpcomingAppointment(hasUpcoming);
+            } catch (error) {
+                console.error('Error fetching upcoming appointments:', error);
+            }
+        };
+
+        fetchUpcomingAppointments();
+    }, [user?.id]);
+
+    useEffect(() => {
+        if (hasUpcomingAppointment && selectedServiceId === CHINH_NHA_SERVICE_ID) {
+            setSelectedServiceId(null);
+            setSelectedServiceName('');
+            setSelected(StatusTab.Tab1);
+        }
+    }, [hasUpcomingAppointment, selectedServiceId]);
+
     const handleServiceSelect = (id: string) => {
+        if (id === CHINH_NHA_SERVICE_ID && hasUpcomingAppointment) {
+            Toast.show({
+                type: 'error',
+                text1: 'Bạn đã có lịch hẹn sắp tới',
+                text2: 'Nếu muốn đổi lịch, vui lòng vào mục Lịch hẹn.',
+            });
+            return;
+        }
+
         setSelectedServiceId(id);
-        const selectedService = services.find(service => service.id == id);
+        const selectedService = services.find(service => service.id === id);
         if (selectedService) {
             setSelectedServiceName(selectedService.name);
         }
@@ -83,6 +132,16 @@ export default function DatLichScreen() {
             return;
         }
 
+        if (selectedServiceId === CHINH_NHA_SERVICE_ID && hasUpcomingAppointment) {
+            Toast.show({
+                type: 'error',
+                text1: 'Bạn đã có lịch hẹn sắp tới',
+                text2: 'Vui lòng vào Lịch hẹn để yêu cầu đổi lịch.',
+            });
+            setSelected(StatusTab.Tab1);
+            return;
+        }
+
         // Kiểm tra ngày không được trong quá khứ
         const selectedDateObj = new Date(selectedDate);
         const today = new Date();
@@ -107,7 +166,7 @@ export default function DatLichScreen() {
         try {
             await createLichHen(lichHen);
             setSelected(index); // Chuyển sang màn hình thành công
-        } catch (error) {
+        } catch {
             Toast.show({
                 type: 'error',
                 text1: 'Đã có lỗi xảy ra, xin thử lại sau',
@@ -124,12 +183,7 @@ export default function DatLichScreen() {
     const handleBack = () => {
         setSelected(0);
     };
-    const showToast = () => {
-        Toast.show({
-            type: 'error',
-            text1: 'Vui lòng chọn ngày khám',
-        });
-    }
+
     return (
         <View className='bg-white h-full'>
             <View className='px-[11px] mt-[16px]'>
@@ -138,7 +192,13 @@ export default function DatLichScreen() {
                     selected === StatusTab.Tab1
                         ?
                         (
-                            <DichVuScreen services={services} selectedServiceId={selectedServiceId} handleServiceSelect={handleServiceSelect} setSelectedTab={setSelected} />
+                            <DichVuScreen
+                                services={services}
+                                selectedServiceId={selectedServiceId}
+                                handleServiceSelect={handleServiceSelect}
+                                setSelectedTab={setSelected}
+                                disabledChinhNha={hasUpcomingAppointment}
+                            />
                         )
                         :
                         selected === StatusTab.Tab2

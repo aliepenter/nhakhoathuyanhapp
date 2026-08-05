@@ -27,7 +27,7 @@ const FunctionItem = ({ icon, title, path, flag, setFlag, notification }: any) =
             className='items-center w-1/3 mb-[10px]'
         >
             <View style={styles.boxShadow} className={`justify-center items-center bg-[#FAFAFA] rounded-lg w-[60px] h-[60px]`}>
-                <Image source={icon} className='w-[50px] h-[50px]' contentFit='contain' transition={500} />
+                <Image source={icon} className='w-[40px] h-[40px]' contentFit='contain' transition={500} />
                 {
                     notification
                         ?

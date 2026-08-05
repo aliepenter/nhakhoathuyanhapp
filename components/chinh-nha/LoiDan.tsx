@@ -1,148 +1,167 @@
-import { View, Text, FlatList, ActivityIndicator, Image, ScrollView } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { View, Text, ActivityIndicator, ScrollView, StyleSheet } from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
 import VideoSection from '../common/VideoSection'
-import { getBaiVietByThuThuat, getBaiVietCategoryById, getChinhNhaThuThuatByChinhNhaId, getVideoCategoryById, getVideosByThuThuat } from '@/lib/apiCall';
+import { getBaiVietByThuThuat, getChinhNhaThuThuatByChinhNhaId, getVideosByThuThuat } from '@/lib/apiCall';
 import BaiVietSection from '../common/BaiVietSection';
-import { router } from 'expo-router';
-import EmptyState from '../common/EmptyState';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 type LoiDanProps = {
     flag: boolean;
     setFlag: (index: boolean) => void;
     chinh_nha_id: any;
+    order: number;
+    onHasContentChange?: (hasContent: boolean) => void;
 }
-export default function LoiDan({ chinh_nha_id, flag, setFlag }: LoiDanProps) {
-    const [videoCategory, setVideoCategory] = useState<Array<any>>([]);
-    const [baiVietCategory, setBaiVietCategory] = useState<Array<any>>([]);
-    const [hasVideo, setHasVideo] = useState<boolean>(true);
-    const [hasBaiViet, setHasBaiViet] = useState<boolean>(true);
-    const [videos, setVideos] = useState<Array<any>>([]); // State để lưu video.data
-    const [baiViets, setBaiViets] = useState<Array<any>>([]); // State để lưu bài viết
+export default function LoiDan({ chinh_nha_id, flag, setFlag, order, onHasContentChange }: LoiDanProps) {
+    const [loading, setLoading] = useState<boolean>(true);
+    const [videos, setVideos] = useState<any[]>([]); // State để lưu video.data
+    const [baiViets, setBaiViets] = useState<any[]>([]); // State để lưu bài viết
+
+    const fetchLoiDan = useCallback(async () => {
+        setLoading(true);
+        setVideos([]);
+        setBaiViets([]);
+        try {
+            if (!chinh_nha_id) {
+                onHasContentChange?.(false);
+                return;
+            }
+
+            const res = await getChinhNhaThuThuatByChinhNhaId(chinh_nha_id);
+            if (!res?.data || res.data.length === 0) {
+                onHasContentChange?.(false);
+                return;
+            }
+
+            const [baiVietsData, videosData] = await Promise.all([
+                Promise.all(res.data.map((item: any) => getBaiVietByThuThuat(item.thu_thuat_id.id))),
+                Promise.all(res.data.map((item: any) => getVideosByThuThuat(item.thu_thuat_id.id))),
+            ]);
+            const formattedBaiViets = baiVietsData
+                .map(baiViet => baiViet.data)
+                .flat()
+                .map((item: any) => ({ bai_viet_id: item }));
+            const formattedVideos = videosData
+                .map(video => video.data)
+                .flat()
+                .map((item: any) => ({ video_id: item }));
+            const hasContent = formattedVideos.length > 0 || formattedBaiViets.length > 0;
+
+            setBaiViets(formattedBaiViets);
+            setVideos(formattedVideos);
+            onHasContentChange?.(hasContent);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            onHasContentChange?.(false);
+        } finally {
+            setLoading(false);
+        }
+    }, [chinh_nha_id, onHasContentChange]);
 
     useEffect(() => {
-        fetchBaiVietLoiDan();
-        fetchVideoLoiDan();
-    }, [chinh_nha_id]);
-    const fetchBaiVietLoiDan = async () => {
-        try {
-            if (chinh_nha_id) {
-                const res = await getChinhNhaThuThuatByChinhNhaId(chinh_nha_id);
-                if (res && res.data) {
-                    const baiVietPromises = res.data.map((item: any) => getBaiVietByThuThuat(item.thu_thuat_id.id));
-                    const baiVietsData = await Promise.all(baiVietPromises);
+        fetchLoiDan();
+    }, [fetchLoiDan]);
 
-                    // Định dạng lại dữ liệu để mỗi item nằm trong key `bai_viet_id`
-                    const formattedBaiViets = baiVietsData
-                        .map(baiViet => baiViet.data) // Lấy `baiViet.data` từ mỗi lời gọi
-                        .flat() // Gộp tất cả các mảng con thành một mảng
-                        .map((item: any) => ({ bai_viet_id: item })); // Đặt mỗi item vào key `bai_viet_id`
+    if (loading) {
+    return (
+        <View style={styles.loadingWrap}>
+            <ActivityIndicator color={'#00E5E5'} />
+        </View>
+        )
+    }
 
-                    if (formattedBaiViets.length === 0) {
-                        setHasBaiViet(false); // Nếu không có bài viết, đặt hasBaiViet thành false
-                    } else {
-                        setBaiViets(formattedBaiViets); // Lưu dữ liệu vào state
-                    }
-                } else {
-                    setHasBaiViet(false); // Nếu không có dữ liệu từ API, đặt hasBaiViet thành false
-                }
-            } else {
-                setHasBaiViet(false); // Nếu không có chinh_nha_id, đặt hasBaiViet thành false
-            }
-        } catch (error) {
-            console.error("Error fetching data:", error);
-            setHasBaiViet(false); // Nếu xảy ra lỗi, đặt hasBaiViet thành false
-        }
-    };
-    const fetchVideoLoiDan = async () => {
-        try {
-            if (chinh_nha_id) {
-                const res = await getChinhNhaThuThuatByChinhNhaId(chinh_nha_id);
-                if (res && res.data) {
-                    const videoPromises = res.data.map((item: any) => getVideosByThuThuat(item.thu_thuat_id.id));
-                    const videosd = await Promise.all(videoPromises);
-
-                    const formattedVideos = videosd
-                        .map(video => video.data) // Lấy `video.data` từ mỗi lời gọi
-                        .flat() // Gộp tất cả các mảng con thành một mảng
-                        .map((item: any) => ({ video_id: item })); // Đặt mỗi item vào key `video_id`
-
-                    if (formattedVideos.length === 0) {
-                        setHasVideo(false); // Nếu không có video, đặt hasVideo thành false
-                    } else {
-                        setVideos(formattedVideos); // Lưu dữ liệu vào state
-                    }
-                } else {
-                    setHasVideo(false); // Nếu không có dữ liệu từ API, đặt hasVideo thành false
-                }
-            } else {
-                setHasVideo(false); // Nếu không có chinh_nha_id, đặt hasVideo thành false
-            }
-        } catch (error) {
-            console.error("Error fetching data:", error);
-            setHasVideo(false);
-        }
-    };
+    if (videos.length === 0 && baiViets.length === 0) {
+        return null;
+    }
 
     return (
-        <View className='mt-[13px] border-b-[2px] pb-[11px] border-b-[#E9E9E9] md:pb-[20px]'>
-            <Text className='text-[16px] md:text-[22px] font-pbold text-[#5EBA1B]'>4. Lời dặn sau điều trị</Text>
-            {
-                (hasVideo || hasBaiViet) ? (
-                    <View>
-                        {hasVideo && (
-                            <View className='mt-[17px] md:mt-[20px]'>
-                                <Text className='text-[#626262] text-[14px] font-psemibold'>Lời dặn bằng video</Text>
-                                {
-                                    videos && videos.length != 0
-                                        ?
-                                        <ScrollView
-                                            horizontal
-                                            className='mt-[10px]'
-                                            showsHorizontalScrollIndicator={false}
-                                        >
-                                            {
-                                                videos.map((item: any, index: number) => (
-                                                    <VideoSection flag={flag} setFlag={setFlag} key={index} customImageStyle={`${videos.length === 1 ? "w-96 h-56" : ''}`} item={item.video_id} isLast={index === videos.length - 1} />
-                                                )
-                                                )
-                                            }
-                                        </ScrollView>
-                                        :
-                                        <View className={`${videos.length === 1 ? "h-[234px]" : 'h-[202px]'} justify-center`}>
-                                            <ActivityIndicator color={'#00E5E5'} />
-                                        </View>
-                                }
-                            </View>
-                        )}
-                        {hasBaiViet && (
-                            <View className='mt-[17px] md:mt-[20px]'>
-                                <Text className='text-[#626262] text-[14px] font-psemibold'>Lời dặn bằng bài viết</Text>
-                                {
-                                    baiViets && baiViets.length != 0
-                                        ?
-                                        <ScrollView
-                                            horizontal
-                                            showsHorizontalScrollIndicator={false}
-                                            className='mt-[10px]'
-                                        >
-                                            {
-                                                baiViets.map((item: any, index: number) => (
-                                                    <BaiVietSection flag={flag} setFlag={setFlag} key={index} customImageStyle={`${baiViets.length === 1 ? "w-96 h-56" : ''}`} item={item.bai_viet_id} isLast={index === baiViets.length - 1} />
-                                                ))
-                                            }
-                                        </ScrollView>
-                                        :
-                                        <View className={`${baiViets.length === 1 ? "h-[234px]" : 'h-[160px]'} justify-center`}>
-                                            <ActivityIndicator color={'#00E5E5'} />
-                                        </View>
-                                }
-                            </View>
-                        )}
-                    </View>
-                ) : (
-                    <EmptyState text="Không có lời dặn" />
-                )
-            }
+        <View style={styles.section}>
+            <View style={styles.titleWrap}>
+                <View style={styles.iconWrap}>
+                    <MaterialCommunityIcons name="clipboard-text-outline" size={20} color="#316BFF" />
+                </View>
+                <View style={styles.titleTextWrap}>
+                    <Text style={styles.title}>{order}. Lời dặn sau điều trị</Text>
+                    <Text style={styles.subtitle}>{videos.length + baiViets.length} nội dung chăm sóc tại nhà</Text>
+                </View>
+            </View>
+            {videos.length > 0 && (
+                <View style={styles.contentGroup}>
+                    <Text style={styles.groupTitle}>Video hướng dẫn</Text>
+                    <ScrollView
+                        horizontal
+                        contentContainerStyle={styles.horizontalList}
+                        showsHorizontalScrollIndicator={false}
+                    >
+                        {videos.map((item: any, index: number) => (
+                            <VideoSection flag={flag} setFlag={setFlag} key={index} customImageStyle={`${videos.length === 1 ? "w-96 h-56" : ''}`} item={item.video_id} isLast={index === videos.length - 1} />
+                        ))}
+                    </ScrollView>
+                </View>
+            )}
+            {baiViets.length > 0 && (
+                <View style={styles.contentGroup}>
+                    <Text style={styles.groupTitle}>Bài viết nên đọc</Text>
+                    <ScrollView
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        contentContainerStyle={styles.horizontalList}
+                    >
+                        {baiViets.map((item: any, index: number) => (
+                            <BaiVietSection flag={flag} setFlag={setFlag} key={index} customImageStyle={`${baiViets.length === 1 ? "w-96 h-56" : ''}`} item={item.bai_viet_id} isLast={index === baiViets.length - 1} />
+                        ))}
+                    </ScrollView>
+                </View>
+            )}
         </View >
     )
 }
 
+const styles = StyleSheet.create({
+    section: {
+        padding: 16,
+    },
+    loadingWrap: {
+        justifyContent: 'center',
+        paddingVertical: 18,
+    },
+    titleWrap: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 10,
+    },
+    iconWrap: {
+        width: 38,
+        height: 38,
+        borderRadius: 12,
+        backgroundColor: '#EAF0FF',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 10,
+    },
+    titleTextWrap: {
+        flex: 1,
+    },
+    title: {
+        color: '#10240B',
+        fontFamily: 'Inter-Bold',
+        fontSize: 17,
+    },
+    subtitle: {
+        color: '#768172',
+        fontFamily: 'Inter-Regular',
+        fontSize: 12,
+        marginTop: 2,
+    },
+    contentGroup: {
+        marginTop: 12,
+    },
+    groupTitle: {
+        color: '#475044',
+        fontFamily: 'Inter-SemiBold',
+        fontSize: 13,
+        marginBottom: 8,
+    },
+    horizontalList: {
+        paddingRight: 2,
+    },
+});

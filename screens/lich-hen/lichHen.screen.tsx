@@ -133,7 +133,7 @@ export default function LichHenScreen() {
             pathname: "/(routes)/chinh-nha/chinhNhaDetail",
             params: {
                 headerTitle: title,
-                thu_thuat_dieu_tri: item.thu_thuat_dieu_tri ? item.thu_thuat_dieu_tri : null,
+                ngay_chinh_nha: item.ngay_chinh_nha,
                 qua_trinh_image_id: item.qua_trinh_image_id ? JSON.stringify(item.qua_trinh_image_id) : null,
                 tinh_trang_rang_mieng: item.loi_dan_id ? JSON.stringify(item.loi_dan_id) : null,
                 chinh_nha_id: item.id
