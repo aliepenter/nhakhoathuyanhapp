@@ -1,18 +1,13 @@
 import { View, Text, Alert, Image, ScrollView, TouchableOpacity, Pressable, Linking } from 'react-native'
-import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react'
+import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { createDeleteRequest, getAllAccount, getAvatar, logout, updateMainStatus, deleteExpoToken } from '@/lib/apiCall';
 import { icons } from '@/constants';
 import CustomButton from '@/components/common/CustomButton';
 import { router } from 'expo-router';
 import useUser from '@/hooks/auth/useUser';
-import {
-    BottomSheetModal,
-    BottomSheetBackdrop,
-    BottomSheetScrollView
-} from '@gorhom/bottom-sheet';
+import AccountSwitcher, { normalizeSwitchAccounts, SwitchAccount } from '@/components/profile/AccountSwitcher';
 import { SERVER_URL } from '@/utils/uri';
 import * as Updates from 'expo-updates';
-import Toast from 'react-native-toast-message';
 import { usePushNotifications } from '@/hooks/usePushNotifications';
 
 export default function ProfileScreen() {
@@ -20,21 +15,29 @@ export default function ProfileScreen() {
     const [loading, setLoading] = useState(true);
     const { user, setRefetch } = useUser();
     const { expoPushToken } = usePushNotifications();
-    const snapPoints = useMemo(() => ["40%"], []);
-    const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-    const [account, setAccount] = useState<Array<User>>();
+    const [account, setAccount] = useState<SwitchAccount[]>([]);
+    const [switcherOpen, setSwitcherOpen] = useState(false);
+    const [accountError, setAccountError] = useState('');
+    const [switchingId, setSwitchingId] = useState<number | null>(null);
+    const switchLock = useRef(false);
+    const accountRequest = useRef(0);
 
     useEffect(() => {
         if (user) {
             const sdt = user.so_dien_thoai;
             fetchAccount(sdt);
         }
+        return () => { accountRequest.current++; };
     }, [user]);
 
     const handleLogout = async () => {
         try {
             if (user && expoPushToken && expoPushToken.data) {
-                await deleteExpoToken(user.id, expoPushToken.data);
+                try {
+                    await deleteExpoToken(user.id, expoPushToken.data);
+                } catch {
+                    // Notification cleanup must not prevent local sign-out.
+                }
             }
             await logout();
         } catch (error) {
@@ -86,54 +89,47 @@ export default function ProfileScreen() {
             setFlag(false)
         }, 1000);
     }
-    const openBottomSheet = () => {
-        setFlag(true);
-        if (bottomSheetModalRef.current) {
-            bottomSheetModalRef.current.present();
-        }
-        setTimeout(() => {
-            setFlag(false);
-        }, 1000);
+    const openAccountSwitcher = () => {
+        if (switchLock.current) return;
+        setSwitcherOpen(true);
+        if (user?.so_dien_thoai) void fetchAccount(user.so_dien_thoai);
     };
     const fetchAccount = async (sdt: string) => {
+        const request = ++accountRequest.current;
+        setLoading(true); setAccountError('');
         try {
-            const resAccount = await getAllAccount(sdt)
-            if (resAccount) {
-                setAccount(resAccount.data)
-                setLoading(false)
-            } else {
-                setLoading(false)
-            }
+            const result = await getAllAccount(sdt);
+            if (!result) throw new Error('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
+            const accounts = normalizeSwitchAccounts(result.data);
+            const resolved = await Promise.all(accounts.map(async item => {
+                if (typeof item.avatar_id !== 'number' || item.avatar_id <= 0) return item;
+                try { const avatar = await getAvatar(item.avatar_id); return { ...item, avatar_id: avatar?.data || null }; }
+                catch { return { ...item, avatar_id: null }; }
+            }));
+            if (request === accountRequest.current) setAccount(resolved);
         } catch (error) {
-            console.error("Error fetching data:", error);
-            setLoading(false)
-        }
+            if (request === accountRequest.current) setAccountError('Không tải được danh sách tài khoản. Vui lòng thử lại.');
+        } finally { if (request === accountRequest.current) setLoading(false); }
     };
-    const renderBackdrop = useCallback(
-        (props: any) => (
-            <BottomSheetBackdrop
-                {...props}
-                disappearsOnIndex={-1}
-                appearsOnIndex={0}
-                opacity={0.3}
-                backgroundColor="black"
-            />
-        ),
-        []
-    );
     const handleSwitch = async (id: number) => {
+        if (switchLock.current || Number(user?.id) === id || !account.some(item => item.id === id)) return;
+        switchLock.current = true; setSwitchingId(id);
         try {
-            await updateMainStatus(id);
-            setRefetch(true);
-            await Updates.reloadAsync();
-        } catch (error) {
-            Toast.show({
-                type: 'error',
-                text1: 'Đã có lỗi xảy ra, xin thử lại sau',
-            });
-        }
-
-    }
+            const result = await updateMainStatus(id);
+            if (!result) throw new Error('Phiên đăng nhập đã hết hạn.');
+            setRefetch(previous => !previous);
+            setSwitcherOpen(false);
+            // Reload only after the server confirms the active account so all screens refresh.
+            if (Updates.isEnabled) {
+                try { await Updates.reloadAsync(); }
+                catch { Alert.alert('Đã chuyển tài khoản', 'Vui lòng đóng và mở lại ứng dụng để tải đầy đủ thông tin tài khoản vừa chọn.'); }
+            } else {
+                router.replace('/');
+            }
+        } catch {
+            Alert.alert('Chuyển tài khoản thất bại', 'Không thể chuyển tài khoản. Vui lòng thử lại.');
+        } finally { switchLock.current = false; setSwitchingId(null); }
+    };
 
     const handlePress = useCallback(async (url: any) => {
         const supported = await Linking.canOpenURL(url);
@@ -187,9 +183,9 @@ export default function ProfileScreen() {
                             </View>
                         </TouchableOpacity>
                         {
-                            account && account.length > 1
+                            account.length > 1 || !!accountError
                                 ?
-                                <TouchableOpacity disabled={flag} onPress={() => openBottomSheet()} className='flex-row flex-nowrap mt-3'>
+                                <TouchableOpacity disabled={flag} onPress={openAccountSwitcher} className='flex-row flex-nowrap mt-3'>
                                     <View className='w-[15%] justify-center items-center'>
                                         <Image source={icons.switchIcon} resizeMode='cover' className='w-[15px] h-[15px]' />
                                     </View>
@@ -353,41 +349,10 @@ export default function ProfileScreen() {
                     iconStyle="w-[18px] h-[18px] mr-[15px]" flag={false} isLoading={undefined} colorFrom={undefined} colorTo={undefined} iconRight={undefined} notification={false} />
                 <View className='h-[150px]'></View>
             </ScrollView>
-            <BottomSheetModal
-                ref={bottomSheetModalRef}
-                index={0}
-                snapPoints={snapPoints}
-                enablePanDownToClose={true}
-                backdropComponent={renderBackdrop}
-            >
-                <BottomSheetScrollView>
-                    <Text className='text-center py-4 text-lg font-pbold'>Chuyển đổi tài khoản</Text>
-                    {account?.map((item: User, index: any) => {
-                        const isSelected = user && user.id === item.id;
-
-                        const itemContent = (
-                            <View className='flex-row justify-start items-center'>
-                                <Image
-                                    source={{ uri: `${SERVER_URL}${item.avatar_id.value}` }}
-                                    className="w-[45px] h-[45px] rounded-full"
-                                    resizeMode='cover'
-                                />
-                                <Text className='font-psemibold ml-3'>{item.ho_va_ten}</Text>
-                            </View>
-                        );
-                        return isSelected ? (
-                            <View key={index} className='flex-row justify-between items-center mb-2 bg-[#E1E1E1] mx-5 p-2 rounded-[15px]'>
-                                {itemContent}
-                                <Image source={icons.tick} resizeMode='cover' className='w-[20px] h-[20px]' />
-                            </View>
-                        ) : (
-                            <TouchableOpacity onPress={() => handleSwitch(item.id)} key={index} className='flex-row justify-between items-center mb-2 bg-[#E1E1E1] mx-5 p-2 rounded-[15px]'>
-                                {itemContent}
-                            </TouchableOpacity>
-                        );
-                    })}
-                </BottomSheetScrollView>
-            </BottomSheetModal>
+            <AccountSwitcher visible={switcherOpen} accounts={account} currentId={user?.id} serverUrl={SERVER_URL}
+                loading={loading} error={accountError} switchingId={switchingId}
+                onClose={() => { if (!switchLock.current) setSwitcherOpen(false); }}
+                onRetry={() => { if (user?.so_dien_thoai) void fetchAccount(user.so_dien_thoai); }} onSelect={handleSwitch} />
         </View>
     )
 }

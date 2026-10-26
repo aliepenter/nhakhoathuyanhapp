@@ -21,20 +21,16 @@ export default function HopDongScreen() {
         try {
             const hopDongData = await getHopDong(userId);
 
-            setTimeout(() => {
-                if (hopDongData) {
-                    setLoading(false)
-                    setHopDong(hopDongData.data);
-                } else {
-                    setLoading(false);
-                }
-            }, 1000);
+            if (hopDongData) {
+                setLoading(false)
+                setHopDong(hopDongData.data);
+            } else {
+                setLoading(false);
+            }
 
         } catch (error) {
             console.error("Error fetching data:", error);
-            setTimeout(() => {
-                setLoading(false)
-            }, 1000);
+            setLoading(false)
         }
     };
 

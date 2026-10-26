@@ -657,6 +657,7 @@ export const deleteExpoToken = async (userId: number, expoToken: string) => {
       // Truyền token dưới dạng query hoặc body nếu backend yêu cầu, ở đây giả sử truyền query
       const response = await axios.delete(`${SERVER_URI}/users/expo-token/${userId}`, {
         data: { expo_notification_token: expoToken },
+        timeout: 5000,
       });
       return {
         code: 200,

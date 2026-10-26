@@ -13,11 +13,9 @@ export default function FaqScreen() {
   const fetchFaqData = async () => {
     try {
       const faq = await getFaq();
-      setTimeout(() => {
-        if (faq.data) {
-          setFaqs(faq.data);
-        }
-      }, 1000);
+      if (faq.data) {
+        setFaqs(faq.data);
+      }
 
     } catch (error) {
       console.error("Error fetching data:", error);

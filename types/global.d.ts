@@ -1,4 +1,6 @@
 type User = {
+  orthodontic_status?: 'not_started' | 'active' | 'retention' | 'completed' | 'discontinued' | null;
+  orthodontic_ended_on?: string | null;
   id: number;
   avatar_id: any;
   ho_va_ten: string;

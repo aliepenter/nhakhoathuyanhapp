@@ -24,10 +24,15 @@ export default function QuaTrinhDetailScreen() {
         headerTitle,
         title
     }: any = useLocalSearchParams();
-    const imageUrls = [anh_1, anh_9, anh_10, anh_2, anh_3, anh_4, anh_5, anh_7, anh_6, anh_11, anh_8, anh_12, anh_13];
+    const imageItems = [anh_1, anh_9, anh_10, anh_2, anh_3, anh_4, anh_5, anh_7, anh_6, anh_8, anh_11, anh_12, anh_13]
+        .map((value, slot) => ({ path: Array.isArray(value) ? value[0] : value, slot }))
+        .filter((item): item is { path: string; slot: number } =>
+            typeof item.path === 'string' && !!item.path.trim() && !['null', 'undefined'].includes(item.path.trim()))
+        .map(item => ({ ...item, path: item.path.trim() }));
+    const imageUrls = imageItems.map(({ path }) => /^https?:\/\//i.test(path)
+        ? path : `${SERVER_URL.replace(/\/$/, '')}/${path.replace(/^\//, '')}`);
 
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const [currentActiveIndex, setCurrenActiveIndex] = useState(0);
     const [modalVisible, setModalVisible] = useState(false);
 
     const [imageHeight, setImageHeight] = useState(187);
@@ -55,25 +60,15 @@ export default function QuaTrinhDetailScreen() {
         } else {
             setIsIn(true);
         }
-        setTimeout(() => {
-            setLoading(false);
-        }, 200);
+        setLoading(false);
     };
 
     const changeImage = (index: number) => {
 
-        if (index !== currentImageIndex) {
-            setCurrenActiveIndex(index); // Cập nhật trạng thái active của icon
+        if (imageUrls[index] && index !== currentImageIndex) {
             setLoading(true); // Bật trạng thái loading
             setImageError(false); // Đặt lại trạng thái lỗi ảnh
-            setTimeout(() => {
-                setCurrentImageIndex(index); // Cập nhật trạng thái active của icon ngay lập tức
-            }, 0);
-            // Trì hoãn việc hiển thị ảnh để loading hiển thị trước
-            if (!imageUrls[index]) {
-                setImageError(true);
-                setLoading(false);
-            }
+            setCurrentImageIndex(index);
         }
     };
     const iconList = [
@@ -97,12 +92,14 @@ export default function QuaTrinhDetailScreen() {
                 <TouchableOpacity
                     className="md:items-center"
                     activeOpacity={0.9}
+                    disabled={!imageUrls.length || imageError || loading}
                     onPress={() => setModalVisible(true)}
                 >
                     <View style={{ position: 'relative' }}>
-                        {!imageError && (
+                        {!!imageUrls.length && !imageError && (
                             <Image
-                                source={{ uri: `${SERVER_URL}${imageUrls[currentImageIndex]}` }}
+                                key={imageUrls[currentImageIndex]}
+                                source={{ uri: imageUrls[currentImageIndex] }}
                                 style={{ 
                                     height: imageHeight, 
                                     width: imageWidth,
@@ -117,13 +114,14 @@ export default function QuaTrinhDetailScreen() {
                                 }}
                             />
                         )}
-                        {loading && !imageError && (
+                        {!!imageUrls.length && loading && !imageError && (
                             <View className='absolute left-[47%] top-1/2 -translate-x-1/2 -translate-y-1/2'>
                                 <ActivityIndicator color={'#00E5E5'} />
                             </View>
                         )}
                     </View>
                 </TouchableOpacity>
+                {!imageUrls.length && <Text className='text-center mt-10'>Chưa có ảnh quá trình</Text>}
                 {imageError && (
                     <View className='absolute left-[40%] h-96 justify-center items-center'>
                         <Text className='font-bold'>Không thể tải ảnh</Text>
@@ -143,7 +141,7 @@ export default function QuaTrinhDetailScreen() {
                             enableSwipeDown={true}
                             swipeDownThreshold={100}
                             onCancel={() => setModalVisible(false)}
-                            imageUrls={imageUrls.map(url => ({ url: `${SERVER_URL}${url}` }))}
+                            imageUrls={imageUrls.map(url => ({ url }))}
                             index={currentImageIndex}
                         />
                         <TouchableOpacity
@@ -160,14 +158,14 @@ export default function QuaTrinhDetailScreen() {
             </View>
 
             <View className={`${Platform.OS === 'ios' ? 'mt-[20px]' : 'mt-[10px]'} flex-wrap flex-row justify-center absolute bottom-16 px-[20px]`}>
-                {iconList.map((icon, index) => (
+                {imageItems.map(({ slot }, index) => (
                     <TouchableOpacity
-                        key={index}
+                        key={slot}
                         className="w-[14.2857142457%] mt-2 flex-row justify-center"
                         onPress={() => changeImage(index)}
                     >
                         <Image
-                            source={index === currentActiveIndex ? activeIconList[index] : icon}
+                            source={index === currentImageIndex ? activeIconList[slot] : iconList[slot]}
                             className="w-[36px] h-[36px]"
                             resizeMode='contain'
                         />

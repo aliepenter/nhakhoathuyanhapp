@@ -12,11 +12,9 @@ export default function AboutUsScreen() {
   const fetchBannerData = async () => {
       try {
           const bannersResponse = await getBanners();
-          setTimeout(() => {
-              if (bannersResponse.data) {
-                  setBanners(bannersResponse.data);
-              }
-          }, 1000);
+          if (bannersResponse.data) {
+              setBanners(bannersResponse.data);
+          }
 
       } catch (error) {
           console.error("Error fetching data:", error);

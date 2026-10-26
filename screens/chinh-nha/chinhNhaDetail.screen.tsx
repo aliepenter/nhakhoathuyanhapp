@@ -81,9 +81,7 @@ export default function ChinhNhaDetailScreen() {
         setRefreshing(true);
         setLoading(true);
         setRefreshing(false);
-        setTimeout(() => {
-            setLoading(false);
-        }, 500);
+        setLoading(false);
     }
     const scrollViewRef = useRef<ScrollView>(null);
 
@@ -93,9 +91,7 @@ export default function ChinhNhaDetailScreen() {
         }
     };
     useEffect(() => {
-        setTimeout(() => {
-            setLoading(false);
-        }, 500);
+        setLoading(false);
         const keyboardDidShowListener = Keyboard.addListener(
             Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
             () => {

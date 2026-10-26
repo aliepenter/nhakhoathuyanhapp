@@ -74,7 +74,7 @@ export default function LichHenScreen() {
                              // Lọc bỏ các lịch hẹn đã approved
                              const filteredLichHen = lichHenRes.data.filter((item: any) => item.change_request_status !== 'approved');
                              const dates: MarkedDates = {};
-                             filteredLichHen.forEach((item: { ngay_kham: any }) => {
+                             filteredLichHen.forEach((item: LichHen) => {
                                  const formattedDate = formatDate(item.ngay_kham, 'isoDate');
                                  const itemDate = new Date(item.ngay_kham);
                                  if (formattedDate && itemDate > today) {
@@ -255,7 +255,7 @@ export default function LichHenScreen() {
             await updateLichHen(matchedLichHen.id, lichHenUpdate);
             
             // Cập nhật state ngay sau khi gửi thành công
-            const updatedLichHenData = lichHenData.map(item => {
+            const updatedLichHenData = lichHenData.map((item): LichHen => {
                 if (item.id === matchedLichHen.id) {
                     return { ...item, change_request_status: 'pending' };
                 }

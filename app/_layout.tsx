@@ -6,6 +6,7 @@ import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 import React from "react";
 import * as SplashScreen from 'expo-splash-screen';
 import OTAUpdateManager from '@/components/home/OTAUpdateManager';
+import useAppActivity from '@/hooks/useAppActivity';
 
 SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({
@@ -30,7 +31,7 @@ export default function RootLayout() {
   useEffect(() => {
     if (error) throw error;
     if (fontsLoaded) SplashScreen.hideAsync();
-    LogBox.ignoreAllLogs(true);
+    if (__DEV__) LogBox.ignoreAllLogs(false);
 
   }, [fontsLoaded, error]);
 
@@ -40,6 +41,7 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
+  useAppActivity();
   const toastConfig = {
     success: (props: any) => (
       <BaseToast

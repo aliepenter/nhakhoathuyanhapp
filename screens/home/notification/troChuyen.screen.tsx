@@ -101,20 +101,16 @@ export default function TroChuyenScreen() {
     const fetchCuocTroChuyen = async (userId: number) => {
         try {
             const cuocTroChuyenData = await getLichSuTroChuyen(userId);
-            setTimeout(() => {
-                if (cuocTroChuyenData) {
-                    setCuocTroChuyen(cuocTroChuyenData.data);
-                    setLoading(false)
-                } else {
-                    setLoading(false)
-                }
-            }, 0);
+            if (cuocTroChuyenData) {
+                setCuocTroChuyen(cuocTroChuyenData.data);
+                setLoading(false)
+            } else {
+                setLoading(false)
+            }
 
         } catch (error) {
             console.error("Error fetching data:", error);
-            setTimeout(() => {
-                setLoading(false)
-            }, 1000);
+            setLoading(false)
         }
     };
     const onChatPress = (title: any, cuoc_tro_chuyen_id: number, status: number) => {

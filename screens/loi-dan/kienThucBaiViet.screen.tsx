@@ -22,20 +22,16 @@ export default function KienThucBaiVietScreen() {
     const fetchLoiDanBaiViet = async () => {
         try {
             const loiDanBaiViet = await getOnlyLoiDan();
-            setTimeout(() => {
-                if (loiDanBaiViet) {
-                    setLoiDanVBaiViet(loiDanBaiViet.data);
-                    setLoading(false)
-                } else {
-                    setLoading(false)
-                }
-            }, 1000);
+            if (loiDanBaiViet) {
+                setLoiDanVBaiViet(loiDanBaiViet.data);
+                setLoading(false)
+            } else {
+                setLoading(false)
+            }
 
         } catch (error) {
             console.error("Error fetching data:", error);
-            setTimeout(() => {
-                setLoading(false)
-            }, 1000);
+            setLoading(false)
         }
     };
     return (

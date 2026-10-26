@@ -39,28 +39,24 @@ export default function MyGalleryScreen({ user }: any) {
   const fetchCustomerLibrary = async (userId: number) => {
     try {
       const customerLibrary = await getCustomerLibrary(userId);
-      setTimeout(() => {
-        if (customerLibrary) {
-          setCustomerLibraryData(customerLibrary.data);
-          setLoading(false);
-          const todayImageData = checkTodayIsShoot(customerLibrary.data);
-          if (todayImageData) {
-            setHasImage(true);
-            setId(todayImageData.id)
-          } else {
-            setHasImage(false);
-            setId(null)
-          }
+      if (customerLibrary) {
+        setCustomerLibraryData(customerLibrary.data);
+        setLoading(false);
+        const todayImageData = checkTodayIsShoot(customerLibrary.data);
+        if (todayImageData) {
+          setHasImage(true);
+          setId(todayImageData.id)
         } else {
-          setLoading(false)
+          setHasImage(false);
+          setId(null)
         }
-      }, 1000);
+      } else {
+        setLoading(false)
+      }
 
     } catch (error) {
       console.error("Error fetching data:", error);
-      setTimeout(() => {
-        setLoading(false)
-      }, 1000);
+      setLoading(false)
     }
   };
   const [permission, requestPermission] = useCameraPermissions();

@@ -27,20 +27,16 @@ export default function QuaTrinhScreen({ user }: any) {
   const fetchAnhQuaTrinh = async (userId: number) => {
     try {
       const anhData = await getAnhQuaTrinh(userId);
-      setTimeout(() => {
-        if (anhData) {
-          setAnh(anhData.data);
-          setLoading(false)
-        } else {
-          setLoading(false)
-        }
-      }, 1000);
+      if (anhData) {
+        setAnh(anhData.data);
+        setLoading(false)
+      } else {
+        setLoading(false)
+      }
 
     } catch (error) {
       console.error("Error fetching data:", error);
-      setTimeout(() => {
-        setLoading(false)
-      }, 1000);
+      setLoading(false)
     }
   };
 

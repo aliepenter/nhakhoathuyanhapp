@@ -23,20 +23,16 @@ export default function VideosScreen() {
         try {
             const videosData = await getVideos();
 
-            setTimeout(() => {
-                if (videosData) {
-                    setLoading(false)
-                    setVideos(videosData.data);
-                } else {
-                    setLoading(false);
-                }
-            }, 1000);
+            if (videosData) {
+                setLoading(false)
+                setVideos(videosData.data);
+            } else {
+                setLoading(false);
+            }
 
         } catch (error) {
             console.error("Error fetching data:", error);
-            setTimeout(() => {
-                setLoading(false)
-            }, 1000);
+            setLoading(false)
         }
     };
 

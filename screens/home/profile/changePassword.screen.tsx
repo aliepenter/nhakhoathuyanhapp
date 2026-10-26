@@ -36,15 +36,11 @@ export default function ChangePasswordScreen() {
       } catch (error) {
         Alert.alert('Thất bại', 'Mật khẩu cũ chưa đúng!');
       } finally {
-        setTimeout(() => {
-          setIsSubmitting(false);
-        }, 2000);
+        setIsSubmitting(false);
       }
     } else {
       Alert.alert('Thất bại', 'Mật khẩu mới không khớp!');
-      setTimeout(() => {
-        setIsSubmitting(false);
-      }, 2000);
+      setIsSubmitting(false);
     }
 
   };

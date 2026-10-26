@@ -9,7 +9,9 @@ import {
   TouchableOpacity,
   Text,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import { useFocusEffect } from "expo-router";
+import { getOrthodonticDuration } from "@/utils/orthodonticDuration";
+import React, { useCallback, useEffect, useState } from "react";
 import { deleteRequest, getBanners, getCustomerLibrary, getLichHenByUserId, getPosts, getTrending, updateExpoToken } from "@/lib/apiCall";
 import useUser from "@/hooks/auth/useUser";
 import FunctionItemsList from "@/components/home/FunctionItem";
@@ -17,7 +19,7 @@ import RenderVideo from "@/components/home/RenderVideo";
 import BannerSlide from "@/components/common/BannerSlide";
 import NewsSection from "@/components/home/NewsSection";
 import TimeTracking from "@/components/home/TimeTracking";
-import { calculateDaysDifference, checkDay, checkTodayIsShoot, formatDate } from "@/lib/commonFunctions";
+import { checkDay, checkTodayIsShoot, formatDate } from "@/lib/commonFunctions";
 import Toast from "react-native-toast-message";
 import { usePushNotifications } from "@/hooks/usePushNotifications";
 // Lấy thông tin thiết bị từ expo-device
@@ -28,7 +30,9 @@ const HomeScreen = () => {
   const [banners, setBanners] = useState([]);
   const [post, setPost] = useState([]);
   const [lichHen, setLichHen] = useState(null);
-  const { user } = useUser();
+  const { user, setRefetch } = useUser();
+  const duration = getOrthodonticDuration(user);
+  useFocusEffect(useCallback(() => { setRefetch(value => !value); }, [setRefetch]));
   const { expoPushToken } = usePushNotifications();
   const [flag, setFlag] = useState<boolean>(false);
   const handleUpdateExpoToken = async (id: any, data: any) => {
@@ -53,6 +57,7 @@ const HomeScreen = () => {
   }, [user, expoPushToken]);
   const onRefresh = async () => {
     setRefreshing(true);
+    setRefetch(value => !value);
     setVideos([]);
     setBanners([]);
     setPost([]);
@@ -102,11 +107,9 @@ const HomeScreen = () => {
   const fetchNews = async () => {
     try {
       const postData = await getPosts();
-      setTimeout(() => {
-        if (postData) {
-          setPost(postData.data);
-        }
-      }, 1000);
+      if (postData) {
+        setPost(postData.data);
+      }
 
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -115,11 +118,9 @@ const HomeScreen = () => {
   const fetchVideoData = async () => {
     try {
       const videosResponse = await getTrending();
-      setTimeout(() => {
-        if (videosResponse.data) {
-          setVideos(videosResponse.data);
-        }
-      }, 1000);
+      if (videosResponse.data) {
+        setVideos(videosResponse.data);
+      }
 
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -128,11 +129,9 @@ const HomeScreen = () => {
   const fetchBannerData = async () => {
     try {
       const bannersResponse = await getBanners();
-      setTimeout(() => {
-        if (bannersResponse.data) {
-          setBanners(bannersResponse.data);
-        }
-      }, 1000);
+      if (bannersResponse.data) {
+        setBanners(bannersResponse.data);
+      }
 
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -162,11 +161,12 @@ const HomeScreen = () => {
   };
 
   return (
-    <View className="bg-white">
+    <View className="flex-1 bg-white">
       <ScrollView
+        style={{ flex: 1 }}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
-        <TimeTracking lichHen={lichHen ? lichHen : null} schedule={lichHen ? formatDate(lichHen, 'minimize') : 0} totalTime={user && user.ngay_gan_mc != null ? calculateDaysDifference(user.ngay_gan_mc) : 0} flag={flag} setFlag={setFlag} />
+        <TimeTracking lichHen={lichHen ? lichHen : null} schedule={lichHen ? formatDate(lichHen, 'minimize') : 0} totalTime={duration.days} endedOn={duration.endedOn} flag={flag} setFlag={setFlag} />
 
         <FunctionItemsList schedule={lichHen ? lichHen : null} flag={flag} setFlag={setFlag} />
         <BannerSlide banners={banners} type={1} />

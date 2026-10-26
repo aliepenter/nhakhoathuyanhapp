@@ -169,7 +169,6 @@ const PageLayout = () => {
                 <Stack.Screen options={{ headerShown: false }} name="verify-sign-up/index" />
                 <Stack.Screen options={{ headerShown: false }} name="play-video/index" />
                 <Stack.Screen options={{ headerShown: false }} name="chinh-nha/chinhNhaDetail" />
-                <Stack.Screen options={{ headerShown: false }} name="hop-dong/hopDongDetail" />
                 <Stack.Screen options={{ headerShown: false }} name="image-gallery/index" />
                 <Stack.Screen options={{ headerShown: false }} name="camera/index" />
                 <Stack.Screen options={{ headerShown: false }} name="loving/index" />

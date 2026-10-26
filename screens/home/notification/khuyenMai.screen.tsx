@@ -31,30 +31,24 @@ export default function KhuyenMaiScreen() {
   const fetchSalePosts = async () => {
     try {
       const salePostsData = await getOnlyPosts();
-      setTimeout(() => {
-        if (salePostsData) {
-          setSalePosts(salePostsData.data);
-          setLoading(false)
-        } else {
-          setLoading(false)
-        }
-      }, 1000);
+      if (salePostsData) {
+        setSalePosts(salePostsData.data);
+        setLoading(false)
+      } else {
+        setLoading(false)
+      }
 
     } catch (error) {
       console.error("Error fetching data:", error);
-      setTimeout(() => {
-        setLoading(false)
-      }, 1000);
+      setLoading(false)
     }
   };
   const fetchBannerData = async () => {
     try {
       const bannersResponse = await getBanners();
-      setTimeout(() => {
-        if (bannersResponse.data) {
-          setBanners(bannersResponse.data);
-        }
-      }, 1000);
+      if (bannersResponse.data) {
+        setBanners(bannersResponse.data);
+      }
 
     } catch (error) {
       console.error("Error fetching data:", error);

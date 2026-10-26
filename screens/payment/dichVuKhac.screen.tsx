@@ -27,20 +27,16 @@ export default function DichVuKhacScreen() {
     const fetchLichSuThanhToanDvk = async (userId: number) => {
         try {
             const dvk = await getDichVuKhacByUserId(userId);
-            setTimeout(() => {
-                if (dvk) {
-                    setLichSuThanhToanDvk(dvk.data);
-                    setLoading(false)
-                } else {
-                    setLoading(false)
-                }
-            }, 1000);
+            if (dvk) {
+                setLichSuThanhToanDvk(dvk.data);
+                setLoading(false)
+            } else {
+                setLoading(false)
+            }
 
         } catch (error) {
             console.error("Error fetching data:", error);
-            setTimeout(() => {
-                setLoading(false)
-            }, 1000);
+            setLoading(false)
         }
     };
     return (

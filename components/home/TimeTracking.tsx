@@ -10,10 +10,11 @@ type TimeTrackingProps = {
     flag: boolean;
     setFlag: (index: boolean) => void;
     schedule: any;
-    totalTime: number;
+    totalTime: number | null;
+    endedOn?: string | null;
     lichHen: any;
 }
-export default function TimeTracking({ lichHen, schedule, totalTime, flag, setFlag }: TimeTrackingProps) {
+export default function TimeTracking({ lichHen, schedule, totalTime, endedOn, flag, setFlag }: TimeTrackingProps) {
     const onPress = () => {
         setFlag(true);
         Haptics.selectionAsync();
@@ -35,9 +36,12 @@ export default function TimeTracking({ lichHen, schedule, totalTime, flag, setFl
         }, 1000);
     }
     return (
-        <View className='flex-row flex-1 justify-between px-[11px] mt-[20px]'>
+        <View
+            className='flex-row justify-between px-[11px] mt-[20px]'
+            style={{ height: endedOn ? 78 : 59, flexGrow: 0, flexShrink: 0 }}
+        >
             <Pressable
-                className={`w-[48%] h-[59px] `}
+                className={`w-[48%] ${endedOn ? 'h-[78px]' : 'h-[59px]'} `}
                 disabled={flag}
                 onPress={() => onPressLichHen()}
             >
@@ -70,7 +74,7 @@ export default function TimeTracking({ lichHen, schedule, totalTime, flag, setFl
                 }
             </Pressable>
             <Pressable
-                className={`w-[48%] h-[59px] `}
+                className={`w-[48%] ${endedOn ? 'h-[78px]' : 'h-[59px]'} `}
                 disabled={flag}
                 onPress={() => onPress()}
             >
@@ -84,14 +88,13 @@ export default function TimeTracking({ lichHen, schedule, totalTime, flag, setFl
                         <Image source={icons.calenderDay} className='w-[16px] h-[16px] mr-[3px]' resizeMode='contain' />
                         <Text className='font-pbold text-[12px] text-white md:text-[16px]'>Thời gian niềng răng</Text>
                     </View>
-                    {totalTime >= 0
+                    {totalTime !== null && totalTime >= 0
                         ?
                         <Text className='font-pextrabold text-[12px] text-[#FBFF49] md:text-[16px]'>{totalTime} ngày</Text>
                         :
-                        <View className="h-[23px] justify-center">
-                            <ActivityIndicator color={'#00E5E5'} />
-                        </View>
+                        <Text className='text-[12px] text-white'>Chưa có dữ liệu</Text>
                     }
+                    {endedOn && <Text className='text-[11px] text-white'>Đến {endedOn.split('-').reverse().join('/')}</Text>}
                 </LinearGradient>
             </Pressable>
         </View>

@@ -40,16 +40,12 @@ const PasswordScreen = () => {
 
         try {
             await login!(username, password);
-            setTimeout(() => {
-                router.dismissAll();
-                router.replace("/(tabs)");
-            }, 2000);
+            router.dismissAll();
+            router.replace("/(tabs)");
         } catch (error) {
             Alert.alert('Đăng nhập thất bại', 'Xin vui lòng kiểm tra lại thông tin');
         } finally {
-            setTimeout(() => {
-                setIsSubmitting(false);
-            }, 2000);
+            setIsSubmitting(false);
         }
     };
 

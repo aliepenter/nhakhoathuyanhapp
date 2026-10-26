@@ -15,9 +15,7 @@ export default function useUser() {
             try {
                 const token = await SecureStore.getItemAsync(TOKEN_KEY);
                 if (!token) {
-                    setTimeout(() => {
-                        setLoading(false);
-                    }, 2000);
+                    setLoading(false);
                     return;
                 }
                 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -30,9 +28,7 @@ export default function useUser() {
             } catch (err) {
                 setError("Đã có lỗi xảy ra, xin vui lòng thử lại sau");
             } finally {
-                setTimeout(() => {
-                    setLoading(false);
-                }, 2000);
+                setLoading(false);
             }
         };
         fetchUser();

@@ -33,20 +33,16 @@ export default function LoiDanScreen() {
   const fetchLoiDan = async (userId: number) => {
     try {
       const loiDanData = await getLoiDan(userId);
-      setTimeout(() => {
-        if (loiDanData) {
-          setLoiDan(loiDanData.data);
-          setLoading(false)
-        } else {
-          setLoading(false)
-        }
-      }, 1000);
+      if (loiDanData) {
+        setLoiDan(loiDanData.data);
+        setLoading(false)
+      } else {
+        setLoading(false)
+      }
 
     } catch (error) {
       console.error("Error fetching data:", error);
-      setTimeout(() => {
-        setLoading(false)
-      }, 1000);
+      setLoading(false)
     }
   };
   const handlePress = async (item: LoiDan) => {

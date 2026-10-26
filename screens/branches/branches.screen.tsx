@@ -22,11 +22,9 @@ export default function BranchesScreen() {
     const fetchBannerData = async () => {
         try {
             const bannersResponse = await getBanners();
-            setTimeout(() => {
-                if (bannersResponse.data) {
-                    setBanners(bannersResponse.data);
-                }
-            }, 1000);
+            if (bannersResponse.data) {
+                setBanners(bannersResponse.data);
+            }
 
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -36,11 +34,9 @@ export default function BranchesScreen() {
     const fetchBranchesData = async () => {
         try {
             const branchesResponse = await getBranches();
-            setTimeout(() => {
-                if (branchesResponse.data) {
-                    setBranches(branchesResponse.data);
-                }
-            }, 1000);
+            if (branchesResponse.data) {
+                setBranches(branchesResponse.data);
+            }
 
         } catch (error) {
             console.error("Error fetching data:", error);

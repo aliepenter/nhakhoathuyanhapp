@@ -20,20 +20,16 @@ export default function KienThucVideoScreen() {
     const fetchLoiDanVideo = async () => {
         try {
             const loiDanVideo = await getOnlyLoiDanVideo();
-            setTimeout(() => {
-                if (loiDanVideo) {
-                    setLoiDanVideo(loiDanVideo.data);
-                    setLoading(false)
-                } else {
-                    setLoading(false)
-                }
-            }, 1000);
+            if (loiDanVideo) {
+                setLoiDanVideo(loiDanVideo.data);
+                setLoading(false)
+            } else {
+                setLoading(false)
+            }
 
         } catch (error) {
             console.error("Error fetching data:", error);
-            setTimeout(() => {
-                setLoading(false)
-            }, 1000);
+            setLoading(false)
         }
     };
     return (

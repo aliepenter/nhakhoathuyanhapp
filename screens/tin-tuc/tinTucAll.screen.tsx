@@ -23,20 +23,16 @@ export default function TinTucAllScreen() {
         try {
             const postData = await getPosts();
 
-            setTimeout(() => {
-                if (postData) {
-                    setLoading(false)
-                    setPost(postData.data);
-                } else {
-                    setLoading(false);
-                }
-            }, 1000);
+            if (postData) {
+                setLoading(false)
+                setPost(postData.data);
+            } else {
+                setLoading(false);
+            }
 
         } catch (error) {
             console.error("Error fetching data:", error);
-            setTimeout(() => {
-                setLoading(false)
-            }, 1000);
+            setLoading(false)
         }
     };
 

@@ -23,9 +23,6 @@ export default function HoSoTraGopCnScreen() {
     if (user) {
       const userId = user.id;
       await fetchHoSoTraGopCn(userId);
-      if (hoSoTraGopCn) {
-        await fetchLichSuThanhToanCn(hoSoTraGopCn);
-      }
     }
     setRefreshing(false);
   };
@@ -40,31 +37,29 @@ export default function HoSoTraGopCnScreen() {
       const hoSoTraGopCnData = await getHoSoTraGopCn(userId);
       if (hoSoTraGopCnData) {
         setHoSoTraGopCn(hoSoTraGopCnData.data);
-        fetchLichSuThanhToanCn(hoSoTraGopCnData.data)
+        await fetchLichSuThanhToanCn(hoSoTraGopCnData.data);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setLoading2(false);
     }
   };
   const fetchLichSuThanhToanCn = async (hstgcn: HoSoTraGopCn) => {
     try {
       const lsttcn = await getLichSuThanhToanCn(hstgcn.id.toString());
-      setTimeout(() => {
-        if (lsttcn) {
-          const calculatedData = calculatePaymentDetails(hstgcn.tong_so_tien, hstgcn.so_tien_can_tra_ki_toi, lsttcn.data);
-          setThongTinThanhToan(calculatedData)
-          setLichSuThanhToanCn(lsttcn.data);
-          setLoading2(false)
-        } else {
-          setLoading2(false)
-        }
-      }, 200);
+      if (lsttcn) {
+        const calculatedData = calculatePaymentDetails(hstgcn.tong_so_tien, hstgcn.so_tien_can_tra_ki_toi, lsttcn.data);
+        setThongTinThanhToan(calculatedData)
+        setLichSuThanhToanCn(lsttcn.data);
+        setLoading2(false)
+      } else {
+        setLoading2(false)
+      }
 
     } catch (error) {
       console.error("Error fetching data:", error);
-      setTimeout(() => {
-        setLoading2(false)
-      }, 200);
+      setLoading2(false)
     }
   };
   return (

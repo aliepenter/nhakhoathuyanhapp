@@ -29,20 +29,16 @@ export default function ChinhNhaScreen() {
   const fetchChinhNha = async (userId: number) => {
     try {
       const chinhNhaData = await getChinhNha(userId);
-      setTimeout(() => {
-        if (chinhNhaData) {
-          setChinhNha(chinhNhaData.data);
-          setLoading(false)
-        } else {
-          setLoading(false)
-        }
-      }, 1000);
+      if (chinhNhaData) {
+        setChinhNha(chinhNhaData.data);
+        setLoading(false)
+      } else {
+        setLoading(false)
+      }
 
     } catch (error) {
       console.error("Error fetching data:", error);
-      setTimeout(() => {
-        setLoading(false)
-      }, 1000);
+      setLoading(false)
     }
   };
   const handlePress = (item: ChinhNha) => {

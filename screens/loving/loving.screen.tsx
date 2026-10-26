@@ -1,18 +1,21 @@
 import { View, Text, ActivityIndicator, Share, Alert } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import { getOrthodonticDuration } from '@/utils/orthodonticDuration'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { ImageBackground, Image } from 'expo-image'
 import { icons, images } from '@/constants'
 import { SERVER_URL } from '@/utils/uri'
 import useUser from '@/hooks/auth/useUser'
 import CustomButton from '@/components/common/CustomButton'
-import { calculateDaysDifference, formatDate } from '@/lib/commonFunctions'
-import { router } from 'expo-router'
+import { formatDate } from '@/lib/commonFunctions'
+import { router, useFocusEffect } from 'expo-router'
 import { getAvatar, getLoving } from '@/lib/apiCall'
 import ViewShot from 'react-native-view-shot';
 import * as Sharing from 'expo-sharing';
 
 export default function LovingScreen() {
-    const { user } = useUser();
+    const { user, setRefetch } = useUser();
+    const duration = getOrthodonticDuration(user);
+    useFocusEffect(useCallback(() => { setRefetch(value => !value); }, [setRefetch]));
     const [avatar, setAvatar] = useState<Avatar>();
     const [loving, setLoving] = useState<Loving>();
     const [loading, setLoading] = useState(true);
@@ -84,7 +87,7 @@ export default function LovingScreen() {
                             <Text className='text-[24px] leading-[30px] font-mmedium'>Đồng hành cùng nhau</Text>
                             <Text className='text-[55px] leading-[70px] font-mbold text-[#FB3F4A]'>
                                 {
-                                    user && user.ngay_gan_mc != null ? calculateDaysDifference(user.ngay_gan_mc) : 0
+                                    duration.days === null ? '—' : duration.days
                                 } ngày
                             </Text>
                             <Text className='text-[30px] leading-[50px] font-mregular'>
@@ -92,6 +95,9 @@ export default function LovingScreen() {
                                     user && user.ngay_gan_mc != null ? formatDate(user.ngay_gan_mc, 'minimize') : 0
                                 }
                             </Text>
+                            {duration.endedOn && <Text className='text-[16px] font-mregular'>
+                                Đến {duration.endedOn.split('-').reverse().join('/')}
+                            </Text>}
                         </ImageBackground>
                     </View>
                     <View className='items-center h-[25%] flex-row'>
