@@ -15,26 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import CustomHeader from '@/components/common/CustomHeader';
 
-// Đây là code dành cho android, khi làm đến ios nếu có lỗi ở play video sau khi build thì check ở đây, check version của webview,....
-const getYoutubeVideoId = (value: string) => {
-  if (!value) return '';
-
-  // Support direct IDs and common YouTube URL formats from API data.
-  const normalized = value.trim();
-  const directIdPattern = /^[a-zA-Z0-9_-]{11}$/;
-  if (directIdPattern.test(normalized)) return normalized;
-
-  const idFromVParam = normalized.match(/[?&]v=([^&#]+)/)?.[1];
-  if (idFromVParam && directIdPattern.test(idFromVParam)) return idFromVParam;
-
-  const idFromShortUrl = normalized.match(/youtu\.be\/([^?&#/]+)/)?.[1];
-  if (idFromShortUrl && directIdPattern.test(idFromShortUrl)) return idFromShortUrl;
-
-  const idFromEmbed = normalized.match(/embed\/([^?&#/]+)/)?.[1];
-  if (idFromEmbed && directIdPattern.test(idFromEmbed)) return idFromEmbed;
-
-  return '';
-};
+import { getYoutubeVideoId } from '@/utils/youtube';
 
 const PlayVideoScreen = ({ headerTitle, videoItem }: any) => {
   const router = useRouter();

@@ -5,13 +5,15 @@ import { router } from 'expo-router';
 import { Image } from 'expo-image';
 import * as Haptics from 'expo-haptics';
 import { checkDay } from '@/lib/commonFunctions';
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 
 type Props = {
     flag: boolean;
     schedule: any;
     setFlag: (index: boolean) => void
 }
-const FunctionItem = ({ icon, title, path, flag, setFlag, notification }: any) => {
+const FunctionItem = ({ icon, title, path, flag, setFlag, notification, isVideo }: any) => {
     const handlePress = (route: any) => {
         Haptics.selectionAsync();
         setFlag(true);
@@ -27,7 +29,9 @@ const FunctionItem = ({ icon, title, path, flag, setFlag, notification }: any) =
             className='items-center w-1/3 mb-[10px]'
         >
             <View style={styles.boxShadow} className={`justify-center items-center bg-[#FAFAFA] rounded-lg w-[60px] h-[60px]`}>
-                <Image source={icon} className='w-[40px] h-[40px]' contentFit='contain' transition={500} />
+                {isVideo ? <LinearGradient colors={['#1560A1', '#4FAA57']} style={{ width: 40, height: 40, borderRadius: 12, alignItems: 'center', justifyContent: 'center' }}>
+                    <Ionicons name="play" size={25} color="#fff" />
+                </LinearGradient> : <Image source={icon} className='w-[40px] h-[40px]' contentFit='contain' transition={500} />}
                 {
                     notification
                         ?
@@ -51,7 +55,7 @@ export default function FunctionItemsList({ flag, setFlag, schedule }: Props) {
             <FunctionItem setFlag={setFlag} flag={flag} notification={checkDay(schedule)} icon={icons.iconLichHen} path="/(routes)/lich-hen" title="Lịch hẹn" />
             <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconDatLich} path="/(routes)/dat-lich" title="Đặt lịch" />
             <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconThanhToan} path="/(routes)/payment" title="Thanh toán" />
-            <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconTinTuc} path="/(routes)/kien-thuc" title="Kiến thức" />
+            <FunctionItem setFlag={setFlag} flag={flag} notification={false} isVideo path="/(routes)/video" title="Video" />
             <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.giftGif} path="/(routes)/gioi-thieu" title="Quà tặng" />
             {/* <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconHopDong} path="/(routes)/hop-dong" title="Hồ sơ" /> */}
             <FunctionItem setFlag={setFlag} flag={flag} notification={false} icon={icons.iconChiNhanh} path="/(routes)/branches" title="Chi nhánh" />

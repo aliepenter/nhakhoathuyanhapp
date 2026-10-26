@@ -10,7 +10,7 @@ const TOKEN_KEY = 'Dat.2624';
 
 export const getVideos = async () => {
   try {
-    const response = await axios.get(`${SERVER_URI}/videos`);
+    const response = await axios.get(`${SERVER_URI}/videos`, { timeout: 15000 });
     return {
       code: 200,
       data: response.data,

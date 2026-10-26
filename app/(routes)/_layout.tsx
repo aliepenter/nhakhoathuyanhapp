@@ -68,9 +68,7 @@ const PageLayout = () => {
                 <Stack.Screen
                     name="video/index"
                     options={{
-                        header: (props) => (
-                            <CustomHeader {...props} customStyle="bg-white" title="Video" />
-                        ),
+                        headerShown: false,
                     }}
                 />
                 <Stack.Screen
